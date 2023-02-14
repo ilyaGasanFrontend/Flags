@@ -1,0 +1,144 @@
+{
+  "resources/adminkit/img/avatars/avatar-3.jpg": {
+    "file": "assets/avatar-3.66fb056d.jpg",
+    "src": "resources/adminkit/img/avatars/avatar-3.jpg"
+  },
+  "resources/adminkit/img/avatars/avatar-2.jpg": {
+    "file": "assets/avatar-2.1d9265f8.jpg",
+    "src": "resources/adminkit/img/avatars/avatar-2.jpg"
+  },
+  "resources/adminkit/img/avatars/avatar.jpg": {
+    "file": "assets/avatar.86e8ba01.jpg",
+    "src": "resources/adminkit/img/avatars/avatar.jpg"
+  },
+  "resources/adminkit/img/flags/aq.png": {
+    "file": "assets/aq.98e93d35.png",
+    "src": "resources/adminkit/img/flags/aq.png"
+  },
+  "resources/adminkit/img/avatars/avatar-5.jpg": {
+    "file": "assets/avatar-5.d336ec57.jpg",
+    "src": "resources/adminkit/img/avatars/avatar-5.jpg"
+  },
+  "resources/adminkit/img/avatars/avatar-4.jpg": {
+    "file": "assets/avatar-4.09754c94.jpg",
+    "src": "resources/adminkit/img/avatars/avatar-4.jpg"
+  },
+  "resources/adminkit/img/flags/bl.png": {
+    "file": "assets/bl.268bb326.png",
+    "src": "resources/adminkit/img/flags/bl.png"
+  },
+  "resources/adminkit/img/flags/bt.png": {
+    "file": "assets/bt.fe09c16f.png",
+    "src": "resources/adminkit/img/flags/bt.png"
+  },
+  "resources/adminkit/img/flags/bz.png": {
+    "file": "assets/bz.13c46926.png",
+    "src": "resources/adminkit/img/flags/bz.png"
+  },
+  "resources/adminkit/img/flags/gb-wls.png": {
+    "file": "assets/gb-wls.989f9b16.png",
+    "src": "resources/adminkit/img/flags/gb-wls.png"
+  },
+  "resources/adminkit/img/flags/io.png": {
+    "file": "assets/io.0ba39cd8.png",
+    "src": "resources/adminkit/img/flags/io.png"
+  },
+  "resources/adminkit/fonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400.886fd1e6.woff2",
+    "src": "resources/adminkit/fonts/fa-regular-400.woff2"
+  },
+  "resources/adminkit/fonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400.33a252d6.woff2",
+    "src": "resources/adminkit/fonts/fa-brands-400.woff2"
+  },
+  "resources/adminkit/fonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900.94e1bbc1.woff2",
+    "src": "resources/adminkit/fonts/fa-solid-900.woff2"
+  },
+  "resources/adminkit/fonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400.e4761618.ttf",
+    "src": "resources/adminkit/fonts/fa-regular-400.ttf"
+  },
+  "resources/adminkit/fonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400.523dc72c.ttf",
+    "src": "resources/adminkit/fonts/fa-brands-400.ttf"
+  },
+  "resources/adminkit/fonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900.1c210c13.ttf",
+    "src": "resources/adminkit/fonts/fa-solid-900.ttf"
+  },
+  "resources/adminkit/img/flags/vi.png": {
+    "file": "assets/vi.7278a76f.png",
+    "src": "resources/adminkit/img/flags/vi.png"
+  },
+  "resources/adminkit/img/icons/brand-1.svg": {
+    "file": "assets/brand-1.15060f6b.svg",
+    "src": "resources/adminkit/img/icons/brand-1.svg"
+  },
+  "resources/adminkit/img/icons/brand-2.svg": {
+    "file": "assets/brand-2.7e2689c8.svg",
+    "src": "resources/adminkit/img/icons/brand-2.svg"
+  },
+  "resources/adminkit/img/icons/brand-3.svg": {
+    "file": "assets/brand-3.85119505.svg",
+    "src": "resources/adminkit/img/icons/brand-3.svg"
+  },
+  "resources/adminkit/img/icons/brand-4.svg": {
+    "file": "assets/brand-4.2c2522ad.svg",
+    "src": "resources/adminkit/img/icons/brand-4.svg"
+  },
+  "resources/adminkit/img/icons/brand-5.svg": {
+    "file": "assets/brand-5.b402bc7d.svg",
+    "src": "resources/adminkit/img/icons/brand-5.svg"
+  },
+  "resources/adminkit/img/logo/octagramma_belo.png": {
+    "file": "assets/octagramma_belo.e27c8ec8.png",
+    "src": "resources/adminkit/img/logo/octagramma_belo.png"
+  },
+  "resources/adminkit/img/logo/octagramma.png": {
+    "file": "assets/octagramma.5948e440.png",
+    "src": "resources/adminkit/img/logo/octagramma.png"
+  },
+  "resources/adminkit/img/photos/unsplash-2.jpg": {
+    "file": "assets/unsplash-2.ee1cb4e5.jpg",
+    "src": "resources/adminkit/img/photos/unsplash-2.jpg"
+  },
+  "resources/adminkit/img/photos/unsplash-1.jpg": {
+    "file": "assets/unsplash-1.18ec3e93.jpg",
+    "src": "resources/adminkit/img/photos/unsplash-1.jpg"
+  },
+  "resources/adminkit/img/photos/unsplash-3.jpg": {
+    "file": "assets/unsplash-3.1d669769.jpg",
+    "src": "resources/adminkit/img/photos/unsplash-3.jpg"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app.ab93cf8a.js",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/adminkit/js/app.js": {
+    "file": "assets/app.7f34b0ec.js",
+    "src": "resources/adminkit/js/app.js",
+    "isEntry": true
+  },
+  "resources/adminkit/js/datatables.js": {
+    "file": "assets/datatables.e75d045f.js",
+    "src": "resources/adminkit/js/datatables.js",
+    "isEntry": true
+  },
+  "resources/adminkit/js/fullcalendar.js": {
+    "file": "assets/fullcalendar.8ffe4010.js",
+    "src": "resources/adminkit/js/fullcalendar.js",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app.50094539.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/adminkit/css/light.css": {
+    "file": "assets/light.99bd1f55.css",
+    "src": "resources/adminkit/css/light.css",
+    "isEntry": true
+  }
+}

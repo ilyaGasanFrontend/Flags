@@ -1,0 +1,7 @@
+{
+  "resources/adminkit/js/myscript.js": {
+    "file": "myscript.js",
+    "src": "resources/adminkit/js/myscript.js",
+    "isEntry": true
+  }
+}
