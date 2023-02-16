@@ -10,8 +10,8 @@
                             <div class="card-body">
                                 <div class="m-sm-4">
                                     <div class="text-center">
-                                        <img src="{{ Vite::asset('resources/adminkit/img/logo/flagsocta.jpg') }}"
-                                            alt="Charles Hall" class="img-fluid" width="300" height="auto" />
+                                        <img src="{{ Vite::asset('resources/adminkit/img/logo/flags.png') }}"
+                                            alt="Charles Hall" class="img-fluid" width="200" height="auto" />
                                     </div>
                                     @if ($errors->any())
                                         @foreach ($errors->all() as $error)

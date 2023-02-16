@@ -2,8 +2,8 @@
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="">
             <span class="sidebar-brand-text align-middle">
-                <img src="{{ Vite::asset('resources/adminkit/img/logo/flagsocta.jpg') }}" alt="Oktagramma"
-                    width="100px" height="auto">
+                <img src="{{ Vite::asset('resources/adminkit/img/logo/flags2.png') }}" alt="Oktagramma"
+                    width="150px" height="auto">
 
             </span>
             <svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24"
