@@ -4,8 +4,9 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Support\Facades\Route;
 
+
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/selector', 'App\\Http\\Controllers\\TestController@Index');
 
 Route::get('/', function () {
     return view('auth.login');

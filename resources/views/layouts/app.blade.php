@@ -25,7 +25,19 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
+    <link href="{{ url('/css/selector.css') }}" rel="stylesheet">
+    @push('head')
+    <script src="{{ asset('js/components/pizza.js')}}"></script>
+    @endpush
+    {{-- <link href="{{ asset('resources/adminkit/css/selector.css') }}" rel="stylesheet"> --}}
+    <!-- Choose your prefered color scheme -->
+    <!-- <link href="css/light.css" rel="stylesheet"> -->
+    <!-- <link href="css/dark.css" rel="stylesheet"> -->
+    <!-- scripts -->
+    @vite(['resources/adminkit/css/light.css', 'resources/js/app.js'])
+    @vite(['resources/js/selector.js', 'resources/js/slider.js', 'resources/js/creatingmarks.js','resources/js/returnerToBD.js'])
 
+    
     @vite(['resources/adminkit/css/light.css'])
     {{-- @vite(['resources/adminkit/js/myscript.js']) --}}
     <script src="{{ asset('myscript.js') }}"></script>
@@ -37,7 +49,9 @@
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     <div class="wrapper">
+    @yield('content')
 
+{{-- 
         @include('layouts.navigation')
         <div class="main">
             @include('layouts.navigation-top')
@@ -46,7 +60,7 @@
             </main>
             @include('layouts.footer')
         </div>
-    </div>
+    </div> --}}
     @vite(['resources/js/app.js', 'resources/adminkit/js/app.js'])
     @livewireScripts
 </body>
