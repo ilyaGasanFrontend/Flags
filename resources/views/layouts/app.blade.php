@@ -49,18 +49,15 @@
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     <div class="wrapper">
-    @yield('content')
-
-{{-- 
         @include('layouts.navigation')
         <div class="main">
-            @include('layouts.navigation-top')
+            {{-- @include('layouts.navigation-top') --}} 
             <main class="content">
                 @yield('content')
             </main>
             @include('layouts.footer')
         </div>
-    </div> --}}
+    </div>
     @vite(['resources/js/app.js', 'resources/adminkit/js/app.js'])
     @livewireScripts
 </body>

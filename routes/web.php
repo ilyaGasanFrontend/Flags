@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/selector', 'App\\Http\\Controllers\\TestController@Index');
+Route::get('/selector', 'TestController@Index');
+Route::get('/selector2', 'SelectorController@Index');
 
 Route::get('/', function () {
     return view('auth.login');

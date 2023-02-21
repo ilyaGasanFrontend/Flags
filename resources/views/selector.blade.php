@@ -1,9 +1,10 @@
 @extends('layouts/app')
+{{-- @extends('layouts/footer') --}}
+{{-- @extends('layouts/navigation-top') --}}
+
 @section('content')
 <main class="content">
     <div class="container-fluid p-0">
-
-       
         <div class="row row__selector">
             <div class="col-12 col-lg-8 col_selector">
                 <div class="card card__selector">
@@ -56,9 +57,12 @@
                     </div>
                 </div>
                 <div class="card card-info-input card-info-obj">
-                    <div class="dropdown-menu mb-2 dropdown-menu-obj" style="position:static;display:block;">
-                        
-                    </div>
+                    <form style="width: 100%" method="POST">
+                        <input type="submit" class="btn btn-primary"> 
+                        <div class="dropdown-menu mb-2 dropdown-menu-obj" style="position:static;display:block;">
+                            
+                        </div>
+                    </form>           
                 </div>
                 
             </div>
@@ -80,20 +84,9 @@
                                     <div class="col-sm col__photos__list"><img class="photogal-el" src="{{asset('images/example4.png')}}" alt="Image"/></div>
                                 </div>
                             </div>
-                            <script>
-                                var lol
-                                
-                                function GetStyle(){
-                                    console.log('hi')
-                                    lol = $('.canvas').children('.square');
-                                    
-                                    
-                                    cosole.log({{$count}})
-                                }
-                            </script>
+
                             <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right">
                                 
-                               
                                 
                                 
                                 <img src="{{asset('images/right-arrow.png')}}"  alt="" class="arrow">
@@ -103,6 +96,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <button>Отправить</button>
+        </div>
+    </div>
 
 </main>
 
