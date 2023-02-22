@@ -14,6 +14,10 @@ function createRadioElement(name, checked) {
 
 
 $(document).ready(function (e) {
+  var x_arr = []
+  var y_arr = []
+  var width_arr = []
+  var height_arr = []
 
   const Statuses = Object.freeze({
     CreatingElements: 1,
@@ -158,7 +162,7 @@ $(document).ready(function (e) {
       flag = false
       let objects = (canvas).children()
       $(objects[objects.length-1]).remove()
-      console.log('pidor')
+      // console.log('exit')
     }
     
 
@@ -229,7 +233,17 @@ $(document).ready(function (e) {
         }
         $(id).css('width', (e.clientX - startcoordX) / scale)
         $(id).css('height', (e.clientY - startcoordY) / scale)
-        
+
+        x_arr.push($(id).css('left'))
+        y_arr.push($(id).css('top'))
+        width_arr.push($(id).css('width'))
+        height_arr.push($(id).css('height'))
+
+        $('#hiddenX').val(x_arr)
+        $('#hiddenY').val(y_arr)
+        $('#hiddenWidth').val(width_arr)
+        $('#hiddenHeight').val(height_arr)
+
         var object = $('<div>', {
           'class': 'prev__elemnt__objects dropdown-item',
         })
@@ -257,39 +271,55 @@ $(document).ready(function (e) {
         //   'method': 'POST',
         // })
 
-        var hidden_X = $('<input>',{
-          'type': 'hidden',
-          'name': 'x',
-          'wire:model': 'x',
-          'value': startcoordX
-        })
+        // var hidden_x = $('<input>',{
+        //   'id': 'hidden_x123',
+        //   'type': 'hidden',
+        //   'name': 'x',
+        //   'wire:model': 'x',
+        //   'id': 'x_id',
+        //   'value': $(id).css('left')
+        // })
 
-        var hidden_Y = $('<input>',{
-          'type': 'hidden',
-          'name': 'y',
-          'wire:model': 'y',
-          'value': startcoordY
-        })
+        // var hidden_y = $('<input>',{
+        //   'type': 'hidden',
+        //   'name': 'y',
+        //   'wire:model': 'y',
+        //   'value': $(id).css('top')
+        // })
 
-        var hidden_width = $('<input>',{
-          'type': 'hidden',
-          'name': 'width',
-          'wire:model': 'width',
-          'value': $(id).css('width')
-        })
+        // var hidden_width = $('<input>',{
+        //   'type': 'hidden',
+        //   'name': 'width',
+        //   'wire:model': 'width',
+        //   'value': $(id).css('width')
+        // })
 
+        // var hidden_height = $('<input>',{
+        //   'type': 'hidden',
+        //   'name': 'height',
+        //   'wire:model': 'height',
+        //   'value': $(id).css('height')
+        // })
 
-        var hidden_height = $('<input>',{
-          'type': 'hidden',
-          'name': 'height',
-          'wire:model': 'height',
-          'value': $(id).css('height')
-        })
+        // var hidden_x2 = $('<input>',{
+        //   'type': 'text',
+        //   'name': 'x',
+        //   'wire:model': '2',
+        //   'value': $(id).css('left')
+        // })
 
-        var submitButton = $('<input>',{
-          'type': 'submit',
-        })
-        console.log(startcoordX)
+        // var textbox = $('<input>',{
+        //   'type': 'text',
+        //   'name': 'testtext',
+        //   'wire:model': 'testtext',
+        // })
+        // var labeltextbox = $('<label>',{
+        //   'for': 'testtext',
+        //   'value': "123"
+        // })
+        console.log($(id).css('left'))
+        console.log(x_arr)
+        // console.log(startcoordX)
         var svgEdit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
         var svgDelete = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>'
         $(desMetrik).html($('input[name=color_selector]:checked').next().html())
@@ -298,12 +328,15 @@ $(document).ready(function (e) {
         // $(form).append(object)
         $(object).append(numberEl)
         $(object).append(desMetrik)
-        $(object).append(form)
+        // // $(object).append(form)
 
-        $(object).append(hidden_X)
-        $(object).append(hidden_Y)
-        $(object).append(hidden_width)
-        $(object).append(hidden_height)
+        // $(object).append(hidden_x)
+        // // $(object).append(hidden_x2)
+        // $(object).append(hidden_y)
+        // $(object).append(hidden_width)
+        // $(object).append(hidden_height)
+        // $(object).append(textbox)
+        // $(object).append('<label for="testtext">123</label>')
 
         $(buttonDeleting).append(svgDelete)
         $(buttonEditing).append(svgEdit)

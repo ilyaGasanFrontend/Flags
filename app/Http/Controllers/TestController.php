@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
+    public $x;
     /**
      * Display a listing of the resource.
      *
@@ -20,12 +21,6 @@ class TestController extends Controller
 
     }
 
-    public function sumbit()
-    {
-        dump("created" . $this->x);
-    
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -33,26 +28,27 @@ class TestController extends Controller
      */
     public function create()
     {
-        //
-        $postsArr = [
-            'username' => 'admin',
-            'photoname' => 'test',
-            'x' => 1024,
-            'y' => 1024,
-            'width' => 1024,
-            'height' => 1024,
-        ];
+        // $postsArr = [
+        //     [
+        //         'x' => 1024,
+        //         'y' => 1024,
+        //         'width' => 1024,
+        //         'height' => 1024,
+        //     ],
+        //     [
+        //         'x' => 1023,
+        //         'y' => 1023,
+        //         'width' => 1023,
+        //         'height' => 1023,
+        //     ]
+        // ];
 
         test::create([
-            'username' => 'admin',
-            'photoname' => 'test',
             'x' => 1024,
             'y' => 1024,
             'width' => 1024,
             'height' => 1024,
         ]);
-
-        dd('created');
     }
 
     /**
@@ -63,16 +59,15 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        // $data = new test;
-
-        // $data->x = $request->input('x');
-        // $data->save();
-
-        // return redirect()->to('\db');
         //
-        // $this->validate($request, array(
-        //     'x' => 
-        // ));
+        $test = new test;
+        $test->x = $request->x;
+        $test->y = $request->y;
+        $test->width = $request->width;
+        $test->height = $request->height;
+        $test->save();
+        return redirect('selector')->with('status', 'Blog Post Form Data Has Been inserted');
+
     }
 
     /**

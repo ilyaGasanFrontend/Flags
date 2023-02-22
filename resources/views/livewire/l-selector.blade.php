@@ -1,8 +1,4 @@
-@extends('layouts/app')
-{{-- @extends('layouts/footer') --}}
-{{-- @extends('layouts/navigation-top') --}}
 
-@section('content')
 <main class="content">
     <div class="container-fluid p-0">
         <div class="row row__selector">
@@ -57,14 +53,50 @@
                     </div>
                 </div>
                 <div class="card card-info-input card-info-obj">
-                    <form style="width: 100%" method="POST" action="{{ url('selector/create')}}">
-                        <input type="submit" class="btn btn-primary"> 
+                    <form style="width: 100%" wire:submit.prevent="submit">
+                        <input type="hidden" id="hiddenX"/>
+                        <input type="hidden" id="hiddenY"/>
+                        <input type="hidden" id="hiddenWidth"/>
+                        <input type="hidden" id="hiddenHeight"/>
+                        <input type="submit" class="btn btn-primary submit-button"> 
                         <div class="dropdown-menu mb-2 dropdown-menu-obj" style="position:static;display:block;">
                             
                         </div>
                     </form>           
                 </div>
-                
+
+                @push('scripts')
+                    <script>
+                        
+                        $(document).ready(function (e) {
+                            // arr = []
+                            $('.canvas').on('mouseup', function () {
+                                // static array(arr)
+                                // arr.push(@this.x)
+
+                                // arr.push($('#hiddenX').attr('value'))
+                                //TODO: УБРАТЬ КОСТЫЛЬ
+                                /////////////////////////////////////////////////////////////////////////////////////////////
+                                setTimeout(() => {
+                                    // arr.push($('#hiddenX').attr('value'))
+                                    // @this.x = 123
+                                    console.log($('#hiddenX').attr('value'))
+                                    // @this.x = $('#hiddenX').attr('value')
+                                    // console.log($('#hidden_X123').attr('value'))
+                                }, 1);
+                                
+                                // @this.x = ['1', '2', '3']
+                            })
+
+                            $('.submit-button').on('mouseup', function () {
+                                @this.x = $('#hiddenX').attr('value')
+                                @this.y = $('#hiddenY').attr('value')
+                                @this.width = $('#hiddenWidth').attr('value')
+                                @this.height = $('#hiddenHeight').attr('value')
+                            })
+                        })
+                    </script>
+                @endpush
             </div>
         </div>
         <div class="row">
@@ -108,6 +140,3 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-   
-    
-@endsection
