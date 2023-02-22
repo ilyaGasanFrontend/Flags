@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Selector extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'data'
+    ];
+    // use HasFactory;
 }

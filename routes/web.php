@@ -17,8 +17,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/selector', 'TestController@Index');
-Route::get('/selector2', 'SelectorController@Index');
+Route::get('/selector', 'App\Http\Controllers\TestController@index');
+Route::get('/selector/create', 'App\Http\Controllers\TestController@create');
+Route::get('/selector2', 'App\Http\Controllers\SelectorController@index');
+
+// Route::livewire('db', 'selector'); 
+Route::get('/db', \App\Http\Livewire\Test\Selector::class); 
+Route::post('/articles/create', [App\Http\Controllers\TestController::class, 'submit']);
 
 Route::get('/', function () {
     return view('auth.login');
