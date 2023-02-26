@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TestController;
 use App\Http\Livewire\LSelector;
+use App\Http\Livewire\Gallery;
 
 use Illuminate\Support\Facades\Route;
 /*
@@ -21,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/selector', [TestController::class, 'index']);
 Route::post('/selector/create', [TestController::class, 'store']);
 // Route::get('/selector2', 'SelectorController@Index');
-Route::get('/db', LSelector::class);
+Route::get('/db/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
+Route::get('/gallery', Gallery::class);
 Route::get('/', function () {
     return view('auth.login');
 });

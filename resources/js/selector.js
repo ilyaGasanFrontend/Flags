@@ -231,6 +231,7 @@ $(document).ready(function (e) {
           $(curenid).css('left', parseInt($(curenid).css('left')) - parseInt($(curenid).css('width')) / 2)
 
         }
+        console.log(img.height)
         $(id).css('width', (e.clientX - startcoordX) / scale)
         $(id).css('height', (e.clientY - startcoordY) / scale)
 
@@ -271,35 +272,32 @@ $(document).ready(function (e) {
         //   'method': 'POST',
         // })
 
-        // var hidden_x = $('<input>',{
-        //   'id': 'hidden_x123',
-        //   'type': 'hidden',
-        //   'name': 'x',
-        //   'wire:model': 'x',
-        //   'id': 'x_id',
-        //   'value': $(id).css('left')
-        // })
+        var hidden_x = $('<input>',{
+          'type': 'hidden',
+          'name': `x[${$('.canvas').children('.square').length-1}]`,
+          'value': $(id).css('left')
+        })
 
-        // var hidden_y = $('<input>',{
-        //   'type': 'hidden',
-        //   'name': 'y',
-        //   'wire:model': 'y',
-        //   'value': $(id).css('top')
-        // })
+        var hidden_y = $('<input>',{
+          'type': 'hidden',
+          'name': 'y',
+          'wire:model': 'y',
+          'value': $(id).css('top')
+        })
 
-        // var hidden_width = $('<input>',{
-        //   'type': 'hidden',
-        //   'name': 'width',
-        //   'wire:model': 'width',
-        //   'value': $(id).css('width')
-        // })
+        var hidden_width = $('<input>',{
+          'type': 'hidden',
+          'name': 'width',
+          'wire:model': 'width',
+          'value': $(id).css('width')
+        })
 
-        // var hidden_height = $('<input>',{
-        //   'type': 'hidden',
-        //   'name': 'height',
-        //   'wire:model': 'height',
-        //   'value': $(id).css('height')
-        // })
+        var hidden_height = $('<input>',{
+          'type': 'hidden',
+          'name': 'height',
+          'wire:model': 'height',
+          'value': $(id).css('height')
+        })
 
         // var hidden_x2 = $('<input>',{
         //   'type': 'text',
@@ -317,6 +315,7 @@ $(document).ready(function (e) {
         //   'for': 'testtext',
         //   'value': "123"
         // })
+
         console.log($(id).css('left'))
         console.log(x_arr)
         // console.log(startcoordX)
@@ -330,11 +329,11 @@ $(document).ready(function (e) {
         $(object).append(desMetrik)
         // // $(object).append(form)
 
-        // $(object).append(hidden_x)
+        $(object).append(hidden_x)
         // // $(object).append(hidden_x2)
-        // $(object).append(hidden_y)
-        // $(object).append(hidden_width)
-        // $(object).append(hidden_height)
+        $(object).append(hidden_y)
+        $(object).append(hidden_width)
+        $(object).append(hidden_height)
         // $(object).append(textbox)
         // $(object).append('<label for="testtext">123</label>')
 
