@@ -328,6 +328,8 @@
     }
     .dropdown-menu-obj {
       width: 80%;
+      max-height: 400px;
+      overflow-y: scroll;
     }
     .wrapper__info_objects {
       width: 90%;

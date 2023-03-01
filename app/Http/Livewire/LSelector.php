@@ -21,32 +21,47 @@ class LSelector extends Component
     //     'x' => 'required',
     // ];
 
+    public function test()
+    {
+    }
     public function submit()
     {
-        $arr_x;
-        $arr_y;
-        $arr_width;
-        $arr_height;
-
+        // $arr_x;
+        // $arr_y;
+        // $arr_width;
+        // $arr_height;
         $arr_x = explode('px,', substr($this->x, 0, -2)); 
         $arr_y = explode('px,', substr($this->y, 0, -2)); 
         $arr_width = explode('px,', substr($this->width, 0, -2)); 
         $arr_height = explode('px,', substr($this->height, 0, -2)); 
-
+        // dump($this->arr_x);
+        // dd($arr_y);
         for ($i=0; $i < count($arr_x); $i++) { 
-            test::create([
-                'userName' => 'admin',
-                'photoName' => $this->param,
-                'x' => $arr_x[$i],
-                'y' => $arr_y[$i],
-                'width' => $arr_width[$i],
-                'height' => $arr_height[$i],
-            ]);
+            test::updateOrCreate(
+                ['photoName' => $this->param, 'label_id' => $i+1],
+                [
+                    'userName' => 'admin',
+                    'x' => $arr_x[$i],
+                    'y' => $arr_y[$i],
+                    'width' => $arr_width[$i],
+                    'height' => $arr_height[$i],
+                ]
+                );
+            
+            // test::create([
+            //     'userName' => 'admin',
+            //     'photoName' => $this->param,
+            //     'label_id' => $i+1,
+            //     'x' => $arr_x[$i],
+            //     'y' => $arr_y[$i],
+            //     'width' => $arr_width[$i],
+            //     'height' => $arr_height[$i],
+            // ]);
             Image::where('id', $this->param)->update(['is_ready' => 1]);
             // dd(Image::where('id', $this->param));
         }
-        // return refresh();
-        // return redirect()->to('/db/{{$this->param}');
+
+
     }
 
     public function read()

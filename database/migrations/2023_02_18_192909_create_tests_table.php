@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('userName');
             $table->string('photoName');
+            $table->integer('label_id');
             $table->float('x');
             $table->float('y');
             $table->float('width');

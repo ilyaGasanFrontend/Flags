@@ -51,6 +51,19 @@ class Gallery extends Component
     {
         $this->filter = !$this->filter;
     }
+
+    public function store_s3()
+    {
+        $this->validate([
+            'files.*' => 'image',
+        ]);
+
+        foreach ($this->files as $file)
+        {
+            $file->storePublicly('livewire-imgs', 's3');
+        }
+        
+    }
     public function store_photos()
     {
         $this->validate([

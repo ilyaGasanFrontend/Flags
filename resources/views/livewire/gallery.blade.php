@@ -17,10 +17,25 @@
             <div class="col-12 col-md-6 col-lg-3">
                 <form wire:submit.prevent="store_photos">
                     <input type="file" wire:model="files" multiple>
+                    <div wire:loading wire:target="files">Uploading...</div>
+
                     <input type="submit">
                 </form>
             </div>
         </div>
+
+        <br>S3
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-3">
+                <form wire:submit.prevent="store_s3">
+                    <input type="file" wire:model="files">
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+        <br>
+
+        {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
         @push('scripts')
             <script>
                 $(document).ready(function(e) {
@@ -132,14 +147,15 @@
 
             </div>
             <div class="col-md-6 text-center">
-                <div class="input-group mb-3">
+                {{-- <div class="input-group mb-3">
                     <select class="form-select flex-grow-1" wire:click="filter(0)">
                         <option wire:click="filter">Показывать все</option>
                         <option wire:click="filter">Показывать пустые</option>
                     </select>
 
                     <button class="btn btn-secondary" type="button">Go!</button>
-                </div>
+                </div> --}}
+                
             </div>
 
         </div>
@@ -153,8 +169,8 @@
                             <div class="card">
 
                                 <a href="/db/{{ $image->id }}">
-                                    <img class="card-img-top" src="{{ $image->path_to_file }}"
-                                        alt="{{ $image->path_to_file }}">
+                                    <img class="card-img-top" src="{{ $image->path_to_file }}" loading="lazy"
+                                        alt="{{ $image->path_to_file }}" style="aspect-ratio: 1/1;" >
                                     {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
 
                                 </a>
