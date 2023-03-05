@@ -139,6 +139,7 @@
                             <input type="hidden" id="hiddenHeight" />
                         @endif
 
+                        <input type="hidden" id="hidden_delete">
                         {{-- <input type="hidden" id="hiddenX" />
                         <input type="hidden" id="hiddenY" />
                         <input type="hidden" id="hiddenWidth" />
@@ -212,6 +213,9 @@
                                 @this.y = $('#hiddenY').attr('value')
                                 @this.width = $('#hiddenWidth').attr('value')
                                 @this.height = $('#hiddenHeight').attr('value')
+                                @this.delete = $('#hidden_delete').attr('value')
+
+                                delete_arr = []
                             })
                         })
                     </script>

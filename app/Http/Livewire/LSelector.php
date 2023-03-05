@@ -17,6 +17,8 @@ class LSelector extends Component
 
     public $images; //массив данных из таблицы images
     public $squares;
+
+    public $delete;
     // protected $rules = [
     //     'x' => 'required',
     // ];
@@ -34,8 +36,25 @@ class LSelector extends Component
         $arr_y = explode('px,', substr($this->y, 0, -2)); 
         $arr_width = explode('px,', substr($this->width, 0, -2)); 
         $arr_height = explode('px,', substr($this->height, 0, -2)); 
-        // dump($this->arr_x);
-        // dd($arr_y);
+        $arr_delete = explode(',', $this->delete);
+        
+        if (($arr_delete[0] != '')) {
+            if (Image::find($this->param)->getOriginal('is_ready') == true) {
+                foreach ($arr_delete as $id) {
+                    Test::where('photoName', $this->param)->where('label_id', $id+1)->delete();
+                    
+                    $count = Test::where('photoName', $this->param)->where('label_id', '>', $id+1)->count();
+
+                    for ($i = $id+1; $i <= $id + 1 + $count; $i++)
+                    {
+                        Test::where('photoName', $this->param)->where('label_id', $i)->update(['label_id' => $i-1]);
+                    }
+                
+                }
+            }
+        }
+        
+
         for ($i=0; $i < count($arr_x); $i++) { 
             test::updateOrCreate(
                 ['photoName' => $this->param, 'label_id' => $i+1],
@@ -57,6 +76,9 @@ class LSelector extends Component
             //     'width' => $arr_width[$i],
             //     'height' => $arr_height[$i],
             // ]);
+
+            
+
             Image::where('id', $this->param)->update(['is_ready' => 1]);
             // dd(Image::where('id', $this->param));
         }
@@ -64,12 +86,6 @@ class LSelector extends Component
 
     }
 
-    public function read()
-    {
-        $res = [];
-        array_push($res, test::find(35));
-        dd($res);
-    }
 
     public function mount($param )
     {

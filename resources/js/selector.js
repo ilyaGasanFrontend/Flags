@@ -28,6 +28,8 @@ $(document).ready(function (e) {
     var height_arr = $('#hiddenHeight').val().split(',')
   }
 
+  var delete_arr = []
+
   console.log($('#hiddenX').val().split(','))
   // var x_arr = $('#hiddenX').val().split(',')
   // var x_arr = []
@@ -606,7 +608,17 @@ $(document).ready(function (e) {
     // $('#hiddenY').val(y_arr)
     // $('#hiddenWidth').val(width_arr)
     // $('#hiddenHeight').val(height_arr)
-
+    delete_arr.push(parseInt(number))
+    x_arr.splice(number, 1)
+    y_arr.splice(number, 1)
+    width_arr.splice(number, 1)
+    height_arr.splice(number, 1)
+    $('#hiddenX').val(x_arr)
+    $('#hiddenY').val(y_arr)
+    $('#hiddenWidth').val(width_arr)
+    $('#hiddenHeight').val(height_arr)
+    $('#hidden_delete').val(delete_arr)
+    console.log('ID', delete_arr)
     $(objects[number]).remove()
 
     $(testobjects[number]).remove()
