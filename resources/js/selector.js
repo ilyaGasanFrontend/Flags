@@ -28,7 +28,7 @@ $(document).ready(function (e) {
     var height_arr = $('#hiddenHeight').val().split(',')
   }
 
-  var delete_arr = []
+  var delete_arr
 
   console.log($('#hiddenX').val().split(','))
   // var x_arr = $('#hiddenX').val().split(',')
@@ -82,28 +82,28 @@ $(document).ready(function (e) {
     return radios;
   }
 
-  //////////////////////////////////////////////////////
-  $('#create-elements').on('click', e => {
-    // for (let i = 0; i < arraBase64OBj.length; i++) {
-    //   $(arraBase64OBj[i]).toggleClass('point__events')
-    // }
+  // //////////////////////////////////////////////////////
+  // $('#create-elements').on('click', e => {
+  //   // for (let i = 0; i < arraBase64OBj.length; i++) {
+  //   //   $(arraBase64OBj[i]).toggleClass('point__events')
+  //   // }
 
-    status = Statuses.CreatingElements
-  })
-  $('#change-size').on('click', e => {
-    status = Statuses.EditingElements
+  //   status = Statuses.CreatingElements
+  // })
+  // $('#change-size').on('click', e => {
+  //   status = Statuses.EditingElements
 
-    // for (let i = 0; i < arraBase64OBj.length; i++) {
-    //   $(arraBase64OBj[i]).toggleClass('point__events')
-    // }
+  //   // for (let i = 0; i < arraBase64OBj.length; i++) {
+  //   //   $(arraBase64OBj[i]).toggleClass('point__events')
+  //   // }
 
-  })
-  $('#delete-elements').on('click', e => {
-    status = Statuses.DeletingElements
-    // for (let i = 0; i < arraBase64OBj.length; i++) {
-    //   $(arraBase64OBj[i]).toggleClass('point__events')
-    // }
-  })
+  // })
+  // $('#delete-elements').on('click', e => {
+  //   status = Statuses.DeletingElements
+  //   // for (let i = 0; i < arraBase64OBj.length; i++) {
+  //   //   $(arraBase64OBj[i]).toggleClass('point__events')
+  //   // }
+  // })
 
 
 
@@ -279,7 +279,7 @@ $(document).ready(function (e) {
         })
         var buttonEditing = $('<a>', {
           'class': 'button__editing',
-          'id': `${editingButtonId}${$('.canvas').children('.square').length - 1}`
+          'id': `${editingButtonId}${$('.canvas').children('.square').length - 1}`,
 
         })
         var wrapperTools = $('<div>', {
@@ -399,12 +399,12 @@ $(document).ready(function (e) {
     if (status != Statuses.EditingElements) {
 
       status = Statuses.EditingElements
-
+      $('#flag').val('EditingInProgress')
       let testobjects = $('.canvas').children('.square')
       let number = ($(this).attr('id')).substring(editingButtonId.length)
       let objects = $('.dropdown-menu-obj').children()
       
-      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle align-middle me-2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>')
+      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle me-2"><polyline points="20 6 9 17 4 12"></polyline></svg>')
       $(testobjects[number]).toggleClass('point__events')
 
 
@@ -507,7 +507,6 @@ $(document).ready(function (e) {
     else {
 
       status = Statuses.CreatingElements
-
       let testobjects = $('.canvas').children('.square')
       let number = ($(this).attr('id')).substring(editingButtonId.length)
       let objects = $('.dropdown-menu-obj').children()
@@ -608,7 +607,8 @@ $(document).ready(function (e) {
     // $('#hiddenY').val(y_arr)
     // $('#hiddenWidth').val(width_arr)
     // $('#hiddenHeight').val(height_arr)
-    delete_arr.push(parseInt(number))
+    // delete_arr.push(parseInt(number))
+    delete_arr = parseInt(number)
     x_arr.splice(number, 1)
     y_arr.splice(number, 1)
     width_arr.splice(number, 1)

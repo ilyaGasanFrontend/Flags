@@ -46,12 +46,6 @@ class Gallery extends Component
         }
         
     }
-
-    public function filter()
-    {
-        $this->filter = !$this->filter;
-    }
-
     public function store_s3()
     {
         $this->validate([
