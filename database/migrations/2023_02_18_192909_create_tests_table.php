@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
             $table->string('userName');
-            $table->string('photoName');
+            $table->foreignId('photoName')->constrained('images', 'id');
             $table->integer('label_id');
             $table->float('x');
             $table->float('y');

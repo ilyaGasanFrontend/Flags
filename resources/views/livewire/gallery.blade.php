@@ -3,13 +3,28 @@
         <h1>Галерея</h1><br><br>
 
         <div class="row">
-            <div class="col-12 col-md-6 col-lg-3">
-                <form wire:submit.prevent="store_photos">
-                    <input type="file" wire:model="files" multiple>
-                    <div wire:loading wire:target="files">Uploading...</div>
+            <div class="col-md-6 text-center">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <form wire:submit.prevent="store_photos">
+                        <input type="file" wire:model="files" multiple>
+                        <div wire:loading wire:target="files">Uploading...</div>
 
-                    <input type="submit">
-                </form>
+                        <input type="submit">
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6 text-center"">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Экспорт
+                    </button>
+                    <div class="dropdown-menu" style="">
+                        <h6 class="dropdown-header">Экспортировать как...</h6>
+                        <div class="dropdown-item" wire:click='download_file("txt")'>TXT</div>
+                        <div class="dropdown-item" wire:click='download_file("csv")'>CSV</div>
+                        {{-- <div class="dropdown-item" wire:click='download_file("json")'>JSON</div> --}}
+                    </div>
+                </div>
             </div>
         </div>
 

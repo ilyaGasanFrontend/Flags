@@ -28,7 +28,7 @@ $(document).ready(function (e) {
     var height_arr = $('#hiddenHeight').val().split(',')
   }
 
-  var delete_arr
+  var delete_arr = []
 
   console.log($('#hiddenX').val().split(','))
   // var x_arr = $('#hiddenX').val().split(',')
@@ -607,8 +607,14 @@ $(document).ready(function (e) {
     // $('#hiddenY').val(y_arr)
     // $('#hiddenWidth').val(width_arr)
     // $('#hiddenHeight').val(height_arr)
-    // delete_arr.push(parseInt(number))
-    delete_arr = parseInt(number)
+    // if (condition) {
+      
+    // } else {
+      
+    // }
+    delete_arr.push(parseInt(number))
+ 
+    // delete_arr = parseInt(number)
     x_arr.splice(number, 1)
     y_arr.splice(number, 1)
     width_arr.splice(number, 1)
@@ -617,12 +623,18 @@ $(document).ready(function (e) {
     $('#hiddenY').val(y_arr)
     $('#hiddenWidth').val(width_arr)
     $('#hiddenHeight').val(height_arr)
-    $('#hidden_delete').val(delete_arr)
+
     console.log('ID', delete_arr)
     $(objects[number]).remove()
 
     $(testobjects[number]).remove()
-
+    console.log($('.canvas').children('.square').length)
+    if ($('.canvas').children('.square').length == 0) {
+      $('#hidden_delete').val(null)
+    }
+    else {
+      $('#hidden_delete').val(delete_arr)
+    }
     testobjects = $('.canvas').children('.square')
     objects = $('.dropdown-menu-obj').children()
 

@@ -35,7 +35,7 @@
     <!-- <link href="css/dark.css" rel="stylesheet"> -->
     <!-- scripts -->
     @vite(['resources/adminkit/css/light.css', 'resources/js/app.js'])
-    @vite(['resources/js/selector.js', 'resources/js/slider.js', 'resources/js/creatingmarks.js','resources/js/returnerToBD.js'])
+    {{-- @vite(['resources/js/selector.js', 'resources/js/slider.js', 'resources/js/creatingmarks.js','resources/js/returnerToBD.js']) --}}
 
     
     @vite(['resources/adminkit/css/light.css'])

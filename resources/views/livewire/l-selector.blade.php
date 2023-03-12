@@ -1,5 +1,8 @@
 <main class="content">
-    <h1><a href="/gallery">Галерея</a> / {{ $images->name }}</h1><br>
+    @vite(['resources/js/selector.js', 'resources/js/creatingmarks.js', 'resources/js/returnerToBD.js'])
+    {{-- @vite(['resources/js/slider.js']) --}}
+    <h1><a href="/gallery">Галерея</a> / Фотография {{$this_img_number}} из {{ $images_count }}</h1><br>
+    
 
     <div class="container-fluid p-0">
         <div class="row row__selector">
@@ -167,63 +170,22 @@
 
                         $(document).ready(function(e) {
 
-                            $('.canvas').on('mouseup', function() {
-                                if ($('#flag').val() == 'Creating') {
-                                    //убрать костыль
-                                    /////////////////////////////////////////////////////////////////////////////////////////////
-                                    setTimeout(() => {
-                                        @this.x = $('#hiddenX').attr('value')
-                                        @this.y = $('#hiddenY').attr('value')
-                                        @this.width = $('#hiddenWidth').attr('value')
-                                        @this.height = $('#hiddenHeight').attr('value')
-                                        @this.delete = $('#hidden_delete').attr('value')
-
-                                        @this.img_scale = $('.wrapper_canvas').css('transform')
-                                        @this.submit()
-                                    }, 1);
-                                }
-
-                            })
-
-                            $('.dropdown-menu-obj').on('click', '.button__deletting', function(e) {
-                                setTimeout(() => {
-                                    @this.x = $('#hiddenX').attr('value')
-                                    @this.y = $('#hiddenY').attr('value')
-                                    @this.width = $('#hiddenWidth').attr('value')
-                                    @this.height = $('#hiddenHeight').attr('value')
-                                    @this.delete = $('#hidden_delete').attr('value')
-
-                                    @this.img_scale = $('.wrapper_canvas').css('transform')
-                                    setTimeout(() => { }, 5);
-                                    @this.delete_row()
-                                }, 1);
-                            })
-
-                            $('.dropdown-menu-obj').on('click', '.button__editing', function(e) {
-                                if ($('#flag').val() == 'EditingInProgress') {
-                                    setTimeout(() => {
-                                    @this.x = $('#hiddenX').attr('value')
-                                    @this.y = $('#hiddenY').attr('value')
-                                    @this.width = $('#hiddenWidth').attr('value')
-                                    @this.height = $('#hiddenHeight').attr('value')
-                                    @this.delete = $('#hidden_delete').attr('value')
-
-                                    @this.img_scale = $('.wrapper_canvas').css('transform')
-                                    @this.submit()
-                                }, 1);
-                                }
-                                
-                            })
-
-                            $('.submit-button').on('mouseup', function() {
+                            $('.arrow').on('mouseup', function() {
                                 @this.x = $('#hiddenX').attr('value')
                                 @this.y = $('#hiddenY').attr('value')
                                 @this.width = $('#hiddenWidth').attr('value')
                                 @this.height = $('#hiddenHeight').attr('value')
                                 @this.delete = $('#hidden_delete').attr('value')
-
-                                delete_arr = []
                             })
+
+                            $('.photogal-el').on('mouseup', function() {
+                                @this.x = $('#hiddenX').attr('value')
+                                @this.y = $('#hiddenY').attr('value')
+                                @this.width = $('#hiddenWidth').attr('value')
+                                @this.height = $('#hiddenHeight').attr('value')
+                                @this.delete = $('#hidden_delete').attr('value')
+                            })
+
                         })
                     </script>
                 @endpush
@@ -231,39 +193,38 @@
         </div>
 
 
-        {{-- <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-8">
             <div class="card">
                 <div class="wrapper__prev__img">
                     <div class="row row__arrows">
                         <div class="col-1 col--arrows col--arrows--arrow" id="left">
                             <img src="{{ asset('images/right-arrow.png') }}" alt=""
-                                class="arrow arrow--left">
+                                class="arrow arrow--left" wire:click='submit("previous")'>
                         </div>
                         <div class="col-6 col--arrows col--arrows--photos">
                             <div class="row row__photo__list">
                                 @foreach ($nav_images as $img)
-                                    @if ($img->id == $images->id)
+                                    @if ($img['id'] == $images->id)
                                         <div class="col-sm col__photos__list"><img
                                                 class="photogal-el photogal-el--active"
-                                                src="{{ $img->path_to_file }}" alt="Image" /></div>
+                                                src="{{ asset($img['path_to_file']) }}" alt="Image"
+                                                style="aspect-ratio: 1/1" wire:click='submit({{ $img['id'] }})' /></div>
                                     @else
                                         <div class="col-sm col__photos__list"><img class="photogal-el"
-                                                src="{{ asset($img->path_to_file) }}" alt="Image"
-                                                style="aspect-ratio: 1/1" /></div>
+                                                src="{{ asset($img['path_to_file']) }}" alt="Image"
+                                                style="aspect-ratio: 1/1" wire:click='submit({{ $img['id'] }})' />
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>
                         </div>
 
                         <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right">
-                            @if (count($nav_images))
-                                
-                            @else
-                                
-                            @endif
-                            <a href="/db/{{ end($nav_images)->id }}"><img src="{{ asset('images/right-arrow.png') }}" alt=""
-                                    class="arrow"></a>
-                            {{end($nav_images)->id}}
+
+
+                            <img src="{{ asset('images/right-arrow.png') }}" alt="" class="arrow"
+                                wire:click='submit("next")'>
+
                         </div>
 
 
@@ -271,24 +232,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
-
-        {{-- @foreach ($nav_images as $img)
-            <h1>{{ $img->id }}</h1>
-        @endforeach --}}
-        <nav aria-label="Page navigation example">
-            <ul class="pagination pagination-lg">
-                <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item active"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="/db/{{}}"><i
-                            class="fas fa-angle-right"></i></a></li>
-            </ul>
-        </nav>
-
+        </div>
     </div>
 
 </main>

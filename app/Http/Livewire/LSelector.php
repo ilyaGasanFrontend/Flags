@@ -8,10 +8,12 @@ use App\Models\Image;
 
 class LSelector extends Component
 {
-    public $test = [];
+    public $test;
     protected $listeners = ['submit'];
 
     public $img_scale;
+    public $this_img_number;
+    public $images_count;
     public $x;
     public $y;
     public $width;
@@ -29,10 +31,33 @@ class LSelector extends Component
     //     'x' => 'required',
     // ];
 
-    public function test()
+    private function next()
     {
+        $last_img = Image::orderByDesc('id')->first();
+
+        if ($this->images->id == $last_img->id) {
+            $next_id = Image::first();
+            
+        } else {
+            $next_id = Image::where('id', '>', $this->param)->first();
+        }
+
+        return redirect()->to('/db/' . $next_id->id . '/');
     }
 
+    private function previous()
+    {
+        $first_img = Image::orderBy('id')->first();
+        // dd($first_img->id);
+        // $prev_id = Image::where('id', '<', $this->param)->orderByDesc('id')->first();
+        if ($this->images->id == $first_img->id) {
+            $prev_id = Image::orderByDesc('id')->first();
+        } else {
+            $prev_id = Image::where('id', '<', $this->param)->orderByDesc('id')->first();
+        }
+        
+        return redirect()->to('/db/' . $prev_id->id . '/');
+    }
     public function delete_row()
     {
         $arr_delete = explode(',', $this->delete);
@@ -53,7 +78,7 @@ class LSelector extends Component
         }
         $this->dispatchBrowserEvent('page_refresh_prevent');
     }
-    public function submit()
+    public function submit($param)
     {
         // $arr_x;
         // $arr_y;
@@ -81,36 +106,32 @@ class LSelector extends Component
             }
         }
         
+        if ($arr_x[0] != '') {
+            for ($i=0; $i < count($arr_x); $i++) { 
+                test::updateOrCreate(
+                    ['photoName' => $this->param, 'label_id' => $i+1],
+                    [
+                        'userName' => 'admin',
+                        'x' => $arr_x[$i],
+                        'y' => $arr_y[$i],
+                        'width' => $arr_width[$i],
+                        'height' => $arr_height[$i],
+                    ]
+                    );
 
-        for ($i=0; $i < count($arr_x); $i++) { 
-            test::updateOrCreate(
-                ['photoName' => $this->param, 'label_id' => $i+1],
-                [
-                    'userName' => 'admin',
-                    'x' => $arr_x[$i],
-                    'y' => $arr_y[$i],
-                    'width' => $arr_width[$i],
-                    'height' => $arr_height[$i],
-                ]
-                );
-            
-            // test::create([
-            //     'userName' => 'admin',
-            //     'photoName' => $this->param,
-            //     'label_id' => $i+1,
-            //     'x' => $arr_x[$i],
-            //     'y' => $arr_y[$i],
-            //     'width' => $arr_width[$i],
-            //     'height' => $arr_height[$i],
-            // ]);
-
-            
-
-            Image::where('id', $this->param)->update(['is_ready' => 1]);
-            // dd(Image::where('id', $this->param));
+                Image::where('id', $this->param)->update(['is_ready' => 1]);
+            }
         }
+        
 
         $this->dispatchBrowserEvent('page_refresh_prevent');
+        // dd($param == 'next');
+        if ($param == 'next') {
+            $this->next();
+        } else if ($param == 'previous') {
+            $this->previous();
+        }
+        else redirect()->to('/db/' . $param . '/');
     }
 
 
@@ -131,14 +152,24 @@ class LSelector extends Component
         $this->images = Image::find($this->param);
         $this->squares = test::where('photoName', $this->param)->get();
 
+        $this->nav_images = [];
         foreach (Image::where('id', '<', $this->param)->orderByDesc('id')->limit(2)->get() as $q) {
             array_push($this->nav_images, $q);
-        }
-        array_push($this->nav_images, $this->images);
+        } //nav_images = [1, 0]
+
+        if (count($this->nav_images) == 2)
+        {
+            [$this->nav_images[0], $this->nav_images[1]] = [$this->nav_images[1], $this->nav_images[0]];
+        } //nav_images = [0,1]
+
+        array_push($this->nav_images, $this->images); //nav_images = [0, 1, 2]
         foreach (Image::where('id', '>', $this->param)->orderBy('id')->limit(2)->get() as $q) {
             array_push($this->nav_images, $q);
-        }
+        } //nav_images = [0, 1, 2, 3, 4]
         
+        $this->this_img_number = Image::where('id', '<=', $this->param)->count();
+        $this->images_count = Image::count();
+
         return view('livewire.l-selector')->extends('layouts.app');
     }
 }
