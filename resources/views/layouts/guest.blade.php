@@ -53,7 +53,7 @@
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     
-
+    @yield('content')
     @vite(['resources/adminkit/js/app.js'])
 
 </body>
