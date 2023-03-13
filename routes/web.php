@@ -4,8 +4,11 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
+use App\Http\Livewire\LSelector;
+use App\Http\Livewire\Gallery;
 
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/db/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
+Route::get('/gallery', Gallery::class);
 
 Route::get('/', function () {
     return view('auth.login');

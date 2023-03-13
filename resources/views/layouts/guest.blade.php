@@ -19,12 +19,19 @@
     <title>{{ config('app.name', 'Octagramma') }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
+    
+    <link href="{{ url('/css/selector.css') }}" rel="stylesheet">
+    @push('head')
+    <script src="{{ asset('js/components/pizza.js')}}"></script>
+    @endpush
+    {{-- <link href="{{ asset('resources/adminkit/css/selector.css') }}" rel="stylesheet"> --}}
     <!-- Choose your prefered color scheme -->
     <!-- <link href="css/light.css" rel="stylesheet"> -->
     <!-- <link href="css/dark.css" rel="stylesheet"> -->
     <!-- scripts -->
     @vite(['resources/adminkit/css/light.css', 'resources/js/app.js'])
+    @vite(['resources/js/selector.js', 'resources/js/slider.js', 'resources/js/creatingmarks.js'])
+
     <!-- BEGIN SETTINGS -->
     <!-- Remove this after purchasing -->
     {{-- <link class="js-stylesheet" href="css/light.css" rel="stylesheet">
@@ -47,7 +54,6 @@
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
     
     @yield('content')
-
     @vite(['resources/adminkit/js/app.js'])
 
 </body>

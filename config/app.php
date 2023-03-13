@@ -27,7 +27,8 @@ return [
     | services the application utilizes. Set this in your ".env" file.
     |
     */
-
+    'Vite' => \Illuminate\Support\Facades\Vite::class,
+    
     'env' => env('APP_ENV', 'production'),
 
     /*
