@@ -19,11 +19,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/selector', [TestController::class, 'index']);
-Route::post('/selector/create', [TestController::class, 'store']);
-// Route::get('/selector2', 'SelectorController@Index');
+
 Route::get('/db/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
 Route::get('/gallery', Gallery::class);
+
 Route::get('/', function () {
     return view('auth.login');
 });
