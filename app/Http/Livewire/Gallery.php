@@ -50,7 +50,7 @@ class Gallery extends Component
 
     private function create_file($sql, $dtype)
     {
-        $dir = substr(__DIR__, 0, -17) . '/storage/app/public/exports/' . 'flags_work_' . date('d_m_Y') . '.' . $dtype;
+        $dir = public_path('storage') . '/exports/' . 'admin_flags_work_' . date('d_m_Y') . '.' . $dtype;
         $file = fopen($dir, 'w');
         fwrite($file, 'name,label_id,x,y,width,height,original_width,original_height' . PHP_EOL);
         foreach ($sql as $item) {
@@ -82,7 +82,6 @@ class Gallery extends Component
             $query = $this->create_sql_view(false);
             $file = $this->create_file($query, $dtype);
         }
-       
         // Storage::download($file);
         return response()->download($file);
     }
@@ -123,9 +122,12 @@ class Gallery extends Component
         ]);
 
         foreach ($this->files as $file ) {
+            // storage::path('public') "E:\Projects\FlagsOcta\storage\app\public"
+            // public_path('storage') "E:\Projects\FlagsOcta\public\storage"
             $file->store('photos', 'public');
-            $width = \getimagesize('E:/Projects/FlagsOcta/public/storage/photos/' . $file->hashName())[0];
-            $height = \getimagesize('E:/Projects/FlagsOcta/public/storage/photos/' . $file->hashName())[1];
+            $width = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[0];
+            $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
+
             image::create([
                 'name' => $file->hashName(),
                 'path_to_file' => '/storage/photos/' . $file->hashName(),

@@ -74,7 +74,7 @@
                             {{-- <button class="btn btn-primary submit-button"> --}}
                             <div class="card">
 
-                                <a href="/db/{{ $image->id }}">
+                                <a href="/gallery/{{ $image->id }}">
                                     <img class="card-img-top" src="{{ $image->path_to_file }}" loading="lazy"
                                         alt="{{ $image->path_to_file }}" style="aspect-ratio: 1/1;" >
                                     {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}

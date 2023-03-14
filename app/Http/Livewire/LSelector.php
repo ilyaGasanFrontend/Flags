@@ -42,7 +42,7 @@ class LSelector extends Component
             $next_id = Image::where('id', '>', $this->param)->first();
         }
 
-        return redirect()->to('/db/' . $next_id->id . '/');
+        return redirect()->to('/gallery/' . $next_id->id . '/');
     }
 
     private function previous()
@@ -56,7 +56,7 @@ class LSelector extends Component
             $prev_id = Image::where('id', '<', $this->param)->orderByDesc('id')->first();
         }
         
-        return redirect()->to('/db/' . $prev_id->id . '/');
+        return redirect()->to('/gallery/' . $prev_id->id . '/');
     }
     public function delete_row()
     {
@@ -131,7 +131,7 @@ class LSelector extends Component
         } else if ($param == 'previous') {
             $this->previous();
         }
-        else redirect()->to('/db/' . $param . '/');
+        else redirect()->to('/gallery/' . $param . '/');
     }
 
 
