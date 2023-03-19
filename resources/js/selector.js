@@ -19,6 +19,7 @@ $(document).ready(function (e) {
     var y_arr = []
     var width_arr = []
     var height_arr = []
+    var categories_arr = []
   }
   else {
 
@@ -26,6 +27,7 @@ $(document).ready(function (e) {
     var y_arr = $('#hiddenY').val().split(',')
     var width_arr = $('#hiddenWidth').val().split(',')
     var height_arr = $('#hiddenHeight').val().split(',')
+    var categories_arr = $('#hiddenCategory').val().split(',')
   }
 
   var delete_arr = []
@@ -75,7 +77,17 @@ $(document).ready(function (e) {
   var delettingButtonId = 'deletting__button'
   var editingButtonId = 'editing__button'
 
+  // var radio_checked = $("input[name='radio_category']:checked").val()
+  var radio_checked_id = $("input[name='radio_category']:checked").val();
+  var radio_checked_color = $('#span_' + radio_checked_id).css('color');
+  // console.log(radio_checked_id, radio_checked_color)
 
+  $("input[type='radio']").click(function () {
+    radio_checked_id = $("input[name='radio_category']:checked").val()
+    radio_checked_color = $('#span_' + radio_checked_id).css('color')
+    console.log(radio_checked_id, radio_checked_color)
+    console.log(categories_arr)
+  })
 
   function getRandomColor() {
     var radios = $('input[name=color_selector]:checked').val();
@@ -163,7 +175,9 @@ $(document).ready(function (e) {
         $(id).css('left', startcoordX)
         $(id).css('width', 0)
         $(id).css('height', 0)
-        $(id).css('color', getRandomColor())
+        $(id).css('color', radio_checked_color)
+        // $(id).css('background', radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)')
+
         flag = true
         startcoordX = e.clientX
         startcoordY = e.clientY
@@ -257,12 +271,49 @@ $(document).ready(function (e) {
         y_arr.push($(id).css('top'))
         width_arr.push($(id).css('width'))
         height_arr.push($(id).css('height'))
+        categories_arr.push($("input[name='radio_category']:checked").val())
 
         $('#hiddenX').val(x_arr)
         $('#hiddenY').val(y_arr)
         $('#hiddenWidth').val(width_arr)
         $('#hiddenHeight').val(height_arr)
+        $('#hiddenCategory').val(categories_arr)
 
+        let number = $('.canvas').children('.square').length - 1
+        var obj = $('.obj-table')
+        console.log(radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.4)')
+        var table_row = $('<tr>', {
+          'id': 'table_row_' + number,
+          'class': 'table-row',
+          'style': 'background-color: ' + radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)',
+
+        })
+
+        var td_number = $('<td>', {
+          'class': 'number',
+        })
+
+        var td_desmetr = $('<td>', {
+          'class': 'desmetr',
+        })
+
+        var td_table_action = $('<td>', {
+          'class': 'table-action',
+        })
+
+        var edit_button = $('<a>', {
+          'class': 'button__editing',
+          'id': `${editingButtonId}${$('.canvas').children('.square').length - 1}`,
+          'style': 'text-decoration: none'
+
+        })
+        var delete_button = $('<a>', {
+          'class': 'button__deletting',
+          'id': `${delettingButtonId}${$('.canvas').children('.square').length - 1}`,
+          'style': 'text-decoration: none'
+
+        })
+        // console.log($('#span_' + radio_checked).css('color'), radio_checked)
         var object = $('<div>', {
           'class': 'prev__elemnt__objects dropdown-item',
         })
@@ -349,6 +400,23 @@ $(document).ready(function (e) {
         // $(form).append(object)
         $(object).append(numberEl)
         $(object).append(desMetrik)
+
+        $(obj).append(table_row)
+        console.log($('#span_'+radio_checked_id).text())
+        $(td_number).html($('.canvas').children('.square').length)
+        $(table_row).append(td_number)
+        $(td_desmetr).html($('#span_'+radio_checked_id).text())
+        $(table_row).append(td_desmetr)
+
+        var svg_edit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
+        var svg_delete = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"> <polyline points="3 6 5 6 21 6"></polyline> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"> </path> <line x1="10" y1="11" x2="10" y2="17"> </line> <line x1="14" y1="11" x2="14" y2="17"> </line> </svg>'
+
+        $(edit_button).append(svg_edit)
+        $(td_table_action).append(edit_button)
+        $(delete_button).append(svg_delete)
+        $(td_table_action).append(delete_button)
+        $(table_row).append(td_table_action)
+
         // // $(object).append(form)
 
 
@@ -378,9 +446,30 @@ $(document).ready(function (e) {
 
   });
 
+  // $('.form-check').on('mouseup', '.form-check-input', function e() {
+  //   console.log(123)
+  //   // console.log($("input[name='radio_category']:checked").val())
+  //   // console.log(categories_arr)
+  // })
+
 
   ///////
-  $('.dropdown-menu-obj').on('mouseenter', '.button__editing', function (e) {
+
+  //orig mouseenter edit
+  // $('.dropdown-menu-obj').on('mouseenter', '.button__editing', function (e) {
+  //   let number = ($(this).attr('id')).substring(editingButtonId.length)
+  //   let testobjects = $('.canvas').children('.square')
+  //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+  // })
+
+  //new mouseenter edit
+  // $('.table-action').on('mouseenter', '.button__editing', function (e) {
+  //   let number = ($(this).attr('id')).substring(editingButtonId.length)
+  //   let testobjects = $('.canvas').children('.square')
+  //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+  // })
+
+  $('.obj-table').children('.table-row').children('.table-action').on('mouseenter', '.button__editing', function (e) {
     let number = ($(this).attr('id')).substring(editingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
@@ -388,30 +477,217 @@ $(document).ready(function (e) {
 
 
 
-  $('.dropdown-menu-obj').on('mouseleave', '.button__editing', function (e) {
+  //orig mouseleave edit
+  // $('.dropdown-menu-obj').on('mouseleave', '.button__editing', function (e) {
+  //   let number = ($(this).attr('id')).substring(editingButtonId.length)
+  //   let testobjects = $('.canvas').children('.square')
+  //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+  // })
+
+  //new mouseleave edit
+  $('.obj-table').children('.table-row').children('.table-action').on('mouseleave', '.button__editing', function (e) {
     let number = ($(this).attr('id')).substring(editingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
   })
 
 
-  $('.dropdown-menu-obj').on('click', '.button__editing', function (e) {
+  //orig click edit
+  // $('.dropdown-menu-obj').on('click', '.button__editing', function (e) {
+  //   if (status != Statuses.EditingElements) {
+
+  //     status = Statuses.EditingElements
+  //     $('#flag').val('EditingInProgress')
+  //     let testobjects = $('.canvas').children('.square')
+  //     let number = ($(this).attr('id')).substring(editingButtonId.length)
+  //     let objects = $('.dropdown-menu-obj').children()
+
+  //     $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle me-2"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+  //     $(testobjects[number]).toggleClass('point__events')
+
+
+  //     $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
+
+  //     for (let i = 0; i < testobjects.length; i++) {
+
+  //       if (i != parseInt(number)) {
+  //         $(testobjects[i]).toggleClass('hidden__squares')
+  //         $(objects[i]).toggleClass('hidden__tools')
+  //       }
+  //     }
+
+
+  //     interact(testobjects[number]).resizable({
+  //       // resize from all edges and corners
+  //       edges: { left: true, right: true, bottom: true, top: true },
+
+  //       listeners: {
+  //         move(event) {
+  //           var target = event.target
+  //           var x = (parseFloat(target.getAttribute('data-x')) || 0)
+  //           var y = (parseFloat(target.getAttribute('data-y')) || 0)
+
+  //           // update the element's style
+  //           target.style.width = event.rect.width * (1 / scale) + 'px'
+  //           target.style.height = event.rect.height * (1 / scale) + 'px'
+
+  //           // translate when resizing from top or left edges
+  //           x += event.deltaRect.left * (1 / scale)
+  //           y += event.deltaRect.top * (1 / scale)
+
+  //           target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+
+  //           target.setAttribute('data-x', x)
+  //           target.setAttribute('data-y', y)
+  //         }
+  //       },
+  //       modifiers: [
+  //         // keep the edges inside the parent
+  //         interact.modifiers.restrictEdges({
+  //           outer: 'parent'
+  //         }),
+
+  //         // minimum size
+  //         interact.modifiers.restrictSize({
+  //           min: { width: 2, height: 1 }
+  //         })
+  //       ],
+
+  //       inertia: true
+  //     })
+
+  //     interact(testobjects[number]).draggable({
+  //       // enable inertial throwing
+  //       inertia: true,
+  //       // keep the element within the area of it's parent
+  //       modifiers: [
+  //         interact.modifiers.restrictRect({
+  //           restriction: 'parent',
+  //           endOnly: true
+  //         })
+  //       ],
+  //       // enable autoScroll
+  //       autoScroll: true,
+
+  //       listeners: {
+  //         // call this function on every dragmove event
+  //         move: dragMoveListener,
+
+  //         // call this function on every dragend event
+  //         end(event) {
+  //           var textEl = event.target.querySelector('p')
+
+  //           textEl && (textEl.textContent =
+  //             'moved a distance of ' +
+  //             (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+  //               Math.pow(event.pageY - event.y0, 2) | 0))
+  //               .toFixed(2) + 'px')
+  //         }
+  //       }
+  //     })
+
+  //     function dragMoveListener(event) {
+  //       var target = event.target
+  //       // keep the dragged position in the data-x/data-y attributes
+  //       var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx / scale
+  //       var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy / scale
+
+  //       // translate the element
+  //       target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+  //       // update the posiion attributes
+  //       target.setAttribute('data-x', x)
+  //       target.setAttribute('data-y', y)
+  //     }
+  //     // console.log( $(testobjects[number]).css('x'))
+  //     window.dragMoveListener = dragMoveListener
+  //   }
+  //   else {
+
+  //     status = Statuses.CreatingElements
+  //     let testobjects = $('.canvas').children('.square')
+  //     let number = ($(this).attr('id')).substring(editingButtonId.length)
+  //     let objects = $('.dropdown-menu-obj').children()
+  //     $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
+  //     $(testobjects[number]).toggleClass('point__events')
+
+  //     for (let i = 0; i < testobjects.length; i++) {
+
+  //       if (i != parseInt(number)) {
+  //         $(testobjects[i]).toggleClass('hidden__squares')
+  //         $(objects[i]).toggleClass('hidden__tools')
+  //       }
+  //     }
+  //     $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
+  //     // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
+
+
+  //     //алгоритм для обновления данных
+  //     let old_X = $('#square'+number).css('left')
+  //     let old_Y = $('#square'+number).css('top')
+  //     old_X = old_X.substring(0, old_X.length - 2)
+  //     old_Y = old_Y.substring(0, old_Y.length - 2)
+  //     console.log('oldX', old_X, old_Y)
+  //     let transform_value = $(testobjects[number]).css('transform')
+  //     transform_value = transform_value.substring(7)
+  //     transform_value = transform_value.substring(0, transform_value.length -1)
+  //     let tmp_X = transform_value.split(',')[4]
+  //     let tmp_Y = transform_value.split(',')[5]
+  //     console.log(tmp_X, tmp_Y)
+  //     // $('#hiddenX').val(new_X.split(',')[4])
+
+  //     let new_arr_X = $('#hiddenX').val().split(',')
+  //     let new_arr_Y = $('#hiddenY').val().split(',')
+
+  //     console.log(new_arr_X);
+  //     let new_X = new_arr_X[number]
+  //     let new_Y = new_arr_Y[number]
+  //     new_X = new_X.substring(0, new_X.length -2)
+  //     new_X = parseFloat(old_X) + parseFloat(tmp_X) + 'px'
+
+  //     new_Y = new_Y.substring(0, new_Y.length -2)
+  //     new_Y = parseFloat(old_Y) + parseFloat(tmp_Y) + 'px'
+  //     console.log(new_X, new_Y)
+  //     new_arr_X[number] = new_X
+  //     new_arr_Y[number] = new_Y
+  //     $('#hiddenX').val(new_arr_X)
+  //     $('#hiddenY').val(new_arr_Y)
+
+  //     let new_arr_Width = $('#hiddenWidth').val().split(',')
+  //     new_arr_Width[number] = $('#square'+number).css('width')
+  //     console.log('width', new_arr_Width)
+  //     $('#hiddenWidth').val(new_arr_Width)
+
+  //     let new_arr_Height = $('#hiddenHeight').val().split(',')
+  //     new_arr_Height[number] = $('#square'+number).css('height')
+  //     $('#hiddenHeight').val(new_arr_Height)
+
+
+  //   }
+
+  // })
+
+  //new click edit
+  $('.obj-table').children('.table-row').children('.table-action').on('click', '.button__editing', function (e) {
+    console.log('click', $('.obj-table').children('.table-row').children('.table-action'))
     if (status != Statuses.EditingElements) {
 
       status = Statuses.EditingElements
+
       $('#flag').val('EditingInProgress')
+
       let testobjects = $('.canvas').children('.square')
       let number = ($(this).attr('id')).substring(editingButtonId.length)
-      let objects = $('.dropdown-menu-obj').children()
-      
-      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle me-2"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+      console.log(this)
+      let objects = $('.obj-table').children('.table-row').children('.table-action')
+      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
       $(testobjects[number]).toggleClass('point__events')
 
 
-      $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
+      // $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
 
       for (let i = 0; i < testobjects.length; i++) {
-
+        // console.log(i, $(objects[number]).children())
         if (i != parseInt(number)) {
           $(testobjects[i]).toggleClass('hidden__squares')
           $(objects[i]).toggleClass('hidden__tools')
@@ -509,8 +785,8 @@ $(document).ready(function (e) {
       status = Statuses.CreatingElements
       let testobjects = $('.canvas').children('.square')
       let number = ($(this).attr('id')).substring(editingButtonId.length)
-      let objects = $('.dropdown-menu-obj').children()
-      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
+      let objects = $('.obj-table').children('.table-row').children('.table-action')
+      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
       $(testobjects[number]).toggleClass('point__events')
 
       for (let i = 0; i < testobjects.length; i++) {
@@ -525,14 +801,14 @@ $(document).ready(function (e) {
 
 
       //алгоритм для обновления данных
-      let old_X = $('#square'+number).css('left')
-      let old_Y = $('#square'+number).css('top')
+      let old_X = $('#square' + number).css('left')
+      let old_Y = $('#square' + number).css('top')
       old_X = old_X.substring(0, old_X.length - 2)
       old_Y = old_Y.substring(0, old_Y.length - 2)
       console.log('oldX', old_X, old_Y)
       let transform_value = $(testobjects[number]).css('transform')
       transform_value = transform_value.substring(7)
-      transform_value = transform_value.substring(0, transform_value.length -1)
+      transform_value = transform_value.substring(0, transform_value.length - 1)
       let tmp_X = transform_value.split(',')[4]
       let tmp_Y = transform_value.split(',')[5]
       console.log(tmp_X, tmp_Y)
@@ -544,10 +820,10 @@ $(document).ready(function (e) {
       console.log(new_arr_X);
       let new_X = new_arr_X[number]
       let new_Y = new_arr_Y[number]
-      new_X = new_X.substring(0, new_X.length -2)
+      new_X = new_X.substring(0, new_X.length - 2)
       new_X = parseFloat(old_X) + parseFloat(tmp_X) + 'px'
 
-      new_Y = new_Y.substring(0, new_Y.length -2)
+      new_Y = new_Y.substring(0, new_Y.length - 2)
       new_Y = parseFloat(old_Y) + parseFloat(tmp_Y) + 'px'
       console.log(new_X, new_Y)
       new_arr_X[number] = new_X
@@ -556,24 +832,45 @@ $(document).ready(function (e) {
       $('#hiddenY').val(new_arr_Y)
 
       let new_arr_Width = $('#hiddenWidth').val().split(',')
-      new_arr_Width[number] = $('#square'+number).css('width')
+      new_arr_Width[number] = $('#square' + number).css('width')
       console.log('width', new_arr_Width)
       $('#hiddenWidth').val(new_arr_Width)
 
       let new_arr_Height = $('#hiddenHeight').val().split(',')
-      new_arr_Height[number] = $('#square'+number).css('height')
+      new_arr_Height[number] = $('#square' + number).css('height')
       $('#hiddenHeight').val(new_arr_Height)
 
 
     }
 
   })
-
   ///////
 
 
+  //orig mouseenter delete
+  // $('.dropdown-menu-obj').on('mouseenter', '.button__deletting', function (e) {
+  //   let number = ($(this).attr('id')).substring(delettingButtonId.length)
+  //   let testobjects = $('.canvas').children('.square')
+  //   $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
+  // })
 
-  $('.dropdown-menu-obj').on('mouseenter', '.button__deletting', function (e) {
+  //new mouseenter delete
+  $('.obj-table').children('.table-row').children('.table-action').on('mouseenter', '.button__deletting', function (e) {
+    let number = ($(this).attr('id')).substring(delettingButtonId.length)
+    let testobjects = $('.canvas').children('.square')
+    $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
+  })
+
+
+  //orig mouseleave delete
+  // $('.dropdown-menu-obj').on('mouseleave', '.button__deletting', function (e) {
+  //   let number = ($(this).attr('id')).substring(delettingButtonId.length)
+  //   let testobjects = $('.canvas').children('.square')
+  //   $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
+  // })
+
+  //new mouseleave delete
+  $('.obj-table').children('.table-row').children('.table-action').on('mouseleave', '.button__deletting', function (e) {
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
@@ -581,19 +878,75 @@ $(document).ready(function (e) {
 
 
 
-  $('.dropdown-menu-obj').on('mouseleave', '.button__deletting', function (e) {
+  //orig click delete
+  // $('.dropdown-menu-obj').on('click', '.button__deletting', function (e) {
+
+  //   let number = ($(this).attr('id')).substring(delettingButtonId.length)
+  //   let testobjects = $('.canvas').children('.square')
+  //   let objects = $('.dropdown-menu-obj').children()
+
+  //   console.log(x_arr)
+  //   console.log(x_arr[0])
+  //   console.log(number)
+  //   // x_arr.push($(id).css('left'))
+  //   // y_arr.push($(id).css('top'))
+  //   // width_arr.push($(id).css('width'))
+  //   // height_arr.push($(id).css('height'))
+
+  //   // $('#hiddenX').val(x_arr)
+  //   // $('#hiddenY').val(y_arr)
+  //   // $('#hiddenWidth').val(width_arr)
+  //   // $('#hiddenHeight').val(height_arr)
+  //   // if (condition) {
+
+  //   // } else {
+
+  //   // }
+  //   delete_arr.push(parseInt(number))
+
+  //   // delete_arr = parseInt(number)
+  //   x_arr.splice(number, 1)
+  //   y_arr.splice(number, 1)
+  //   width_arr.splice(number, 1)
+  //   height_arr.splice(number, 1)
+  //   $('#hiddenX').val(x_arr)
+  //   $('#hiddenY').val(y_arr)
+  //   $('#hiddenWidth').val(width_arr)
+  //   $('#hiddenHeight').val(height_arr)
+
+  //   console.log('ID', delete_arr)
+  //   $(objects[number]).remove()
+
+  //   $(testobjects[number]).remove()
+  //   console.log($('.canvas').children('.square').length)
+  //   if ($('.canvas').children('.square').length == 0) {
+  //     $('#hidden_delete').val(null)
+  //   }
+  //   else {
+  //     $('#hidden_delete').val(delete_arr)
+  //   }
+  //   testobjects = $('.canvas').children('.square')
+  //   objects = $('.dropdown-menu-obj').children()
+
+  //   for (let i = 0; i < testobjects.length; i++) {
+  //     $(testobjects[i]).attr('id', square + i)
+  //     $(objects[i]).attr('id', prev__elemnt__objects + i)
+
+  //     $(objects[i]).children('.number').html(i + 1)
+
+  //     $(objects[i]).children('.wrapper__buttons').children('.button__deletting').attr('id', delettingButtonId + i)
+  //     $(objects[i]).children('.wrapper__buttons').children('.button__editing').attr('id', editingButtonId + i)
+
+  //   }
+  //   // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // })
+
+  //new click delete
+  $('.obj-table').children('.table-row').children('.table-action').on('click', '.button__deletting', function (e) {
+
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')
-    $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
-  })
-
-
-
-  $('.dropdown-menu-obj').on('click', '.button__deletting', function (e) {
-
-    let number = ($(this).attr('id')).substring(delettingButtonId.length)
-    let testobjects = $('.canvas').children('.square')
-    let objects = $('.dropdown-menu-obj').children()
+    let objects = $('.obj-table').children('.table-row')
 
     console.log(x_arr)
     console.log(x_arr[0])
@@ -608,21 +961,23 @@ $(document).ready(function (e) {
     // $('#hiddenWidth').val(width_arr)
     // $('#hiddenHeight').val(height_arr)
     // if (condition) {
-      
+
     // } else {
-      
+
     // }
     delete_arr.push(parseInt(number))
- 
+
     // delete_arr = parseInt(number)
     x_arr.splice(number, 1)
     y_arr.splice(number, 1)
     width_arr.splice(number, 1)
     height_arr.splice(number, 1)
+    categories_arr.splice(number, 1)
     $('#hiddenX').val(x_arr)
     $('#hiddenY').val(y_arr)
     $('#hiddenWidth').val(width_arr)
     $('#hiddenHeight').val(height_arr)
+    $('#hiddenCategory').val(categories_arr)
 
     console.log('ID', delete_arr)
     $(objects[number]).remove()
@@ -630,13 +985,14 @@ $(document).ready(function (e) {
     $(testobjects[number]).remove()
     console.log($('.canvas').children('.square').length)
     if ($('.canvas').children('.square').length == 0) {
-      $('#hidden_delete').val(null)
+      $('#hidden_delete').val(0)
     }
     else {
       $('#hidden_delete').val(delete_arr)
     }
     testobjects = $('.canvas').children('.square')
-    objects = $('.dropdown-menu-obj').children()
+    objects = $('.obj-table').children('.table-row')
+    console.log(objects, '!!!!!!!!!!!!!!!!!!!', number)
 
     for (let i = 0; i < testobjects.length; i++) {
       $(testobjects[i]).attr('id', square + i)

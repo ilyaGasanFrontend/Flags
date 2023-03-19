@@ -5,12 +5,15 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\test;
 use App\Models\Image;
+use App\Models\Category;
+use Auth;
 
 class LSelector extends Component
 {
     public $test;
     protected $listeners = ['submit'];
 
+    public $radio_category;
     public $img_scale;
     public $this_img_number;
     public $images_count;
@@ -18,13 +21,14 @@ class LSelector extends Component
     public $y;
     public $width;
     public $height;
+    public $category;
 
     public $param; //передача id фотки во вьюху
 
     public $images; //массив данных из таблицы images
 
     public $nav_images = []; //фотографии в панель навигации
-    public $squares;
+    // public $squares;
 
     public $delete;
     // protected $rules = [
@@ -89,10 +93,12 @@ class LSelector extends Component
         $arr_width = explode('px,', substr($this->width, 0, -2)); 
         $arr_height = explode('px,', substr($this->height, 0, -2)); 
         $arr_delete = explode(',', $this->delete);
+        $this->category = explode(',', $this->category);
         
         if (($arr_delete[0] != '')) {
             if (Image::find($this->param)->getOriginal('is_ready') == true) {
                 foreach ($arr_delete as $id) {
+                    
                     Test::where('photoName', $this->param)->where('label_id', $id+1)->delete();
                     
                     $count = Test::where('photoName', $this->param)->where('label_id', '>', $id+1)->count();
@@ -111,7 +117,8 @@ class LSelector extends Component
                 test::updateOrCreate(
                     ['photoName' => $this->param, 'label_id' => $i+1],
                     [
-                        'userName' => 'admin',
+                        'user_id' => auth()->user()->id,
+                        'category_id' => $this->category[$i],
                         'x' => $arr_x[$i],
                         'y' => $arr_y[$i],
                         'width' => $arr_width[$i],
@@ -123,7 +130,7 @@ class LSelector extends Component
             }
         }
         
-
+        // dd($arr_delete);
         $this->dispatchBrowserEvent('page_refresh_prevent');
         // dd($param == 'next');
         if ($param == 'next') {
@@ -150,7 +157,15 @@ class LSelector extends Component
         // $this->nav_images = Image::where('id', '<', $this->param)->orderByDesc('id')->limit(2)->get();
         // array_push($this->nav_images, Image::where('id', '<', $this->param)->orderByDesc('id')->limit(2)->get());
         $this->images = Image::find($this->param);
-        $this->squares = test::where('photoName', $this->param)->get();
+        $squares = test::select(
+            'tests.x', 'tests.y', 'tests.width', 'tests.height', 'categories.description', 'categories.color', 
+            'tests.category_id' //для инпут хидден
+            )->join(
+                'categories', 'tests.category_id', '=', 'categories.id'
+            )->where('photoName', $this->param)->where('tests.user_id', auth()->user()->id)->get();
+
+        // dd($squares);
+        // $this->squares = test::where('photoName', $this->param)->get();
 
         $this->nav_images = [];
         foreach (Image::where('id', '<', $this->param)->orderByDesc('id')->limit(2)->get() as $q) {
@@ -170,6 +185,12 @@ class LSelector extends Component
         $this->this_img_number = Image::where('id', '<=', $this->param)->count();
         $this->images_count = Image::count();
 
-        return view('livewire.l-selector')->extends('layouts.app');
+        $categories = Category::where('user_id', '=', auth()->user()->id)->get();
+        // $this->radio_category = Category::first()->id;
+
+        return view('livewire.l-selector', compact([
+            'categories', 
+            'squares', 
+            ]))->extends('layouts.app');
     }
 }

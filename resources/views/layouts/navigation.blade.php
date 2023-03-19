@@ -28,6 +28,13 @@
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Рабочий стол</span>
                 </a>
             </li>
+
+            <li class="sidebar-item ">
+                <a class="sidebar-link" href="{{ route('gallery') }}">
+                    <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Галерея</span>
+                </a>
+            </li>
+            
             <li class="sidebar-header">
                 Справочники
             </li>
@@ -41,7 +48,11 @@
                     <i class="align-middle" data-feather="user-check"></i> <span class="align-middle">Роли</span>
                 </a>
             </li>
-            
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('categories') }}">
+                    <i class="align-middle" data-feather="crop"></i> <span class="align-middle">Категории</span>
+                </a>
+            </li>
 
         </ul>
 

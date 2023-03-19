@@ -51,7 +51,7 @@
     <div class="wrapper">
         @include('layouts.navigation')
         <div class="main">
-            {{-- @include('layouts.navigation-top') --}} 
+            @include('layouts.navigation-top') 
             <main class="content">
                 @yield('content')
             </main>

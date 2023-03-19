@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('userName');
-            $table->foreignId('photoName')->constrained('images', 'id');
+            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('photoName')->constrained('images', 'id')->cascadeOnDelete();
             $table->integer('label_id');
+            $table->foreignId('category_id')->constrained('categories', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->float('x');
             $table->float('y');
             $table->float('width');

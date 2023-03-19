@@ -1,13 +1,13 @@
 <?php
 
-
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\TestController;
 use App\Http\Livewire\LSelector;
 use App\Http\Livewire\Gallery;
-
+use App\Http\Livewire\OptionsIndex;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/gallery/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
-Route::get('/gallery', Gallery::class);
+// Route::get('/gallery/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
+// Route::get('/gallery', Gallery::class);
 
 Route::get('/', function () {
     return view('auth.login');
@@ -36,6 +36,12 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/dashboard', function () {
     //     return view('dashboard');
     // })->name('dashboard');
+
+    //gallery & selector
+    Route::get('/gallery', Gallery::class)->name('gallery');
+    Route::get('/gallery/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
+    // Route::get('/options', OptionsIndex::class)->name('options');
+
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // route root
@@ -52,6 +58,13 @@ Route::middleware(['auth'])->group(function () {
         // Route::delete('/delete-user/{user}', 'destroy')->name('delete-user');
     });
     
+    Route::controller(CategoryController::class)->group(function() {
+        Route::get('/categories', 'index')->name('categories');
+        Route::get('/add-category', 'create')->name('add-category');
+        Route::post('/store-category', 'store')->name('store-category');
+        Route::get('/edit-category/{category}', 'edit')->name('edit-category');
+        Route::put('/update-category/{category}', 'update')->name('update-category');
+    });
 });
 
 require __DIR__ . '/auth.php';
