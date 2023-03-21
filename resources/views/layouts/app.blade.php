@@ -25,7 +25,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <link href="{{ url('/css/selector.css') }}" rel="stylesheet">
+    
     @push('head')
     <script src="{{ asset('js/components/pizza.js')}}"></script>
     @endpush

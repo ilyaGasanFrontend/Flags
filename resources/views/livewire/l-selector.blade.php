@@ -1,3 +1,4 @@
+<div>
 <main>
     @vite(['resources/js/selector.js', 'resources/js/creatingmarks.js', 'resources/js/returnerToBD.js'])
     {{-- @vite(['resources/js/slider.js']) --}}
@@ -51,12 +52,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="wrapper__prev__img">
                         <div class="row row__arrows">
                             <div class="col-1 col--arrows col--arrows--arrow" id="left">
                                 <img src="{{ asset('images/right-arrow.png') }}" alt=""
-                                    class="arrow arrow--left" wire:click='submit("previous")'>
+                                    class="arrow arrow--left" wire:click.prevent='submit("previous")'>
                             </div>
                             <div class="col-6 col--arrows col--arrows--photos">
                                 <div class="row row__photo__list">
@@ -66,12 +68,12 @@
                                                     class="photogal-el photogal-el--active"
                                                     src="{{ asset($img['path_to_file']) }}" alt="Image"
                                                     style="aspect-ratio: 1/1"
-                                                    wire:click='submit({{ $img['id'] }})' /></div>
+                                                    wire:click.prvent='submit({{ $img['id'] }})' /></div>
                                         @else
                                             <div class="col-sm col__photos__list"><img class="photogal-el"
                                                     src="{{ asset($img['path_to_file']) }}" alt="Image"
                                                     style="aspect-ratio: 1/1"
-                                                    wire:click='submit({{ $img['id'] }})' />
+                                                    wire:click.prevent='submit({{ $img['id'] }})' />
                                             </div>
                                         @endif
                                     @endforeach
@@ -107,18 +109,19 @@
                         </div>
                     </div>
                 </div> --}}
+                
 
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Категории</h5>
                     </div>
                     <div class="card-body">
-                        <div>
+                        <div class="categories">
                             @foreach ($categories as $i => $category)
                                 <label class="form-check">
                                     {{-- <input class="form-check-input" type="radio" id="{{$category->id}}" value="{{$category->id}}" name="{{$category->description}}">
                                 <label for="{{$category->description}}">{{$category->description}}</label> --}}
-                                    <input class="form-check-input" id="radio_{{ $category->id }}" type="radio"
+                                    <input class="form-check-input categories-default" id="radio_{{ $category->id }}" type="radio"
                                         name="radio_category" value="{{ $category->id }}"
                                         @if ($i == 0) checked @endif>
                                     <span class="form-check-label" id="span_{{ $category->id }}"
@@ -145,56 +148,58 @@
                                 </tr>
                             </thead>
                             <tbody class="obj-table">
-                                
-                                    @if ($squares != null)
-                                        @foreach ($squares as $i => $square)
-                                            <tr id="table_row_{{ $i }}" class="table-row"
-                                                style="background-color: {{ $square->color . 40 }};">
-                                                <td class="number">{{ $i + 1 }}</td>
-                                                <td class="desmetr">{{ $square->description }}</td>
-                                                <td class="table-action">
-                                                    <a class="button__editing"
-                                                        id="editing__button{{ $i }}" style="text-decoration: none"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="blue" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="feather feather-edit-2 align-middle">
-                                                            <path
-                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                            </path>
-                                                        </svg>
-                                                    </a>
-                                                    <a class="button__deletting"
-                                                        id="deletting__button{{ $i }}" style="text-decoration: none"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="red" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="feather feather-trash-2 align-middle me-2">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                            <line x1="10" y1="11" x2="10"
-                                                                y2="17">
-                                                            </line>
-                                                            <line x1="14" y1="11" x2="14"
-                                                                y2="17">
-                                                            </line>
-                                                        </svg></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
+
+                                @if ($squares != null)
+                                    @foreach ($squares as $i => $square)
+                                        <tr id="table_row_{{ $i }}" class="table-row"
+                                            style="background-color: {{ $square->color . 40 }};">
+                                            <td class="number">{{ $i + 1 }}</td>
+                                            <td class="desmetr">
+                                                {{ $square->description }}
+                                                
+                                            </td>
+                                            <input type="hidden" id="hidden-category-{{$i}}" value="{{$square->category_id}}"/>
+                                            <td class="table-action">
+                                                <a class="button__editing" id="editing__button{{ $i }}"
+                                                    style="text-decoration: none"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="blue"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit-2 align-middle">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                                <a class="button__deletting" id="deletting__button{{ $i }}"
+                                                    style="text-decoration: none"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="red"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-trash-2 align-middle me-2">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path
+                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                        </path>
+                                                        <line x1="10" y1="11" x2="10"
+                                                            y2="17">
+                                                        </line>
+                                                        <line x1="14" y1="11" x2="14"
+                                                            y2="17">
+                                                        </line>
+                                                    </svg></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
                     {{-- </form> --}}
                 </div>
-
+                
                 <div class="card card-info-input card-info-obj">
-                    <form style="width: 100%" wire:submit.prevent="submit">
+                    {{-- <form style="width: 100%" wire:submit.prevent="submit"> --}}
                         @if ($squares != null)
                             @php
                                 $x_str = '';
@@ -281,7 +286,7 @@
                             @endif
 
                         </div> --}}
-                    </form>
+                    {{-- </form> --}}
                 </div>
 
                 @push('scripts')
@@ -297,7 +302,7 @@
                             $('.canvas').css("height", img.height);
 
                             $('.wrapper_canvas').css('transform', @this.img_scale);
-                            console.log(@this.img_scale)
+                            console.log('123', @this.img_scale)
 
 
                         })
@@ -311,6 +316,7 @@
                                 @this.height = $('#hiddenHeight').attr('value')
                                 @this.delete = $('#hidden_delete').attr('value')
                                 @this.category = $('#hiddenCategory').attr('value')
+                                @this.img_scale = $('.wrapper_canvas').css('transform')
                                 // @this.radio_category = $('%')
                             })
 
@@ -321,6 +327,7 @@
                                 @this.height = $('#hiddenHeight').attr('value')
                                 @this.delete = $('#hidden_delete').attr('value')
                                 @this.category = $('#hiddenCategory').attr('value')
+                                @this.img_scale = $('.wrapper_canvas').css('transform')
                             })
 
                         })
@@ -334,8 +341,88 @@
     </div>
 
 </main>
-
+{{-- 1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br>
+1<br> --}}
 {{-- <script src="js/app.js"></script> --}}
+<link href="{{ url('/css/selector.css') }}" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+</div>

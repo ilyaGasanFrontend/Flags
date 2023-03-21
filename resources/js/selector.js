@@ -1,6 +1,3 @@
-
-
-
 function createRadioElement(name, checked) {
   var radioHtml = '<input type="radio" name="' + name + '"';
   if (checked) {
@@ -14,6 +11,8 @@ function createRadioElement(name, checked) {
 
 
 $(document).ready(function (e) {
+
+  //  console.log($(document).css('pointer-event'))
   if ($('#hiddenX').val() == '') {
     var x_arr = []
     var y_arr = []
@@ -85,8 +84,8 @@ $(document).ready(function (e) {
   $("input[type='radio']").click(function () {
     radio_checked_id = $("input[name='radio_category']:checked").val()
     radio_checked_color = $('#span_' + radio_checked_id).css('color')
-    console.log(radio_checked_id, radio_checked_color)
-    console.log(categories_arr)
+    // console.log(radio_checked_id, radio_checked_color)
+    // console.log(categories_arr)
   })
 
   function getRandomColor() {
@@ -281,11 +280,11 @@ $(document).ready(function (e) {
 
         let number = $('.canvas').children('.square').length - 1
         var obj = $('.obj-table')
-        console.log(radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.4)')
+        console.log(radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.4)')
         var table_row = $('<tr>', {
           'id': 'table_row_' + number,
           'class': 'table-row',
-          'style': 'background-color: ' + radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)',
+          'style': 'background-color: ' + radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.25)',
 
         })
 
@@ -304,13 +303,13 @@ $(document).ready(function (e) {
         var edit_button = $('<a>', {
           'class': 'button__editing',
           'id': `${editingButtonId}${$('.canvas').children('.square').length - 1}`,
-          'style': 'text-decoration: none'
+          // 'style': 'text-decoration: none'
 
         })
         var delete_button = $('<a>', {
           'class': 'button__deletting',
           'id': `${delettingButtonId}${$('.canvas').children('.square').length - 1}`,
-          'style': 'text-decoration: none'
+          // 'style': 'text-decoration: none'
 
         })
         // console.log($('#span_' + radio_checked).css('color'), radio_checked)
@@ -400,15 +399,15 @@ $(document).ready(function (e) {
         // $(form).append(object)
         $(object).append(numberEl)
         $(object).append(desMetrik)
-
         $(obj).append(table_row)
-        console.log($('#span_'+radio_checked_id).text())
+        // $(obj).append('<tr id="table_row_0" class="table-row" style="background-color: #00000040;"><td class="number">1</td><td class="desmetr">Категория1</td><td class="table-action"><a class="button__editing" id="editing__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a><a class="button__deletting" id="deletting__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a></td></tr>')
+        console.log($('#span_' + radio_checked_id).text())
         $(td_number).html($('.canvas').children('.square').length)
         $(table_row).append(td_number)
-        $(td_desmetr).html($('#span_'+radio_checked_id).text())
+        $(td_desmetr).html($('#span_' + radio_checked_id).text())
         $(table_row).append(td_desmetr)
 
-        var svg_edit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
+        var svg_edit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
         var svg_delete = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"> <polyline points="3 6 5 6 21 6"></polyline> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"> </path> <line x1="10" y1="11" x2="10" y2="17"> </line> <line x1="14" y1="11" x2="14" y2="17"> </line> </svg>'
 
         $(edit_button).append(svg_edit)
@@ -416,7 +415,6 @@ $(document).ready(function (e) {
         $(delete_button).append(svg_delete)
         $(td_table_action).append(delete_button)
         $(table_row).append(td_table_action)
-
         // // $(object).append(form)
 
 
@@ -469,10 +467,12 @@ $(document).ready(function (e) {
   //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
   // })
 
-  $('.obj-table').children('.table-row').children('.table-action').on('mouseenter', '.button__editing', function (e) {
+  $('.obj-table').on('mouseenter', '.button__editing', function (e) {
+
     let number = ($(this).attr('id')).substring(editingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+    console.log('over')
   })
 
 
@@ -485,7 +485,7 @@ $(document).ready(function (e) {
   // })
 
   //new mouseleave edit
-  $('.obj-table').children('.table-row').children('.table-action').on('mouseleave', '.button__editing', function (e) {
+  $('.obj-table').on('mouseleave', '.button__editing', function (e) {
     let number = ($(this).attr('id')).substring(editingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
@@ -668,23 +668,75 @@ $(document).ready(function (e) {
   // })
 
   //new click edit
-  $('.obj-table').children('.table-row').children('.table-action').on('click', '.button__editing', function (e) {
-    console.log('click', $('.obj-table').children('.table-row').children('.table-action'))
+  $('.obj-table').on('click', '.button__editing', function (e) {
+    // console.log('click', $('.obj-table').children('.table-row').children('.table-action'))
     if (status != Statuses.EditingElements) {
 
       status = Statuses.EditingElements
 
       $('#flag').val('EditingInProgress')
 
-      let testobjects = $('.canvas').children('.square')
+      let categories = $('.categories').children()
       let number = ($(this).attr('id')).substring(editingButtonId.length)
-      console.log(this)
+      let active_category_id = $('#hidden-category-' + number).val()
+
+      for (let i = 0; i < categories.length; i++) {
+        console.log($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length), radio_checked_id)
+        if ($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length) == active_category_id) {
+          $(categories[i]).children('.form-check-input').prop('checked', true)
+          radio_checked_id = active_category_id
+          radio_checked_color = $('#span_' + radio_checked_id).css('color');
+        }
+        // console.log($(categories[i]).children('.form-check-input').prop('checked'))
+        // console.log($(categories[i]).children())
+        // if ($(categories[i]).children('.form-check-input').prop('checked') == true) {
+        //   radio_checked_id =$(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length)
+        //   console.log('!!!!!!', radio_checked_id)
+        // } else {
+
+        // }
+
+        // if ($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length) == radio_checked_id) {
+        //   $(categories[i]).children('.form-check-input').prop('checked', true)
+        // }
+        // else {
+        //   $(categories[i]).children('.form-check-input').prop('checked', false)
+        // }
+
+        // console.log($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length) == radio_checked_id)
+      }
+
+
+      // function createRadioElement(name, checked) {
+      //   var radioHtml = '<input type="radio" name="' + name + '"';
+      //   if (checked) {
+      //     radioHtml += ' checked="checked"';
+      //   }
+      //   radioHtml += '/>';
+      //   var radioFragment = document.createElement('div');
+      //   radioFragment.innerHTML = radioHtml;
+      //   return radioFragment.firstChild;
+      // }
+
+
+      let testobjects = $('.canvas').children('.square')
+      // let number = ($(this).attr('id')).substring(editingButtonId.length)
+      console.log(number, '1111111111111111111')
       let objects = $('.obj-table').children('.table-row').children('.table-action')
       $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
       $(testobjects[number]).toggleClass('point__events')
 
 
-      // $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
+      $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
+
+      $("input[type='radio']").toggleClass('categories-editing')
+      $("input[type='radio']").toggleClass('categories-default')
+
+      //смена класса необходимой строке
+      $($('.obj-table').children('.table-row')[number]).toggleClass('table-row-editing')
+
+      //смена класса области с текстом
+      $($('.obj-table').children('.table-row').children('.desmetr')[number]).toggleClass('desmetr-editing')
 
       for (let i = 0; i < testobjects.length; i++) {
         // console.log(i, $(objects[number]).children())
@@ -694,6 +746,21 @@ $(document).ready(function (e) {
         }
       }
 
+      $('.categories-editing').click(function () {
+        //получение новых id и цвета у чекбокса
+        radio_checked_id = $("input[name='radio_category']:checked").val()
+        radio_checked_color = $('#span_' + radio_checked_id).css('color')
+
+        //смена цвета выделенному квадрату
+        $('.active__square__el__obj__edititng').css('color', radio_checked_color)
+        console.log($('#span_' + radio_checked_id).text())
+
+        //смена описания
+        $('.desmetr-editing').text($('#span_' + radio_checked_id).text())
+
+        //смена цвета фона
+        $('.table-row-editing').css('background', radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.25)')
+      })
 
       interact(testobjects[number]).resizable({
         // resize from all edges and corners
@@ -782,13 +849,18 @@ $(document).ready(function (e) {
     }
     else {
 
+
+
       status = Statuses.CreatingElements
       let testobjects = $('.canvas').children('.square')
       let number = ($(this).attr('id')).substring(editingButtonId.length)
       let objects = $('.obj-table').children('.table-row').children('.table-action')
       $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
       $(testobjects[number]).toggleClass('point__events')
-
+      $("input[type='radio']").toggleClass('categories-editing')
+      $("input[type='radio']").toggleClass('categories-default')
+      $($('.obj-table').children('.table-row')[number]).toggleClass('table-row-editing')
+      $($('.obj-table').children('.table-row').children('.desmetr')[number]).toggleClass('desmetr-editing')
       for (let i = 0; i < testobjects.length; i++) {
 
         if (i != parseInt(number)) {
@@ -796,8 +868,9 @@ $(document).ready(function (e) {
           $(objects[i]).toggleClass('hidden__tools')
         }
       }
-      $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
+      $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
       // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
+
 
 
       //алгоритм для обновления данных
@@ -806,11 +879,17 @@ $(document).ready(function (e) {
       old_X = old_X.substring(0, old_X.length - 2)
       old_Y = old_Y.substring(0, old_Y.length - 2)
       console.log('oldX', old_X, old_Y)
+
       let transform_value = $(testobjects[number]).css('transform')
-      transform_value = transform_value.substring(7)
-      transform_value = transform_value.substring(0, transform_value.length - 1)
-      let tmp_X = transform_value.split(',')[4]
-      let tmp_Y = transform_value.split(',')[5]
+      let tmp_X = 0
+      let tmp_Y = 0
+      if (transform_value != 'none') {
+        transform_value = transform_value.substring(7)
+        transform_value = transform_value.substring(0, transform_value.length - 1)
+        tmp_X = transform_value.split(',')[4]
+        tmp_Y = transform_value.split(',')[5]
+      }
+
       console.log(tmp_X, tmp_Y)
       // $('#hiddenX').val(new_X.split(',')[4])
 
@@ -841,6 +920,11 @@ $(document).ready(function (e) {
       $('#hiddenHeight').val(new_arr_Height)
 
 
+      let new_arr_Category = $('#hiddenCategory').val().split(',')
+      console.log(new_arr_Category)
+      new_arr_Category[number] = radio_checked_id
+      $('#hiddenCategory').val(new_arr_Category)
+      console.log(new_arr_Category)
     }
 
   })
@@ -855,7 +939,7 @@ $(document).ready(function (e) {
   // })
 
   //new mouseenter delete
-  $('.obj-table').children('.table-row').children('.table-action').on('mouseenter', '.button__deletting', function (e) {
+  $('.obj-table').on('mouseenter', '.button__deletting', function (e) {
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
@@ -870,7 +954,7 @@ $(document).ready(function (e) {
   // })
 
   //new mouseleave delete
-  $('.obj-table').children('.table-row').children('.table-action').on('mouseleave', '.button__deletting', function (e) {
+  $('.obj-table').on('mouseleave', '.button__deletting', function (e) {
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
@@ -942,7 +1026,7 @@ $(document).ready(function (e) {
   // })
 
   //new click delete
-  $('.obj-table').children('.table-row').children('.table-action').on('click', '.button__deletting', function (e) {
+  $('.obj-table').on('click', '.button__deletting', function (e) {
 
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')

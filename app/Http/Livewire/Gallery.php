@@ -129,6 +129,7 @@ class Gallery extends Component
             $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
 
             image::create([
+                'user_id' => auth()->user()->id,
                 'name' => $file->hashName(),
                 'path_to_file' => '/storage/photos/' . $file->hashName(),
                 'original_width' =>  $width,

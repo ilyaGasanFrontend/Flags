@@ -84,10 +84,7 @@ class LSelector extends Component
     }
     public function submit($param)
     {
-        // $arr_x;
-        // $arr_y;
-        // $arr_width;
-        // $arr_height;
+
         $arr_x = explode('px,', substr($this->x, 0, -2)); 
         $arr_y = explode('px,', substr($this->y, 0, -2)); 
         $arr_width = explode('px,', substr($this->width, 0, -2)); 
@@ -159,7 +156,8 @@ class LSelector extends Component
         $this->images = Image::find($this->param);
         $squares = test::select(
             'tests.x', 'tests.y', 'tests.width', 'tests.height', 'categories.description', 'categories.color', 
-            'tests.category_id' //для инпут хидден
+            'tests.category_id',//для инпут хидден
+            
             )->join(
                 'categories', 'tests.category_id', '=', 'categories.id'
             )->where('photoName', $this->param)->where('tests.user_id', auth()->user()->id)->get();
