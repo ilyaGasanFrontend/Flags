@@ -468,8 +468,9 @@ $(document).ready(function (e) {
   // })
 
   $('.obj-table').on('mouseenter', '.button__editing', function (e) {
-
+    
     let number = ($(this).attr('id')).substring(editingButtonId.length)
+    console.log(number)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
     console.log('over')
@@ -1079,13 +1080,15 @@ $(document).ready(function (e) {
     console.log(objects, '!!!!!!!!!!!!!!!!!!!', number)
 
     for (let i = 0; i < testobjects.length; i++) {
+      console.log( $(testobjects[i]).attr('id'))
       $(testobjects[i]).attr('id', square + i)
-      $(objects[i]).attr('id', prev__elemnt__objects + i)
+      $(objects[i]).attr('id', 'table_row_' + i)
 
       $(objects[i]).children('.number').html(i + 1)
 
-      $(objects[i]).children('.wrapper__buttons').children('.button__deletting').attr('id', delettingButtonId + i)
-      $(objects[i]).children('.wrapper__buttons').children('.button__editing').attr('id', editingButtonId + i)
+      $($(objects[i]).children()[2]).attr('id', 'hidden-category-'+i)
+      $(objects[i]).children('.table-action').children('.button__deletting').attr('id', delettingButtonId + i)
+      $(objects[i]).children('.table-action').children('.button__editing').attr('id', editingButtonId + i)
 
     }
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
