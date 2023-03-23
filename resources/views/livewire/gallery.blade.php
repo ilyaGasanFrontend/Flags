@@ -8,7 +8,6 @@
     <main>
         <div class="container-fluid p-0">
 
-
             {{-- <div class="row">
                 <p>
                     <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
@@ -100,7 +99,7 @@
 
             </div>
 
-            
+
             <div class="row">
                 <div class="card">
                     <div class="card-header">
@@ -113,12 +112,17 @@
                                     {{-- <button class="btn btn-primary submit-button"> --}}
                                     <div class="card bg-light py-2 py-md-3 border">
 
-                                        <a href="/gallery/{{ $image->id }}">
+
+                                        <a
+                                            @if ($is_empty == true) wire:click="alert" @else href="/gallery/{{ $image->id }}" @endif>
                                             <img class="card-img-top" src="{{ $image->path_to_file }}" loading="lazy"
                                                 alt="{{ $image->path_to_file }}" style="aspect-ratio: 1/1;">
                                             {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
 
                                         </a>
+
+
+
 
                                         <div class="card-header bg-light px-4 pt-4">
 
@@ -149,5 +153,11 @@
                 </div>
 
             </div>
+            {{-- <button wire:click="alert">123</button> --}}
+            <script>
+                window.addEventListener('modal-confirm-hide', event => {
+                    myMessageConfirm(event.detail.message, 'danger')
+                });
+            </script>
     </main>
 </div>

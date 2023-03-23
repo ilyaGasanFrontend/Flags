@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Image;
 use App\Models\test;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -25,8 +26,16 @@ class Gallery extends Component
             $this->images = Image::all();
         }
         
+        if (Category::count() == 0) {
+            $is_empty = true;
+        } else {
+            $is_empty = false;
+        }
+        
         // $this->images = DB::table('images')->get();
-        return view('livewire.gallery')->extends('layouts.app');
+        return view('livewire.gallery', compact([
+            'is_empty'
+        ]))->extends('layouts.app');
     }
 
     
@@ -114,6 +123,11 @@ class Gallery extends Component
             $file->storePublicly('livewire-imgs', 's3');
         }
         
+    }
+
+    public function alert()
+    {
+        $this->dispatchBrowserEvent('modal-confirm-hide', ['message' => 'Необходимо создать категории!']);
     }
     public function store_photos()
     {
