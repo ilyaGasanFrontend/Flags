@@ -38,7 +38,11 @@ class Gallery extends Component
         ]))->extends('layouts.app');
     }
 
-    
+    public function delete($image_id)
+    {
+        Image::where('id', $image_id)->delete();
+
+    }
     public function create_sql_view($json)
     {
         if ($json)

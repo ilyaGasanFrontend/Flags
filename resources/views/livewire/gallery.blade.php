@@ -137,7 +137,7 @@
                                                 <div class="badge bg-danger my-2">Не готово</div>
                                             @endif
 
-                                            <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                            <button class="btn btn-danger btn-sm" wire:click="delete({{$image->id}})"><i class="fas fa-times"></i></button>
 
                                         </div>
                                     </div>
