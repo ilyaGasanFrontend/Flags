@@ -7,34 +7,19 @@
     </script> --}}
     <main>
         <div class="container-fluid p-0">
-
-            {{-- <div class="row">
-                <p>
-                    <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both elements</button>
-                  </p>
-                  <div class="row">
-                    <div class="col">
-                      <div class="collapse multi-collapse" id="multiCollapseExample1">
-                        <div class="card card-body">
-                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                        </div>
-                      </div>
+            <div class="row">
+                <label for="formFileMultiple" class="form-label">Добавить файлы</label>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <input class="form-control" type="file" id="formFileMultiple" wire:model="files" multiple>
                     </div>
-                    <div class="col">
-                      <div class="collapse multi-collapse" id="multiCollapseExample2">
-                        <div class="card card-body">
-                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-secondary" wire:click.prevent="store_photos">Загрузить</button>
+                </div>
+            </div>
 
-
-            </div> --}}
-
-            <div class="col-md-6 text-center">
+            {{-- <div class="col-md-6 text-center">
                 <div class="col-12 col-md-6 col-lg-3">
                     <form wire:submit.prevent="store_photos">
                         <input type="file" wire:model="files" multiple>
@@ -43,9 +28,9 @@
                         <input type="submit">
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="col-md-6 text-center">
+            {{-- <div class="col-md-6 text-center">
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -55,10 +40,9 @@
                         <h6 class="dropdown-header">Экспортировать как...</h6>
                         <div class="dropdown-item" wire:click='download_file("txt")'>TXT</div>
                         <div class="dropdown-item" wire:click='download_file("csv")'>CSV</div>
-                        {{-- <div class="dropdown-item" wire:click='download_file("json")'>JSON</div> --}}
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             {{-- <br>S3
@@ -137,7 +121,9 @@
                                                 <div class="badge bg-danger my-2">Не готово</div>
                                             @endif
 
-                                            <button class="btn btn-danger btn-sm" wire:click="delete({{$image->id}})"><i class="fas fa-times"></i></button>
+                                            <button class="btn btn-danger btn-sm"
+                                                wire:click="delete({{ $image->id }})"><i
+                                                    class="fas fa-times"></i></button>
 
                                         </div>
                                     </div>
