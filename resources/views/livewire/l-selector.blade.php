@@ -4,7 +4,7 @@
     {{-- @vite(['resources/js/slider.js']) --}}
     <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
 
-
+    
     <div class="container-fluid p-0">
         <div class="row row__selector">
             <div class="col-12 col-lg-8 col_selector">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                {{-- <div class="card">
                     <div class="wrapper__prev__img">
                         <div class="row row__arrows">
                             <div class="col-1 col--arrows col--arrows--arrow" id="left">
@@ -92,7 +92,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="col-sm-4">
                 {{-- <div class="card card-info-input">
@@ -336,6 +336,46 @@
             </div>
         </div>
 
+        <div class="card">
+            <div class="wrapper__prev__img">
+                <div class="row row__arrows">
+                    <div class="col-1 col--arrows col--arrows--arrow" id="left">
+                        <img src="{{ asset('images/right-arrow.png') }}" alt=""
+                            class="arrow arrow--left" wire:click.prevent='submit("previous")'>
+                    </div>
+                    <div class="col-6 col--arrows col--arrows--photos">
+                        <div class="row row__photo__list">
+                            @foreach ($nav_images as $img)
+                                @if ($img['id'] == $images->id)
+                                    <div class="col-sm col__photos__list"><img
+                                            class="photogal-el photogal-el--active"
+                                            src="{{ asset($img['path_to_file']) }}" alt="Image"
+                                            style="aspect-ratio: 1/1"
+                                            wire:click.prvent='submit({{ $img['id'] }})' /></div>
+                                @else
+                                    <div class="col-sm col__photos__list"><img class="photogal-el"
+                                            src="{{ asset($img['path_to_file']) }}" alt="Image"
+                                            style="aspect-ratio: 1/1"
+                                            wire:click.prevent='submit({{ $img['id'] }})' />
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right">
+
+
+                        <img src="{{ asset('images/right-arrow.png') }}" alt="" class="arrow"
+                            wire:click='submit("next")'>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
 
 
     </div>

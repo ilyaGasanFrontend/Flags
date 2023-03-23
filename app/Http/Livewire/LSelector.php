@@ -160,7 +160,7 @@ class LSelector extends Component
             
             )->join(
                 'categories', 'tests.category_id', '=', 'categories.id'
-            )->where('photoName', $this->param)->where('tests.user_id', auth()->user()->id)->get();
+            )->where('photoName', $this->param)->where('tests.user_id', auth()->user()->id)->orderBy('label_id')->get();
 
         // dd($squares);
         // $this->squares = test::where('photoName', $this->param)->get();
