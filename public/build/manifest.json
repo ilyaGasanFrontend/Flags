@@ -1,8 +1,4 @@
 {
-  "resources/adminkit/img/avatars/avatar-3.jpg": {
-    "file": "assets/avatar-3.66fb056d.jpg",
-    "src": "resources/adminkit/img/avatars/avatar-3.jpg"
-  },
   "resources/adminkit/img/avatars/avatar-2.jpg": {
     "file": "assets/avatar-2.1d9265f8.jpg",
     "src": "resources/adminkit/img/avatars/avatar-2.jpg"
@@ -11,13 +7,17 @@
     "file": "assets/avatar.86e8ba01.jpg",
     "src": "resources/adminkit/img/avatars/avatar.jpg"
   },
+  "resources/adminkit/img/avatars/avatar-5.jpg": {
+    "file": "assets/avatar-5.d336ec57.jpg",
+    "src": "resources/adminkit/img/avatars/avatar-5.jpg"
+  },
   "resources/adminkit/img/flags/aq.png": {
     "file": "assets/aq.98e93d35.png",
     "src": "resources/adminkit/img/flags/aq.png"
   },
-  "resources/adminkit/img/avatars/avatar-5.jpg": {
-    "file": "assets/avatar-5.d336ec57.jpg",
-    "src": "resources/adminkit/img/avatars/avatar-5.jpg"
+  "resources/adminkit/img/avatars/avatar-3.jpg": {
+    "file": "assets/avatar-3.66fb056d.jpg",
+    "src": "resources/adminkit/img/avatars/avatar-3.jpg"
   },
   "resources/adminkit/img/avatars/avatar-4.jpg": {
     "file": "assets/avatar-4.09754c94.jpg",
@@ -39,21 +39,21 @@
     "file": "assets/gb-wls.989f9b16.png",
     "src": "resources/adminkit/img/flags/gb-wls.png"
   },
-  "resources/adminkit/img/flags/io.png": {
-    "file": "assets/io.0ba39cd8.png",
-    "src": "resources/adminkit/img/flags/io.png"
-  },
   "resources/adminkit/fonts/fa-regular-400.woff2": {
     "file": "assets/fa-regular-400.886fd1e6.woff2",
     "src": "resources/adminkit/fonts/fa-regular-400.woff2"
+  },
+  "resources/adminkit/fonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900.94e1bbc1.woff2",
+    "src": "resources/adminkit/fonts/fa-solid-900.woff2"
   },
   "resources/adminkit/fonts/fa-brands-400.woff2": {
     "file": "assets/fa-brands-400.33a252d6.woff2",
     "src": "resources/adminkit/fonts/fa-brands-400.woff2"
   },
-  "resources/adminkit/fonts/fa-solid-900.woff2": {
-    "file": "assets/fa-solid-900.94e1bbc1.woff2",
-    "src": "resources/adminkit/fonts/fa-solid-900.woff2"
+  "resources/adminkit/img/flags/io.png": {
+    "file": "assets/io.0ba39cd8.png",
+    "src": "resources/adminkit/img/flags/io.png"
   },
   "resources/adminkit/fonts/fa-regular-400.ttf": {
     "file": "assets/fa-regular-400.e4761618.ttf",
@@ -91,21 +91,33 @@
     "file": "assets/brand-5.b402bc7d.svg",
     "src": "resources/adminkit/img/icons/brand-5.svg"
   },
-  "resources/adminkit/img/logo/octagramma_belo.png": {
-    "file": "assets/octagramma_belo.e27c8ec8.png",
-    "src": "resources/adminkit/img/logo/octagramma_belo.png"
+  "resources/adminkit/img/logo/flagsocta.jpg": {
+    "file": "assets/flagsocta.15b95102.jpg",
+    "src": "resources/adminkit/img/logo/flagsocta.jpg"
+  },
+  "resources/adminkit/img/logo/flags2.png": {
+    "file": "assets/flags2.6fd9187c.png",
+    "src": "resources/adminkit/img/logo/flags2.png"
+  },
+  "resources/adminkit/img/logo/flags.png": {
+    "file": "assets/flags.eb5f8036.png",
+    "src": "resources/adminkit/img/logo/flags.png"
   },
   "resources/adminkit/img/logo/octagramma.png": {
     "file": "assets/octagramma.5948e440.png",
     "src": "resources/adminkit/img/logo/octagramma.png"
   },
-  "resources/adminkit/img/photos/unsplash-2.jpg": {
-    "file": "assets/unsplash-2.ee1cb4e5.jpg",
-    "src": "resources/adminkit/img/photos/unsplash-2.jpg"
+  "resources/adminkit/img/logo/octagramma_belo.png": {
+    "file": "assets/octagramma_belo.e27c8ec8.png",
+    "src": "resources/adminkit/img/logo/octagramma_belo.png"
   },
   "resources/adminkit/img/photos/unsplash-1.jpg": {
     "file": "assets/unsplash-1.18ec3e93.jpg",
     "src": "resources/adminkit/img/photos/unsplash-1.jpg"
+  },
+  "resources/adminkit/img/photos/unsplash-2.jpg": {
+    "file": "assets/unsplash-2.ee1cb4e5.jpg",
+    "src": "resources/adminkit/img/photos/unsplash-2.jpg"
   },
   "resources/adminkit/img/photos/unsplash-3.jpg": {
     "file": "assets/unsplash-3.1d669769.jpg",
@@ -131,8 +143,28 @@
     "src": "resources/adminkit/js/fullcalendar.js",
     "isEntry": true
   },
+  "resources/js/selector.js": {
+    "file": "assets/selector.b5657610.js",
+    "src": "resources/js/selector.js",
+    "isEntry": true
+  },
+  "resources/js/slider.js": {
+    "file": "assets/slider.5aa4b649.js",
+    "src": "resources/js/slider.js",
+    "isEntry": true
+  },
+  "resources/js/creatingmarks.js": {
+    "file": "assets/creatingmarks.52c8fe70.js",
+    "src": "resources/js/creatingmarks.js",
+    "isEntry": true
+  },
+  "resources/js/returnerToBD.js": {
+    "file": "assets/returnerToBD.3efb4270.js",
+    "src": "resources/js/returnerToBD.js",
+    "isEntry": true
+  },
   "resources/css/app.css": {
-    "file": "assets/app.50094539.css",
+    "file": "assets/app.4117a560.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },

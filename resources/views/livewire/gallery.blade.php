@@ -8,18 +8,23 @@
     <main>
         <div class="container-fluid p-0">
             <div class="row">
-                <label for="formFileMultiple" class="form-label">Добавить файлы</label>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <input class="form-control" type="file" id="formFileMultiple" wire:model="files" multiple>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-outline-secondary" wire:click.prevent="store_photos">Загрузить</button>
-                </div>
-            </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
 
-            {{-- <div class="col-md-6 text-center">
+                            <label for="formFileMultiple" class="form-label">Добавить файлы</label>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
+                                        multiple>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary" wire:click.prevent="store_photos">Загрузить</button>
+                            </div>
+                        </div>
+
+                        {{-- <div class="col-md-6 text-center">
                 <div class="col-12 col-md-6 col-lg-3">
                     <form wire:submit.prevent="store_photos">
                         <input type="file" wire:model="files" multiple>
@@ -30,7 +35,7 @@
                 </div>
             </div> --}}
 
-            {{-- <div class="col-md-6 text-center">
+                        {{-- <div class="col-md-6 text-center">
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -45,7 +50,7 @@
             </div> --}}
 
 
-            {{-- <br>S3
+                        {{-- <br>S3
         <div class="row">
             <div class="col-12 col-md-6 col-lg-3">
                 <form wire:submit.prevent="store_s3">
@@ -56,21 +61,26 @@
         </div>
         <br> --}}
 
-            {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
-            @push('scripts')
-                <script>
-                    $(document).ready(function(e) {
-                        console.log($("input[name='test[1]']").val())
-                    })
-                </script>
-            @endpush
-            <div class="row">
-                <div class="col-md-6">
-                    <input type="checkbox" wire:click="$toggle('filter')"><label> Скрывать готовые</label>
+                        {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
+                        @push('scripts')
+                            <script>
+                                $(document).ready(function(e) {
+                                    console.log($("input[name='test[1]']").val())
+                                })
+                            </script>
+                        @endpush
+                        <div class="row">
+                            {{-- <div class="col-md-6">
+                                <input type="checkbox" wire:click="$toggle('filter')"><label> Скрывать готовые</label>
 
-                </div>
-                <div class="col-md-6 text-center">
-                    {{-- <div class="input-group mb-3">
+                            </div> --}}
+                            <div class="form-check form-switch">
+                                <input wire:click="$toggle('filter')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                <label  class="form-check-label" for="flexSwitchCheckDefault">Скрывать готовые</label>
+                            </div>
+
+                            <div class="col-md-6 text-center">
+                                {{-- <div class="input-group mb-3">
                     <select class="form-select flex-grow-1" wire:click="filter(0)">
                         <option wire:click="filter">Показывать все</option>
                         <option wire:click="filter">Показывать пустые</option>
@@ -79,10 +89,12 @@
                     <button class="btn btn-secondary" type="button">Go!</button>
                 </div> --}}
 
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
 
             <div class="row">
                 <div class="card">
