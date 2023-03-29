@@ -16,7 +16,7 @@ class Gallery extends Component
     public $test = [];
     public $files = [];
     public $images;
-
+    public $col_md = 3;
     public $filter = False;
     public function render()
     {
@@ -38,6 +38,22 @@ class Gallery extends Component
         ]))->extends('layouts.app');
     }
 
+    public function view_switch($param)
+    {
+        if ($param == true) {
+            // if ($this->col_md != 2) {
+            //     $this->col_md++;
+            // }
+            $this->col_md = 3;
+        } else {
+            // if ($this->col_md != 2) {
+            //     $this->col_md--;
+            // }
+            $this->col_md = 2;
+        }
+        
+        
+    }
     public function delete($image_id)
     {
         Image::where('id', $image_id)->delete();
@@ -135,6 +151,7 @@ class Gallery extends Component
     }
     public function store_photos()
     {
+        // dd(public_path('storage'));
         $this->validate([
             'files.*' => 'image',
         ]);

@@ -24,42 +24,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-6 text-center">
-                <div class="col-12 col-md-6 col-lg-3">
-                    <form wire:submit.prevent="store_photos">
-                        <input type="file" wire:model="files" multiple>
-                        <div wire:loading wire:target="files">Uploading...</div>
-
-                        <input type="submit">
-                    </form>
-                </div>
-            </div> --}}
-
-                        {{-- <div class="col-md-6 text-center">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Экспорт
-                    </button>
-                    <div class="dropdown-menu" style="">
-                        <h6 class="dropdown-header">Экспортировать как...</h6>
-                        <div class="dropdown-item" wire:click='download_file("txt")'>TXT</div>
-                        <div class="dropdown-item" wire:click='download_file("csv")'>CSV</div>
-                    </div>
-                </div>
-            </div> --}}
-
-
-                        {{-- <br>S3
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-3">
-                <form wire:submit.prevent="store_s3">
-                    <input type="file" wire:model="files">
-                    <input type="submit">
-                </form>
-            </div>
-        </div>
-        <br> --}}
+                        
 
                         {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
                         @push('scripts')
@@ -92,6 +57,14 @@
                             </div>
 
                         </div>
+                        <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
+                            <button type="button" @if ($col_md == 2) class="btn btn-secondary" @else class="btn btn-outline-secondary" @endif wire:click="view_switch(false)">
+                                <i class="align-middle me-2 fas fa-fw fa-th"></i>
+                            </button>
+                            <button type="button" @if ($col_md == 3) class="btn btn-secondary" @else class="btn btn-outline-secondary" @endif wire:click="view_switch(true)">
+                                <i class="align-middle me-2 fas fa-fw fa-th-large"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,7 +77,7 @@
                     <div class="card-body">
                         <div class="row">
                             @foreach ($images as $image)
-                                <div class="col-12 col-md-6 col-lg-3">
+                                <div class="col-md-{{$col_md}}">
                                     {{-- <button class="btn btn-primary submit-button"> --}}
                                     <div class="card bg-light py-2 py-md-3 border">
 
