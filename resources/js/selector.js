@@ -11,6 +11,10 @@ function createRadioElement(name, checked) {
 
 
 $(document).ready(function (e) {
+  console.log($('div.container').css('height'))
+  console.log($('div.container').css('width'))
+
+
 
   //  console.log($(document).css('pointer-event'))
   if ($('#hiddenX').val() == '') {
@@ -50,7 +54,10 @@ $(document).ready(function (e) {
   var statusElements = $('.action-el')
   var status = Statuses.CreatingElements
 
+  var scale = 1;
+  
   const img = new Image();
+  
   img.src = $(".img__current").attr('src');
   img.onload = function () {
 
@@ -58,6 +65,14 @@ $(document).ready(function (e) {
   $(canvas).css("width", img.width);
   $(canvas).css("height", img.height);
 
+  while (
+    img.height * scale > parseInt($('div.container').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
+  ) {
+    scale -= 0.05
+    console.log(scale)
+  }
+  text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + scale + ')';
+  var min_scale = scale
   const square = 'square'
   const prev__elemnt__objects = 'prev__elemnt__objects'
 
@@ -367,27 +382,6 @@ $(document).ready(function (e) {
           'value': $(id).css('height')
         })
 
-        // var hidden_x2 = $('<input>',{
-        //   'type': 'text',
-        //   'name': 'x',
-        //   'wire:model': '2',
-        //   'value': $(id).css('left')
-        // })
-
-        // var textbox = $('<input>',{
-        //   'type': 'text',
-        //   'name': 'testtext',
-        //   'wire:model': 'testtext',
-        // })
-        // var labeltextbox = $('<label>',{
-        //   'for': 'testtext',
-        //   'value': "123"
-        // })
-        // for (var i = 0; i < $('.canvas').children().length-1; i++)
-        //                         {
-        //                             console.log($('#id['+i+']').val())
-        //                         }
-
         console.log($(id).css('left'))
         console.log(x_arr)
         // console.log(startcoordX)
@@ -444,28 +438,7 @@ $(document).ready(function (e) {
 
   });
 
-  // $('.form-check').on('mouseup', '.form-check-input', function e() {
-  //   console.log(123)
-  //   // console.log($("input[name='radio_category']:checked").val())
-  //   // console.log(categories_arr)
-  // })
-
-
   ///////
-
-  //orig mouseenter edit
-  // $('.dropdown-menu-obj').on('mouseenter', '.button__editing', function (e) {
-  //   let number = ($(this).attr('id')).substring(editingButtonId.length)
-  //   let testobjects = $('.canvas').children('.square')
-  //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
-  // })
-
-  //new mouseenter edit
-  // $('.table-action').on('mouseenter', '.button__editing', function (e) {
-  //   let number = ($(this).attr('id')).substring(editingButtonId.length)
-  //   let testobjects = $('.canvas').children('.square')
-  //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
-  // })
 
   $('.obj-table').on('mouseenter', '.button__editing', function (e) {
     
@@ -477,196 +450,12 @@ $(document).ready(function (e) {
   })
 
 
-
-  //orig mouseleave edit
-  // $('.dropdown-menu-obj').on('mouseleave', '.button__editing', function (e) {
-  //   let number = ($(this).attr('id')).substring(editingButtonId.length)
-  //   let testobjects = $('.canvas').children('.square')
-  //   $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
-  // })
-
   //new mouseleave edit
   $('.obj-table').on('mouseleave', '.button__editing', function (e) {
     let number = ($(this).attr('id')).substring(editingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
   })
-
-
-  //orig click edit
-  // $('.dropdown-menu-obj').on('click', '.button__editing', function (e) {
-  //   if (status != Statuses.EditingElements) {
-
-  //     status = Statuses.EditingElements
-  //     $('#flag').val('EditingInProgress')
-  //     let testobjects = $('.canvas').children('.square')
-  //     let number = ($(this).attr('id')).substring(editingButtonId.length)
-  //     let objects = $('.dropdown-menu-obj').children()
-
-  //     $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle me-2"><polyline points="20 6 9 17 4 12"></polyline></svg>')
-  //     $(testobjects[number]).toggleClass('point__events')
-
-
-  //     $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
-
-  //     for (let i = 0; i < testobjects.length; i++) {
-
-  //       if (i != parseInt(number)) {
-  //         $(testobjects[i]).toggleClass('hidden__squares')
-  //         $(objects[i]).toggleClass('hidden__tools')
-  //       }
-  //     }
-
-
-  //     interact(testobjects[number]).resizable({
-  //       // resize from all edges and corners
-  //       edges: { left: true, right: true, bottom: true, top: true },
-
-  //       listeners: {
-  //         move(event) {
-  //           var target = event.target
-  //           var x = (parseFloat(target.getAttribute('data-x')) || 0)
-  //           var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-  //           // update the element's style
-  //           target.style.width = event.rect.width * (1 / scale) + 'px'
-  //           target.style.height = event.rect.height * (1 / scale) + 'px'
-
-  //           // translate when resizing from top or left edges
-  //           x += event.deltaRect.left * (1 / scale)
-  //           y += event.deltaRect.top * (1 / scale)
-
-  //           target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
-  //           target.setAttribute('data-x', x)
-  //           target.setAttribute('data-y', y)
-  //         }
-  //       },
-  //       modifiers: [
-  //         // keep the edges inside the parent
-  //         interact.modifiers.restrictEdges({
-  //           outer: 'parent'
-  //         }),
-
-  //         // minimum size
-  //         interact.modifiers.restrictSize({
-  //           min: { width: 2, height: 1 }
-  //         })
-  //       ],
-
-  //       inertia: true
-  //     })
-
-  //     interact(testobjects[number]).draggable({
-  //       // enable inertial throwing
-  //       inertia: true,
-  //       // keep the element within the area of it's parent
-  //       modifiers: [
-  //         interact.modifiers.restrictRect({
-  //           restriction: 'parent',
-  //           endOnly: true
-  //         })
-  //       ],
-  //       // enable autoScroll
-  //       autoScroll: true,
-
-  //       listeners: {
-  //         // call this function on every dragmove event
-  //         move: dragMoveListener,
-
-  //         // call this function on every dragend event
-  //         end(event) {
-  //           var textEl = event.target.querySelector('p')
-
-  //           textEl && (textEl.textContent =
-  //             'moved a distance of ' +
-  //             (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-  //               Math.pow(event.pageY - event.y0, 2) | 0))
-  //               .toFixed(2) + 'px')
-  //         }
-  //       }
-  //     })
-
-  //     function dragMoveListener(event) {
-  //       var target = event.target
-  //       // keep the dragged position in the data-x/data-y attributes
-  //       var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx / scale
-  //       var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy / scale
-
-  //       // translate the element
-  //       target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-  //       // update the posiion attributes
-  //       target.setAttribute('data-x', x)
-  //       target.setAttribute('data-y', y)
-  //     }
-  //     // console.log( $(testobjects[number]).css('x'))
-  //     window.dragMoveListener = dragMoveListener
-  //   }
-  //   else {
-
-  //     status = Statuses.CreatingElements
-  //     let testobjects = $('.canvas').children('.square')
-  //     let number = ($(this).attr('id')).substring(editingButtonId.length)
-  //     let objects = $('.dropdown-menu-obj').children()
-  //     $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
-  //     $(testobjects[number]).toggleClass('point__events')
-
-  //     for (let i = 0; i < testobjects.length; i++) {
-
-  //       if (i != parseInt(number)) {
-  //         $(testobjects[i]).toggleClass('hidden__squares')
-  //         $(objects[i]).toggleClass('hidden__tools')
-  //       }
-  //     }
-  //     $(objects[number]).children('.wrapper__buttons').children('.button__deletting').toggleClass('button__deletting__disabled')
-  //     // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
-
-
-  //     //алгоритм для обновления данных
-  //     let old_X = $('#square'+number).css('left')
-  //     let old_Y = $('#square'+number).css('top')
-  //     old_X = old_X.substring(0, old_X.length - 2)
-  //     old_Y = old_Y.substring(0, old_Y.length - 2)
-  //     console.log('oldX', old_X, old_Y)
-  //     let transform_value = $(testobjects[number]).css('transform')
-  //     transform_value = transform_value.substring(7)
-  //     transform_value = transform_value.substring(0, transform_value.length -1)
-  //     let tmp_X = transform_value.split(',')[4]
-  //     let tmp_Y = transform_value.split(',')[5]
-  //     console.log(tmp_X, tmp_Y)
-  //     // $('#hiddenX').val(new_X.split(',')[4])
-
-  //     let new_arr_X = $('#hiddenX').val().split(',')
-  //     let new_arr_Y = $('#hiddenY').val().split(',')
-
-  //     console.log(new_arr_X);
-  //     let new_X = new_arr_X[number]
-  //     let new_Y = new_arr_Y[number]
-  //     new_X = new_X.substring(0, new_X.length -2)
-  //     new_X = parseFloat(old_X) + parseFloat(tmp_X) + 'px'
-
-  //     new_Y = new_Y.substring(0, new_Y.length -2)
-  //     new_Y = parseFloat(old_Y) + parseFloat(tmp_Y) + 'px'
-  //     console.log(new_X, new_Y)
-  //     new_arr_X[number] = new_X
-  //     new_arr_Y[number] = new_Y
-  //     $('#hiddenX').val(new_arr_X)
-  //     $('#hiddenY').val(new_arr_Y)
-
-  //     let new_arr_Width = $('#hiddenWidth').val().split(',')
-  //     new_arr_Width[number] = $('#square'+number).css('width')
-  //     console.log('width', new_arr_Width)
-  //     $('#hiddenWidth').val(new_arr_Width)
-
-  //     let new_arr_Height = $('#hiddenHeight').val().split(',')
-  //     new_arr_Height[number] = $('#square'+number).css('height')
-  //     $('#hiddenHeight').val(new_arr_Height)
-
-
-  //   }
-
-  // })
 
   //new click edit
   $('.obj-table').on('click', '.button__editing', function (e) {
@@ -688,37 +477,7 @@ $(document).ready(function (e) {
           radio_checked_id = active_category_id
           radio_checked_color = $('#span_' + radio_checked_id).css('color');
         }
-        // console.log($(categories[i]).children('.form-check-input').prop('checked'))
-        // console.log($(categories[i]).children())
-        // if ($(categories[i]).children('.form-check-input').prop('checked') == true) {
-        //   radio_checked_id =$(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length)
-        //   console.log('!!!!!!', radio_checked_id)
-        // } else {
-
-        // }
-
-        // if ($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length) == radio_checked_id) {
-        //   $(categories[i]).children('.form-check-input').prop('checked', true)
-        // }
-        // else {
-        //   $(categories[i]).children('.form-check-input').prop('checked', false)
-        // }
-
-        // console.log($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length) == radio_checked_id)
       }
-
-
-      // function createRadioElement(name, checked) {
-      //   var radioHtml = '<input type="radio" name="' + name + '"';
-      //   if (checked) {
-      //     radioHtml += ' checked="checked"';
-      //   }
-      //   radioHtml += '/>';
-      //   var radioFragment = document.createElement('div');
-      //   radioFragment.innerHTML = radioHtml;
-      //   return radioFragment.firstChild;
-      // }
-
 
       let testobjects = $('.canvas').children('.square')
       // let number = ($(this).attr('id')).substring(editingButtonId.length)
@@ -931,14 +690,6 @@ $(document).ready(function (e) {
   })
   ///////
 
-
-  //orig mouseenter delete
-  // $('.dropdown-menu-obj').on('mouseenter', '.button__deletting', function (e) {
-  //   let number = ($(this).attr('id')).substring(delettingButtonId.length)
-  //   let testobjects = $('.canvas').children('.square')
-  //   $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
-  // })
-
   //new mouseenter delete
   $('.obj-table').on('mouseenter', '.button__deletting', function (e) {
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
@@ -946,85 +697,12 @@ $(document).ready(function (e) {
     $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
   })
 
-
-  //orig mouseleave delete
-  // $('.dropdown-menu-obj').on('mouseleave', '.button__deletting', function (e) {
-  //   let number = ($(this).attr('id')).substring(delettingButtonId.length)
-  //   let testobjects = $('.canvas').children('.square')
-  //   $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
-  // })
-
   //new mouseleave delete
   $('.obj-table').on('mouseleave', '.button__deletting', function (e) {
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
   })
-
-
-
-  //orig click delete
-  // $('.dropdown-menu-obj').on('click', '.button__deletting', function (e) {
-
-  //   let number = ($(this).attr('id')).substring(delettingButtonId.length)
-  //   let testobjects = $('.canvas').children('.square')
-  //   let objects = $('.dropdown-menu-obj').children()
-
-  //   console.log(x_arr)
-  //   console.log(x_arr[0])
-  //   console.log(number)
-  //   // x_arr.push($(id).css('left'))
-  //   // y_arr.push($(id).css('top'))
-  //   // width_arr.push($(id).css('width'))
-  //   // height_arr.push($(id).css('height'))
-
-  //   // $('#hiddenX').val(x_arr)
-  //   // $('#hiddenY').val(y_arr)
-  //   // $('#hiddenWidth').val(width_arr)
-  //   // $('#hiddenHeight').val(height_arr)
-  //   // if (condition) {
-
-  //   // } else {
-
-  //   // }
-  //   delete_arr.push(parseInt(number))
-
-  //   // delete_arr = parseInt(number)
-  //   x_arr.splice(number, 1)
-  //   y_arr.splice(number, 1)
-  //   width_arr.splice(number, 1)
-  //   height_arr.splice(number, 1)
-  //   $('#hiddenX').val(x_arr)
-  //   $('#hiddenY').val(y_arr)
-  //   $('#hiddenWidth').val(width_arr)
-  //   $('#hiddenHeight').val(height_arr)
-
-  //   console.log('ID', delete_arr)
-  //   $(objects[number]).remove()
-
-  //   $(testobjects[number]).remove()
-  //   console.log($('.canvas').children('.square').length)
-  //   if ($('.canvas').children('.square').length == 0) {
-  //     $('#hidden_delete').val(null)
-  //   }
-  //   else {
-  //     $('#hidden_delete').val(delete_arr)
-  //   }
-  //   testobjects = $('.canvas').children('.square')
-  //   objects = $('.dropdown-menu-obj').children()
-
-  //   for (let i = 0; i < testobjects.length; i++) {
-  //     $(testobjects[i]).attr('id', square + i)
-  //     $(objects[i]).attr('id', prev__elemnt__objects + i)
-
-  //     $(objects[i]).children('.number').html(i + 1)
-
-  //     $(objects[i]).children('.wrapper__buttons').children('.button__deletting').attr('id', delettingButtonId + i)
-  //     $(objects[i]).children('.wrapper__buttons').children('.button__editing').attr('id', editingButtonId + i)
-
-  //   }
-  //   // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // })
 
   //new click delete
   $('.obj-table').on('click', '.button__deletting', function (e) {
@@ -1094,29 +772,6 @@ $(document).ready(function (e) {
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   })
 
-  // $('.dropdown-menu-obj').on('mouseenter','.prev__elemnt__objects',  function(e){
-  //   switch (status) {
-  //     case (Statuses.EditingElements):
-  //       let number = ($(this).attr('id')).substring(prev__elemnt__objects.length)
-
-  //       let objects = $('.square')
-  //       $(objects[number]).toggleClass('active__menu__el__obj__changing')
-
-  //       break
-  //   }
-  // })
-  // $('.dropdown-menu-obj').on('mouseleave','.prev__elemnt__objects',  function(e){
-  //   switch (status) {
-  //     case (Statuses.EditingElements):
-  //       let number = ($(this).attr('id')).substring(prev__elemnt__objects.length)
-
-  //       let objects = $('.square')
-  //       $(objects[number]).toggleClass('active__menu__el__obj__changing')
-
-  //       break
-  //   }
-  // })
-
 
   $('.canvas').on('mouseenter', '.square', function (e) {
 
@@ -1184,7 +839,7 @@ $(document).ready(function (e) {
     }
   }
 
-  var scale = 1;
+
 
   addOnWheel(text, function (e) {
     var delta = e.deltaY || e.detail || e.wheelDelta;
@@ -1193,13 +848,19 @@ $(document).ready(function (e) {
     // $(".img__current").css("top", parseFloat($(".img__current").css("top")) - (parseFloat($(".img__current").css("top")) + e.layerY)/10)
 
     // отмасштабируем при помощи CSS
-    if (delta > 0) scale += 0.05;
-    else scale -= 0.05;
+    if (scale >= min_scale) {
+      if (delta > 0) scale -= 0.05;
+      else scale += 0.05;
+      console.log(scale, min_scale)
+    }
+    if (scale < min_scale)
+      scale = min_scale
+    
 
     // img.height = img.height * scale
     // img.width = img.width * scale
     text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + scale + ')';
-
+    // console.log($('div.canvas').css('height'), $('div.canvas').css('width'))
     // отменим прокрутку
     e.preventDefault();
   });
