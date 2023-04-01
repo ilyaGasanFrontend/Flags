@@ -851,7 +851,6 @@ $(document).ready(function (e) {
     if (scale >= min_scale) {
       if (delta > 0) scale -= 0.05;
       else scale += 0.05;
-      console.log(scale, min_scale)
     }
     if (scale < min_scale)
       scale = min_scale

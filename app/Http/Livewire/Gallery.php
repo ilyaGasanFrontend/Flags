@@ -31,10 +31,10 @@ class Gallery extends Component
         } else {
             $is_empty = false;
         }
-        
+
         // $this->images = DB::table('images')->get();
         return view('livewire.gallery', compact([
-            'is_empty'
+            'is_empty', 
         ]))->extends('layouts.app');
     }
 
@@ -165,7 +165,8 @@ class Gallery extends Component
 
             image::create([
                 'user_id' => auth()->user()->id,
-                'name' => $file->hashName(),
+                'original_name' => $file->getClientOriginalName(),
+                'hash_name' => $file->hashName(),
                 'path_to_file' => '/storage/photos/' . $file->hashName(),
                 'original_width' =>  $width,
                 'original_height' => $height,

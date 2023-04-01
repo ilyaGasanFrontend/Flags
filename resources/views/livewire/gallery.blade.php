@@ -96,7 +96,8 @@
                                         <div class="card-header bg-light px-4 pt-4">
 
                                             <h5 class="card-title mb-0">
-                                                {{ substr($image->name, 0, 7) . '...' . substr($image->name, -9, 9) }}
+                                                {{-- {{ substr($image->original_name, 0, 7) . '...' . substr($image->name, -9, 9) }} --}}
+                                                {{$image->original_name}}
                                             </h5>
                                         </div>
                                         <div class="card-body px-4 pt-2">
