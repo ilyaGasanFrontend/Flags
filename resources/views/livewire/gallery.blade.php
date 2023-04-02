@@ -79,28 +79,23 @@
                             @foreach ($images as $image)
                                 <div class="col-md-{{$col_md}}">
                                     {{-- <button class="btn btn-primary submit-button"> --}}
-                                    <div class="card bg-light py-2 py-md-3 border">
-
-
-                                        <a
+                                    <div class="card bg-light col d-flex ">
+                                        <div class="wrapper__class ">
+                                            <a class="row-8"  
                                             @if ($is_empty == true) wire:click="alert" @else href="/gallery/{{ $image->id }}" @endif>
                                             <img class="card-img-top" src="{{ $image->path_to_file }}" loading="lazy"
-                                                alt="{{ $image->path_to_file }}" style="aspect-ratio: 1/1;">
+                                                alt="{{ $image->path_to_file }}" style="width: 100%; height: 337px; object-fit: cover;">
                                             {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
-
                                         </a>
 
+                                        <div class="card-header bg-light row-8">
 
-
-
-                                        <div class="card-header bg-light px-4 pt-4">
-
-                                            <h5 class="card-title mb-0">
+                                            <h5 class="card-title ">
                                                 {{-- {{ substr($image->original_name, 0, 7) . '...' . substr($image->name, -9, 9) }} --}}
                                                 {{$image->original_name}}
                                             </h5>
                                         </div>
-                                        <div class="card-body px-4 pt-2">
+                                        <div class="card-body h-auto row-1 h-25 p-3">
                                             @if ($image->is_ready)
                                                 <div class="badge bg-success my-2">Готово</div>
                                             @else
@@ -112,6 +107,10 @@
                                                     class="fas fa-times"></i></button>
 
                                         </div>
+                                        </div>
+
+
+                                        
                                     </div>
                                     {{-- </button> --}}
                                 </div>
