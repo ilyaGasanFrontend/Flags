@@ -137,7 +137,6 @@
 
 
                 <div class="card">
-                    {{-- <form wire:submit.prevent="submit"> --}}
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -195,11 +194,9 @@
                             </tbody>
                         </table>
                     </div>
-                    {{-- </form> --}}
                 </div>
                 
                 <div class="card card-info-input card-info-obj">
-                    {{-- <form style="width: 100%" wire:submit.prevent="submit"> --}}
                         @if ($squares != null)
                             @php
                                 $x_str = '';
@@ -240,62 +237,14 @@
 
                         <input type="hidden" id="hidden_delete">
                         <input type="hidden" id="flag" value="Creating">
-                        {{-- <input type="hidden" id="hiddenX" />
-                        <input type="hidden" id="hiddenY" />
-                        <input type="hidden" id="hiddenWidth" />
-                        <input type="hidden" id="hiddenHeight" /> --}}
-                        {{-- <input type="submit" class="btn btn-primary submit-button"> --}}
-                        {{-- <div class="dropdown-menu mb-2 dropdown-menu-obj" style="position:static;display:block;">
-                            @if ($squares != null)
-                                @foreach ($squares as $i => $square)
-                                    <div class="prev__elemnt__objects dropdown-item"
-                                        id="prev__elemnt__objects{{ $i }}">
-                                        <div class="number">{{ $i + 1 }}</div>
-                                        <div class="desmetr">Default</div>
-                                        <div class="wrapper__buttons">
-                                            <a class="button__deletting"
-                                                id="deletting__button{{ $i }}"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="red"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-trash-2 align-middle me-2">
-                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                    <path
-                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                    </path>
-                                                    <line x1="10" y1="11" x2="10"
-                                                        y2="17">
-                                                    </line>
-                                                    <line x1="14" y1="11" x2="14"
-                                                        y2="17">
-                                                    </line>
-                                                </svg>
-                                            </a>
-                                            <a class="button__editing" id="editing__button{{ $i }}"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="blue"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2 align-middle me-2">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-
-                        </div> --}}
-                    {{-- </form> --}}
+                        
                 </div>
 
                 @push('scripts')
                     <script>
                         window.addEventListener('page_refresh_prevent', event => {
 
-                            //через методы js
-                            //TODO: можно оптимизировать, передававая значения ширины-высоты в переменную компонента
-                            //
+                            
                             const img = new Image();
                             img.src = $(".img__current").attr('src');
                             $('.canvas').css("width", img.width);
@@ -336,43 +285,39 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="wrapper__prev__img">
-                <div class="row row__arrows">
-                    <div class="col-1 col--arrows col--arrows--arrow" id="left">
-                        <img src="{{ asset('images/right-arrow.png') }}" alt=""
-                            class="arrow arrow--left" wire:click.prevent='submit("previous")'>
-                    </div>
-                    <div class="col-6 col--arrows col--arrows--photos">
-                        <div class="row row__photo__list">
-                            @foreach ($nav_images as $img)
-                                @if ($img['id'] == $images->id)
-                                    <div class="col-sm col__photos__list"><img
-                                            class="photogal-el photogal-el--active"
-                                            src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                            style="aspect-ratio: 1/1"
-                                            wire:click.prvent='submit({{ $img['id'] }})' /></div>
-                                @else
-                                    <div class="col-sm col__photos__list"><img class="photogal-el"
-                                            src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                            style="aspect-ratio: 1/1"
-                                            wire:click.prevent='submit({{ $img['id'] }})' />
-                                    </div>
-                                @endif
-                            @endforeach
+        <div class="col-12">
+            <div class="card">
+                <div class="wrapper__prev__img">
+                    <div class=" row__arrows">
+                        <div class="col-1 col--arrows col--arrows--arrow" id="left" style="justify-content: center; display: flex">
+                         
+                            <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left align-middle me-2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            
+                        </div>
+                        <div class="col-6 col--arrows col--arrows--photos">
+                            <div class="row row__photo__list">
+                                @foreach ($nav_images as $img)
+                                    @if ($img['id'] == $images->id)
+                                        <div class="col-sm col__photos__list"><img
+                                                class="photogal-el photogal-el--active"
+                                                src="{{ asset($img['path_to_file']) }}" alt="Image"
+                                                style="aspect-ratio: 1/1"
+                                                wire:click.prvent='submit({{ $img['id'] }})' /></div>
+                                    @else
+                                        <div class="col-sm col__photos__list"><img class="photogal-el"
+                                                src="{{ asset($img['path_to_file']) }}" alt="Image"
+                                                style="aspect-ratio: 1/1"
+                                                wire:click.prevent='submit({{ $img['id'] }})' />
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right" style="justify-content: center; display: flex">
+                            
+                                <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right align-middle me-2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
                     </div>
-
-                    <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right">
-
-
-                        <img src="{{ asset('images/right-arrow.png') }}" alt="" class="arrow"
-                            wire:click='submit("next")'>
-
-                    </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -381,86 +326,7 @@
     </div>
 
 </main>
-{{-- 1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br>
-1<br> --}}
-{{-- <script src="js/app.js"></script> --}}
+
 <link href="{{ url('/css/selector.css') }}" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
