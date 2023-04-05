@@ -258,7 +258,18 @@
 
                         $(document).ready(function(e) {
 
-                            $('.arrow').on('mouseup', function() {
+                            $('#left').on('mouseup', function() {
+                                @this.x = $('#hiddenX').attr('value')
+                                @this.y = $('#hiddenY').attr('value')
+                                @this.width = $('#hiddenWidth').attr('value')
+                                @this.height = $('#hiddenHeight').attr('value')
+                                @this.delete = $('#hidden_delete').attr('value')
+                                @this.category = $('#hiddenCategory').attr('value')
+                                @this.img_scale = $('.wrapper_canvas').css('transform')
+                                // @this.radio_category = $('%')
+                            })
+
+                            $('#right').on('mouseup', function() {
                                 @this.x = $('#hiddenX').attr('value')
                                 @this.y = $('#hiddenY').attr('value')
                                 @this.width = $('#hiddenWidth').attr('value')
@@ -289,7 +300,7 @@
             <div class="card">
                 <div class="wrapper__prev__img">
                     <div class=" row__arrows">
-                        <div class="col-1 col--arrows col--arrows--arrow" id="left" style="justify-content: center; display: flex">
+                        <div class="col-1 col--arrows col--arrows--arrow" id="left" style="justify-content: center; display: flex"  wire:click.prevent='submit("previous")'>
                          
                             <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left align-middle me-2"><polyline points="15 18 9 12 15 6"></polyline></svg>
                             
@@ -313,7 +324,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right" style="justify-content: center; display: flex">
+                        <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right" style="justify-content: center; display: flex"  wire:click.prevent='submit("next")'>
                             
                                 <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right align-middle me-2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
