@@ -23,12 +23,12 @@
                                 </div>
                             </div>
                         </div> --}}
-                            <div class="container">
+                            <div class="container" wire:ignore>
 
                                 <div class="box-2">
                                     <div class="canvas_main">
                                         <div class="wrapper_canvas" id="text">
-                                            <div class="canvas">
+                                            <div class="canvas" wire:click.prevent>
                                                 <!-- canvas-changeable -->
                                                 <img src="{{ $images->path_to_file }}" alt=""
                                                     class="img__current">
@@ -163,6 +163,8 @@
                                                     value="{{ $square->category_id }}" />
                                                 <td class="table-action">
                                                     <a class="button__editing" id="editing__button{{ $i }}"
+                                                        {{-- wire:click.prevent="update(false, null, null, null, null, null, null)" --}}
+                                                        wire:click.prevent=""
                                                         style="text-decoration: none"><svg
                                                             xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
@@ -176,6 +178,7 @@
                                                     </a>
                                                     <a class="button__deletting"
                                                         id="deletting__button{{ $i }}"
+                                                        wire:click.prevent="delete({{ $i }})"
                                                         style="text-decoration: none"><svg
                                                             xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
@@ -248,22 +251,30 @@
 
                     @push('scripts')
                         <script>
-                            window.addEventListener('page_refresh_prevent', event => {
-
-
-                                const img = new Image();
-                                img.src = $(".img__current").attr('src');
-                                $('.canvas').css("width", img.width);
-                                $('.canvas').css("height", img.height);
-
-                                $('.wrapper_canvas').css('transform', @this.img_scale);
-                                console.log('123', @this.img_scale)
-
-
-                            })
 
                             $(document).ready(function(e) {
+                                // $('.button__deletting').on('mouseup', function() {
+                                //     console.log(123)
+                                // })
 
+                                // $('.canvas').on('mouseup', function() {
+                                //     @this.x = $('#hiddenX').attr('value')
+                                //     @this.y = $('#hiddenY').attr('value')
+                                //     @this.width = $('#hiddenWidth').attr('value')
+                                //     @this.height = $('#hiddenHeight').attr('value')
+                                //     @this.category = $('#hiddenCategory').attr('value')
+                                //     console.log(parseInt($('#hiddenX').attr('value')))
+
+                                //     let count = $('.canvas').children('.square').length
+                                //     console.log(parseFloat($(`#square${count-1}`).css('top')))
+                                //     // @this.foo(
+                                //     //     $('#hiddenCategory').attr('value'),
+                                //     //     parseFloat($(`#square${count-1}`).css('left')),
+                                //     //     parseFloat($(`#square${count-1}`).css('top')),
+                                //     //     parseFloat($(`#square${count-1}`).css('width')),
+                                //     //     parseFloat($(`#square${count-1}`).css('height')),
+                                //     // )
+                                // })
                                 $('#left').on('mouseup', function() {
                                     @this.x = $('#hiddenX').attr('value')
                                     @this.y = $('#hiddenY').attr('value')
