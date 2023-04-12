@@ -313,7 +313,7 @@
                 </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-8">
                 <div class="card">
                     <div class="wrapper__prev__img">
                         <div class=" row__arrows">
@@ -334,11 +334,11 @@
                                             <div class="col-sm col__photos__list"><img
                                                     class="photogal-el photogal-el--active"
                                                     src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                    wire:click.prvent='submit({{ $img['id'] }})' /></div>
+                                                    wire:click.prvent='submit({{ $img['id'] }})' style="height: 10vh"/></div>
                                         @else
                                             <div class="col-sm col__photos__list"><img class="photogal-el"
                                                     src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                    wire:click.prevent='submit({{ $img['id'] }})' />
+                                                    wire:click.prevent='submit({{ $img['id'] }})' style="height: 10vh"/>
                                             </div>
                                         @endif
                                     @endforeach

@@ -55,9 +55,9 @@ $(document).ready(function (e) {
   var status = Statuses.CreatingElements
 
   var scale = 1;
-  
+
   const img = new Image();
-  
+
   img.src = $(".img__current").attr('src');
   img.onload = function () {
 
@@ -160,7 +160,7 @@ $(document).ready(function (e) {
           $(objects[i]).children('.number').html(i + 1)
         }
 
-        
+
         break
     }
 
@@ -334,9 +334,9 @@ $(document).ready(function (e) {
         console.log($(id).css('left'))
         console.log(x_arr)
         // console.log(startcoordX)
-        
-        
-        
+
+
+
 
 
         $(obj).append(table_row)
@@ -370,7 +370,7 @@ $(document).ready(function (e) {
         console.log(radio_checked_id)
         $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
         break
-        
+
     }
 
   });
@@ -378,7 +378,7 @@ $(document).ready(function (e) {
   ///////
 
   $('.obj-table').on('mouseenter', '.button__editing', function (e) {
-    
+
     let number = ($(this).attr('id')).substring(editingButtonId.length)
     console.log(number)
     let testobjects = $('.canvas').children('.square')
@@ -460,8 +460,8 @@ $(document).ready(function (e) {
         //смена цвета фона
         $('.table-row-editing').css('background', radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.25)')
 
-        let edit_button_attr =  $(objects[number]).children('.button__editing').attr('wire:click.prevent')
-        edit_button_attr = edit_button_attr.substr(0, edit_button_attr.length -2) + radio_checked_id + ')'
+        let edit_button_attr = $(objects[number]).children('.button__editing').attr('wire:click.prevent')
+        edit_button_attr = edit_button_attr.substr(0, edit_button_attr.length - 2) + radio_checked_id + ')'
         console.log(edit_button_attr)
         $(objects[number]).children('.button__editing').attr('wire:click.prevent', edit_button_attr)
       })
@@ -500,7 +500,7 @@ $(document).ready(function (e) {
             d_width = parseFloat($(`#square${number}`).css('width'))
             d_height = parseFloat($(`#square${number}`).css('height'))
 
-            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number+1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
+            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
           }
         },
         modifiers: [
@@ -566,14 +566,14 @@ $(document).ready(function (e) {
         d_width = parseFloat($(`#square${number}`).css('width'))
         d_height = parseFloat($(`#square${number}`).css('height'))
 
-        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number+1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
       }
       // console.log( $(testobjects[number]).css('x'))
       window.dragMoveListener = dragMoveListener
 
       console.log(number)
       // $(objects[number]).children('.button__editing').attr('wire:click', `update(${parseInt(number)+1}, 100, 100, 100, 100, ${radio_checked_id})`)
-      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number+1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
     }
     else {
 
@@ -727,13 +727,13 @@ $(document).ready(function (e) {
     console.log(objects, '!!!!!!!!!!!!!!!!!!!', number)
 
     for (let i = 0; i < testobjects.length; i++) {
-      console.log( $(testobjects[i]).attr('id'))
+      console.log($(testobjects[i]).attr('id'))
       $(testobjects[i]).attr('id', square + i)
       $(objects[i]).attr('id', 'table_row_' + i)
       $(objects[i]).children('.button__deletting').attr('wire:click.prevent', `delete(${i})`)
       $(objects[i]).children('.number').html(i + 1)
 
-      $($(objects[i]).children()[2]).attr('id', 'hidden-category-'+i)
+      $($(objects[i]).children()[2]).attr('id', 'hidden-category-' + i)
       $(objects[i]).children('.table-action').children('.button__deletting').attr('id', delettingButtonId + i)
       $(objects[i]).children('.table-action').children('.button__editing').attr('id', editingButtonId + i)
 
@@ -815,27 +815,27 @@ $(document).ready(function (e) {
 
     // $(".img__current").css("left", parseFloat($(".img__current").css("left")) - (parseFloat($(".img__current").css("left")) + e.layerX)/10)
     // $(".img__current").css("top", parseFloat($(".img__current").css("top")) - (parseFloat($(".img__current").css("top")) + e.layerY)/10)
-
+    console.log(e.keyCode)
     // отмасштабируем при помощи CSS
     if (scale >= min_scale) {
-      if (e.ctrlKey){        
-        $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 20 * Math.abs(delta)/delta}px`)
+      if (e.ctrlKey) {
+        $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 20 * Math.abs(delta) / delta}px`)
       }
       else {
-        if (e.shiftKey){        
-          $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 20 * Math.abs(delta)/delta}px`)
+        if (e.shiftKey) {
+          $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 20 * Math.abs(delta) / delta}px`)
         }
-        else{
+        else {
           if (delta > 0) scale -= 0.05;
           else scale += 0.05;
         }
-        
+
       }
-      
+
     }
     if (scale < min_scale)
       scale = min_scale
-    
+
 
     // img.height = img.height * scale
     // img.width = img.width * scale
@@ -845,5 +845,25 @@ $(document).ready(function (e) {
     e.preventDefault();
   });
 
+  $(document).keydown(function (e) {
+    console.log(e.keyCode);
+  });
+
+  $(document).keydown(function (e) {
+    if (e.keyCode == 38) {
+      $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) - 10 }px`)
+    }
+    else if (e.keyCode == 40) {
+      $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 10 }px`)
+    }
+    else if (e.keyCode == 37) {
+      $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) - 10 }px`)
+    }
+    else if (e.keyCode == 39) {
+      $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 10 }px`)
+    }
+
+    e.preventDefault()
+  });
 })
 
