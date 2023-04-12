@@ -159,6 +159,8 @@ $(document).ready(function (e) {
           $(objects[i]).attr('id', prev__elemnt__objects + i)
           $(objects[i]).children('.number').html(i + 1)
         }
+
+        
         break
     }
 
@@ -324,75 +326,19 @@ $(document).ready(function (e) {
         var delete_button = $('<a>', {
           'class': 'button__deletting',
           'id': `${delettingButtonId}${$('.canvas').children('.square').length - 1}`,
+          'wire:click.prevent': `delete(${number})`
           // 'style': 'text-decoration: none'
 
-        })
-        // console.log($('#span_' + radio_checked).css('color'), radio_checked)
-        var object = $('<div>', {
-          'class': 'prev__elemnt__objects dropdown-item',
-        })
-        var numberEl = $('<div>', {
-          'class': 'number',
-        })
-        var desMetrik = $('<div>', {
-          'class': 'desmetr',
-        })
-        var buttonDeleting = $('<a>', {
-          'class': 'button__deletting',
-          'id': `${delettingButtonId}${$('.canvas').children('.square').length - 1}`
-
-        })
-        var buttonEditing = $('<a>', {
-          'class': 'button__editing',
-          'id': `${editingButtonId}${$('.canvas').children('.square').length - 1}`,
-
-        })
-        var wrapperTools = $('<div>', {
-          'class': 'wrapper__buttons',
-        })
-
-        // var form = $('<form>',{
-        //   'method': 'POST',
-        // })
-
-        var hidden_x = $('<input>', {
-          'type': 'hidden',
-          'id': `x[${$('.canvas').children('.square').length - 1}]`,
-          'value': $(id).css('left')
-        })
-
-        var hidden_y = $('<input>', {
-          'type': 'hidden',
-          'name': 'y',
-          'wire:model': 'y',
-          'value': $(id).css('top')
-        })
-
-        var hidden_width = $('<input>', {
-          'type': 'hidden',
-          'name': 'width',
-          'wire:model': 'width',
-          'value': $(id).css('width')
-        })
-
-        var hidden_height = $('<input>', {
-          'type': 'hidden',
-          'name': 'height',
-          'wire:model': 'height',
-          'value': $(id).css('height')
         })
 
         console.log($(id).css('left'))
         console.log(x_arr)
         // console.log(startcoordX)
-        var svgEdit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
-        var svgDelete = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>'
-        $(desMetrik).html($('input[name=color_selector]:checked').next().html())
-        $(numberEl).html($('.canvas').children('.square').length)
+        
+        
+        
 
-        // $(form).append(object)
-        $(object).append(numberEl)
-        $(object).append(desMetrik)
+
         $(obj).append(table_row)
         // $(obj).append('<tr id="table_row_0" class="table-row" style="background-color: #00000040;"><td class="number">1</td><td class="desmetr">Категория1</td><td class="table-action"><a class="button__editing" id="editing__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a><a class="button__deletting" id="deletting__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a></td></tr>')
         console.log($('#span_' + radio_checked_id).text())
@@ -421,19 +367,10 @@ $(document).ready(function (e) {
 
         // $(object).append(textbox)
         // $(object).append('<label for="testtext">123</label>')
-
-        $(buttonDeleting).append(svgDelete)
-        $(buttonEditing).append(svgEdit)
-
-        $(wrapperTools).append(buttonDeleting, buttonEditing)
-
-        $(object).append(wrapperTools)
-
-        $(object).attr('id', `prev__elemnt__objects${$('.canvas').children('.square').length - 1}`)
-
-
-        $(prevobjects).append(object)
+        console.log(radio_checked_id)
+        $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
         break
+        
     }
 
   });
@@ -506,6 +443,8 @@ $(document).ready(function (e) {
         }
       }
 
+      // console.log($($('.obj-table').children('.table-row')[number]).children('.button__editing').attr('wire:click', 'dododo(123)'))
+
       $('.categories-editing').click(function () {
         //получение новых id и цвета у чекбокса
         radio_checked_id = $("input[name='radio_category']:checked").val()
@@ -520,7 +459,18 @@ $(document).ready(function (e) {
 
         //смена цвета фона
         $('.table-row-editing').css('background', radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.25)')
+
+        let edit_button_attr =  $(objects[number]).children('.button__editing').attr('wire:click.prevent')
+        edit_button_attr = edit_button_attr.substr(0, edit_button_attr.length -2) + radio_checked_id + ')'
+        console.log(edit_button_attr)
+        $(objects[number]).children('.button__editing').attr('wire:click.prevent', edit_button_attr)
       })
+
+      var d_x, d_y, d_top, d_left, d_width, d_height
+      d_left = parseFloat($(`#square${number}`).css('left'))
+      d_top = parseFloat($(`#square${number}`).css('top'))
+      d_width = parseFloat($(`#square${number}`).css('width'))
+      d_height = parseFloat($(`#square${number}`).css('height'))
 
       interact(testobjects[number]).resizable({
         // resize from all edges and corners
@@ -544,6 +494,13 @@ $(document).ready(function (e) {
 
             target.setAttribute('data-x', x)
             target.setAttribute('data-y', y)
+
+            d_left = parseFloat($(`#square${number}`).css('left'))
+            d_top = parseFloat($(`#square${number}`).css('top'))
+            d_width = parseFloat($(`#square${number}`).css('width'))
+            d_height = parseFloat($(`#square${number}`).css('height'))
+
+            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number+1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
           }
         },
         modifiers: [
@@ -554,7 +511,7 @@ $(document).ready(function (e) {
 
           // minimum size
           interact.modifiers.restrictSize({
-            min: { width: 2, height: 1 }
+            min: { width: 10, height: 10 }
           })
         ],
 
@@ -603,9 +560,20 @@ $(document).ready(function (e) {
         // update the posiion attributes
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
+
+        d_left = parseFloat($(`#square${number}`).css('left'))
+        d_top = parseFloat($(`#square${number}`).css('top'))
+        d_width = parseFloat($(`#square${number}`).css('width'))
+        d_height = parseFloat($(`#square${number}`).css('height'))
+
+        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number+1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
       }
       // console.log( $(testobjects[number]).css('x'))
       window.dragMoveListener = dragMoveListener
+
+      console.log(number)
+      // $(objects[number]).children('.button__editing').attr('wire:click', `update(${parseInt(number)+1}, 100, 100, 100, 100, ${radio_checked_id})`)
+      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number+1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
     }
     else {
 
@@ -621,6 +589,7 @@ $(document).ready(function (e) {
       $("input[type='radio']").toggleClass('categories-default')
       $($('.obj-table').children('.table-row')[number]).toggleClass('table-row-editing')
       $($('.obj-table').children('.table-row').children('.desmetr')[number]).toggleClass('desmetr-editing')
+
       for (let i = 0; i < testobjects.length; i++) {
 
         if (i != parseInt(number)) {
@@ -630,7 +599,7 @@ $(document).ready(function (e) {
       }
       $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
       // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
-
+      $(objects[number]).children('.button__editing').attr('wire:click.prevent', '')
 
 
       //алгоритм для обновления данных
@@ -761,7 +730,7 @@ $(document).ready(function (e) {
       console.log( $(testobjects[i]).attr('id'))
       $(testobjects[i]).attr('id', square + i)
       $(objects[i]).attr('id', 'table_row_' + i)
-
+      $(objects[i]).children('.button__deletting').attr('wire:click.prevent', `delete(${i})`)
       $(objects[i]).children('.number').html(i + 1)
 
       $($(objects[i]).children()[2]).attr('id', 'hidden-category-'+i)
