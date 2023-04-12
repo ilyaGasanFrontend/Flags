@@ -849,8 +849,20 @@ $(document).ready(function (e) {
 
     // отмасштабируем при помощи CSS
     if (scale >= min_scale) {
-      if (delta > 0) scale -= 0.05;
-      else scale += 0.05;
+      if (e.ctrlKey){        
+        $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 20 * Math.abs(delta)/delta}px`)
+      }
+      else {
+        if (e.shiftKey){        
+          $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 20 * Math.abs(delta)/delta}px`)
+        }
+        else{
+          if (delta > 0) scale -= 0.05;
+          else scale += 0.05;
+        }
+        
+      }
+      
     }
     if (scale < min_scale)
       scale = min_scale
