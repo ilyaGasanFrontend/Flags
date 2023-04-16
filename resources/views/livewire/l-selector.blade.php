@@ -13,31 +13,21 @@
                         <div class="card-body m-sm-3 m-md-0 card__for__analis">
                             <div wire:ignore id="text"
                                 style="position: relative; width: 100%; height: 100%; overflow: hidden;">
-                                {{-- <div class="container" wire:ignore style="position: relative; width: 100%; height: 100%"> --}}
+                                <div class="canvas" wire:click.prevent
+                                    style="transform-origin: 0px 0px; width: 100%; height: 100%; transition-duration: 300ms">
+                                    <img src="{{ $images->path_to_file }}" alt="" class="img__current"
+                                        id="image">
+                                    @foreach ($squares as $i => $square)
+                                        <div class="square point__events" id="square{{ $i }}"
+                                            style="top: {{ $square->y }}px; left: {{ $square->x }}px; width: {{ $square->width }}px; height: {{ $square->height }}px; color: {{ $square->color }};">
 
-                                <div class="canvas2" style="position: absolute">
-                                    <div class="canvas" wire:click.prevent style="inset: 0px; overflow: scroll;">
-                                        <!-- canvas-changeable -->
-                                        <img src="{{ $images->path_to_file }}" alt="" class="img__current"
-                                            id="image">
-
-                                        {{-- @dd($squares) --}}
-                                        @if ($squares != null)
-                                            @foreach ($squares as $i => $square)
-                                                <div class="square point__events" id="square{{ $i }}"
-                                                    style="top: {{ $square->y }}px; left: {{ $square->x }}px; width: {{ $square->width }}px; height: {{ $square->height }}px; color: {{ $square->color }};">
-
-                                                </div>
-                                            @endforeach
-                                        @endif
-
-                                    </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-
-
                             </div>
 
                         </div>
+
                     </div>
 
 

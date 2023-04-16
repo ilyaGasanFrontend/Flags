@@ -1,22 +1,7 @@
-function createRadioElement(name, checked) {
-  var radioHtml = '<input type="radio" name="' + name + '"';
-  if (checked) {
-    radioHtml += ' checked="checked"';
-  }
-  radioHtml += '/>';
-  var radioFragment = document.createElement('div');
-  radioFragment.innerHTML = radioHtml;
-  return radioFragment.firstChild;
-}
-
-
 $(document).ready(function (e) {
   console.log($('div.container').css('height'))
   console.log($('div.container').css('width'))
 
-
-
-  //  console.log($(document).css('pointer-event'))
   if ($('#hiddenX').val() == '') {
     var x_arr = []
     var y_arr = []
@@ -34,14 +19,6 @@ $(document).ready(function (e) {
   }
 
   var delete_arr = []
-
-  console.log($('#hiddenX').val().split(','))
-  // var x_arr = $('#hiddenX').val().split(',')
-  // var x_arr = []
-  // var y_arr = []
-  // var width_arr = []
-  // var height_arr = []
-
   const Statuses = Object.freeze({
     CreatingElements: 1,
     EditingElements: 2,
@@ -55,7 +32,8 @@ $(document).ready(function (e) {
   var status = Statuses.CreatingElements
 
   var scale = 1;
-
+  var pointX = 0
+  var pointY = 0
   const img = new Image();
 
   img.src = $(".img__current").attr('src');
@@ -71,8 +49,8 @@ $(document).ready(function (e) {
     scale -= 0.05
     console.log(scale)
   }
-  text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
-  // $('.canvas').css('transform', 'scale(' + scale + ')')
+  $(canvas).css('transform', 'scale('+scale+')')
+  // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
   var min_scale = scale
   const square = 'square'
   const prev__elemnt__objects = 'prev__elemnt__objects'
@@ -104,33 +82,7 @@ $(document).ready(function (e) {
     // console.log(categories_arr)
   })
 
-  function getRandomColor() {
-    var radios = $('input[name=color_selector]:checked').val();
-    return radios;
-  }
 
-  // //////////////////////////////////////////////////////
-  // $('#create-elements').on('click', e => {
-  //   // for (let i = 0; i < arraBase64OBj.length; i++) {
-  //   //   $(arraBase64OBj[i]).toggleClass('point__events')
-  //   // }
-
-  //   status = Statuses.CreatingElements
-  // })
-  // $('#change-size').on('click', e => {
-  //   status = Statuses.EditingElements
-
-  //   // for (let i = 0; i < arraBase64OBj.length; i++) {
-  //   //   $(arraBase64OBj[i]).toggleClass('point__events')
-  //   // }
-
-  // })
-  // $('#delete-elements').on('click', e => {
-  //   status = Statuses.DeletingElements
-  //   // for (let i = 0; i < arraBase64OBj.length; i++) {
-  //   //   $(arraBase64OBj[i]).toggleClass('point__events')
-  //   // }
-  // })
 
 
 
@@ -172,16 +124,18 @@ $(document).ready(function (e) {
   $(canvas).on('mousedown', function (e) {
     switch (status) {
       case (Statuses.CreatingElements):
-        startcoordX = e.originalEvent.layerX / scale
-        startcoordY = e.originalEvent.layerY / scale
-
+        startcoordX = (e.originalEvent.layerX - pointX) / scale  
+        startcoordY = (e.originalEvent.layerY - pointY) / scale
+        console.log(startcoordX, $(canvas).css('transform'), pointX)
         var object = $('<div>', {
           'class': 'square point__events',
         })
         id = '#' + square + $('.canvas').children('.square').length
         curenid = id
-        startcoordX = parseInt($(canvas).css("width")) / 2 + startcoordX;
-        startcoordY = parseInt($(canvas).css("height")) / 2 + startcoordY;
+        // startcoordX = parseInt($(canvas).css("width")) / 2 + startcoordX;
+        // startcoordX = startcoordX;
+        // startcoordY = parseInt($(canvas).css("height")) / 2 + startcoordY;
+        // startcoordY = startcoordY;
         newstartX = startcoordX;
         newstartY = startcoordY;
 
@@ -196,8 +150,8 @@ $(document).ready(function (e) {
         // $(id).css('background', radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)')
 
         flag = true
-        startcoordX = e.clientX
-        startcoordY = e.clientY
+        // startcoordX = e.clientX
+        // startcoordY = e.clientY
 
 
         break
@@ -220,10 +174,14 @@ $(document).ready(function (e) {
     switch (status) {
       case (Statuses.CreatingElements):
         if (flag) {
-
-          var width_current = (e.originalEvent.clientX - startcoordX) / scale;
-          var height_current = (e.originalEvent.clientY - startcoordY) / scale;
-
+          var endcoordX = (e.originalEvent.layerX - pointX) / scale
+          var endcoordY = (e.originalEvent.layerY - pointY) / scale
+          var width_current = endcoordX - startcoordX
+          var height_current = endcoordY - startcoordY
+          // console.log(e.originalEvent.layerX
+          // var width_current = (e.originalEvent.clientX - startcoordX) / scale
+          // var height_current = (e.originalEvent.clientY - startcoordY) / scale
+          console.log(width_current, pointX)
 
           if (width_current >= 0 && height_current >= 0) {
             $(id).css('left', newstartX)
@@ -233,29 +191,20 @@ $(document).ready(function (e) {
           }
           else {
             if (width_current < 0 && height_current < 0) {
-              var a = parseInt($(canvas).css("width")) / 2 + e.originalEvent.layerX / scale
-              var b = parseInt($(canvas).css("height")) / 2 + e.originalEvent.layerY / scale
-
-              $(id).css('left', parseInt(a))
-              $(id).css('top', parseInt(b))
+              $(id).css('left', parseInt(endcoordX))
+              $(id).css('top', parseInt(endcoordY))
               $(id).css('width', parseInt(Math.abs(width_current)))
               $(id).css('height', parseInt(Math.abs(height_current)))
             }
             if (width_current < 0 && height_current > 0) {
-              var a = parseInt($(canvas).css("width")) / 2 + e.originalEvent.layerX / scale
-              var b = newstartY;
-
-              $(id).css('left', parseInt(a))
-              $(id).css('top', parseInt(b))
+              $(id).css('left', parseInt(endcoordX))
+              $(id).css('top', parseInt(startcoordY))
               $(id).css('width', parseInt(Math.abs(width_current)))
               $(id).css('height', parseInt(Math.abs(height_current)))
             }
             if (width_current > 0 && height_current < 0) {
-              var a = newstartX
-              var b = parseInt($(canvas).css("height")) / 2 + e.originalEvent.layerY / scale
-
-              $(id).css('left', parseInt(a))
-              $(id).css('top', parseInt(b))
+              $(id).css('left', parseInt(startcoordX))
+              $(id).css('top', parseInt(endcoordY))
               $(id).css('width', parseInt(Math.abs(width_current)))
               $(id).css('height', parseInt(Math.abs(height_current)))
             }
@@ -810,136 +759,46 @@ $(document).ready(function (e) {
   }
 
 
+  
+  var zoom = $('.canvas')
 
   addOnWheel(text, function (e) {
     var delta = e.deltaY || e.detail || e.wheelDelta;
-    console.log(e.layerX, $(canvas).css('width'), e.layerX * scale)
 
-
-    // $(".img__current").css("left", parseFloat($(".img__current").css("left")) - (parseFloat($(".img__current").css("left")) + e.layerX)/10)
-    // $(".img__current").css("top", parseFloat($(".img__current").css("top")) - (parseFloat($(".img__current").css("top")) + e.layerY)/10)
-    // console.log(e.keyCode)
-    // отмасштабируем при помощи CSS
-    // if (scale >= min_scale) {
-    //   if (e.ctrlKey) {
-    //     $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 20 * Math.abs(delta) / delta}px`)
-    //   }
-    //   else {
-    //     if (e.shiftKey) {
-    //       $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 20 * Math.abs(delta) / delta}px`)
-    //     }
-    //     else {
-    //       if (delta > 0) 
-    //       {
-    //         scale -= 0.05;
-    //         $('.canvas').css('width', img.width * scale)
-    //         $('.canvas').css('height', img.height * scale)
-    //       }
-    //       else 
-    //       {
-    //         scale += 0.05
-    //         $('.canvas').css('width', img.width * scale)
-    //         $('.canvas').css('height', img.height * scale)
-    //       }
-    //     }
-
-    //   }
-
-    // }
-    // if (scale < min_scale)
-    //   scale = min_scale
-
-    var T1_x = 1, T1_y = 1
-    var T2_s = 1
-    var T3_x = 1, T3_y = 1
-    var old_pos_X = 0, old_pos_Y = 0
-    var transform_x = 0, transform_y = 0
-    if (delta > 0) {
+    var xs = (e.layerX - pointX) / scale,
+    ys = (e.layerY - pointY) / scale
+    if (delta > 0)
       scale -= 0.05;
-      // $('.canvas').css('width', img.width * scale)
-      // $('.canvas').css('height', img.height * scale)
-      $('.canvas').css('transform-origin', `${transform_x - transform_x * scale}px ${transform_y - transform_y * scale}px`)
-      $('.canvas').css('transform', 'scale(' + scale + ')')
-
-
-      // $('.canvas').css('transform-origin', `${e.layerX}px ${e.layerY}px`)
-      // T1_x = e.layerX
-      // T1_y = e.layerY
-      // T2_s = scale
-      // T3_x = -T1_x
-      // T3_y = -T1_y
-      // $('.canvas').css('transform', `translate(${-e.layerX}px, ${-e.layerY}px)`)
-
-    }
-    else {
+    else
       scale += 0.05
-      //изначальный transform-origin = 0px 0px
 
-
-      // $('.canvas').css('transform', `translate(${e.layerX}px, ${e.layerY}px)`)
-      // $('.canvas').css('transform-origin', `${e.layerX }px ${e.layerY}px`)
-      // $('.canvas').css('transform', `translate(0px, 0px)`)
-      $('.canvas').css('transform-origin', '50% 50%')
-      // $('.canvas').css('width', img.width * scale)
-      // $('.canvas').css('height', img.height * scale)
-      // $('.canvas').css('transform', `translate(${-e.layerX}px, ${-e.layerY}px)`)
-
-      // $('.img__current').css('transform', `translate(${-e.layerX}px, ${-e.layerY}px)`)
-      // $('.canvas').css('transform', `translate(${-e.layerX}px, ${-e.layerY}px)`)
-      // $('.canvas').css('transform', `translate(50%, 50%)`)
-      // $('.canvas').css('transform', `matrix(${0.45}, 0, 0, ${0.45}, ${-e.layerX/2}, ${-e.layerY/2})`)
-
-      // $('.canvas').css('transform', `matrix(${scale}, 0, 0, ${scale}, ${-e.layerX * scale}, ${-e.layerY * scale })`)
-      // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = `translate(${-e.layerX}px, ${-e.layerY}px)`;
-      T1_x = e.layerX
-      T1_y = e.layerY
-      T2_s = scale
-      T3_x = -T1_x
-      T3_y = -T1_y
-      // $('.canvas').css('transform-origin', `${e.layerX}px ${e.layerY}px`)
-      // $('.canvas').css()
-      // $('.canvas').css('transform', `matrix(${scale}, 0, 0, ${scale}, ${-e.layerX*scale}, ${-e.layerY*scale})`)
-      // $('.canvas').css('transform', 'scale(' + scale + ')')
-      // $('.canvas').css('transform-origin', `${0}px ${0}px`)
-
-      transform_x = e.layerX
-      transform_y = e.layerY
-      // $('.canvas').css('transform', `translate(${-e.layerX}px, ${-e.layerY}px)`)
-    }
     if (scale < min_scale)
       scale = min_scale
-    // img.height = img.height * scale
-    // img.width = img.width * scale
-    // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + scale + ')';
-    // console.log($('div.canvas').css('height'), $('div.canvas').css('width'))
-    // отменим прокрутку
+    
+      console.log(scale)
+      pointX = e.layerX - xs * scale
+      pointY = e.layerY - ys * scale
+      $(zoom).css('transform', "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")")
     e.preventDefault();
   });
 
-  $(document).keydown(function (e) {
-    console.log(e.keyCode);
-  });
 
-  $(document).keydown(function (e) {
-    if (e.keyCode == 38) {
-      $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) - 10}px`)
-    }
-    else if (e.keyCode == 40) {
-      $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 10}px`)
-    }
-    else if (e.keyCode == 37) {
-      $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) - 10}px`)
-    }
-    else if (e.keyCode == 39) {
-      $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 10}px`)
-    }
+  // $(document).keydown(function (e) {
+  //   if (e.keyCode == 38) {
+  //     $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) - 10}px`)
+  //   }
+  //   else if (e.keyCode == 40) {
+  //     $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 10}px`)
+  //   }
+  //   else if (e.keyCode == 37) {
+  //     $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) - 10}px`)
+  //   }
+  //   else if (e.keyCode == 39) {
+  //     $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 10}px`)
+  //   }
 
-    // e.preventDefault()
-  });
-
-  $('#image').bind('mousewheel DOMMouseScroll', function (event) {
-    console.log(123)
-  })
+  //   // e.preventDefault()
+  // });
 
   
 })
