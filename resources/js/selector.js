@@ -47,7 +47,6 @@ $(document).ready(function (e) {
     img.height * scale > parseInt($('div#text').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
   ) {
     scale -= 0.05
-    console.log(scale)
   }
   $(canvas).css('transform', 'scale('+scale+')')
   // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
@@ -774,8 +773,7 @@ $(document).ready(function (e) {
 
     if (scale < min_scale)
       scale = min_scale
-    
-      console.log(scale)
+
       pointX = e.layerX - xs * scale
       pointY = e.layerY - ys * scale
       $(zoom).css('transform', "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")")
