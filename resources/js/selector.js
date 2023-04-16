@@ -450,7 +450,7 @@ $(document).ready(function (e) {
             d_width = parseFloat($(`#square${number}`).css('width'))
             d_height = parseFloat($(`#square${number}`).css('height'))
 
-            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
+            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
           }
         },
         modifiers: [
@@ -516,14 +516,14 @@ $(document).ready(function (e) {
         d_width = parseFloat($(`#square${number}`).css('width'))
         d_height = parseFloat($(`#square${number}`).css('height'))
 
-        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
       }
       // console.log( $(testobjects[number]).css('x'))
       window.dragMoveListener = dragMoveListener
 
       console.log(number)
       // $(objects[number]).children('.button__editing').attr('wire:click', `update(${parseInt(number)+1}, 100, 100, 100, 100, ${radio_checked_id})`)
-      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${number + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
     }
     else {
 
