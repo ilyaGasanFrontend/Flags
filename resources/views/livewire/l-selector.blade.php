@@ -8,108 +8,41 @@
         <div class="container-fluid p-0">
             <div class="row row__selector">
                 <div class="col-12 col-lg-8 col_selector">
+
                     <div class="card card__selector">
                         <div class="card-body m-sm-3 m-md-0 card__for__analis">
-                            {{-- <div class="tools__wrap">
-                            <div class="action__list">
-                                <div class="col-sm action-el action-el--active">
-                                    <a href="#" class="action" id="create-elements">Create </a>
-                                </div>
-                                <div class="col-sm action-el">
-                                    <a href="#" class="action" id="change-size">Change all</a>
-                                </div>
-                                <div class="col-sm action-el">
-                                    <a href="#" class="action" id="delete-elements">Delete section</a>
-                                </div>
-                            </div>
-                        </div> --}}
-                            <div class="container" wire:ignore>
+                            <div wire:ignore id="text"
+                                style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                                {{-- <div class="container" wire:ignore style="position: relative; width: 100%; height: 100%"> --}}
 
-                                <div class="box-2">
-                                    <div class="canvas_main">
-                                        <div class="wrapper_canvas" id="text">
-                                            <div class="canvas" wire:click.prevent>
-                                                <!-- canvas-changeable -->
-                                                <img src="{{ $images->path_to_file }}" alt=""
-                                                    class="img__current">
+                                <div class="canvas2" style="position: absolute">
+                                    <div class="canvas" wire:click.prevent style="inset: 0px; overflow: scroll;">
+                                        <!-- canvas-changeable -->
+                                        <img src="{{ $images->path_to_file }}" alt="" class="img__current"
+                                            id="image">
 
-                                                {{-- @dd($squares) --}}
-                                                @if ($squares != null)
-                                                    @foreach ($squares as $i => $square)
-                                                        <div class="square point__events" id="square{{ $i }}"
-                                                            style="top: {{ $square->y }}px; left: {{ $square->x }}px; width: {{ $square->width }}px; height: {{ $square->height }}px; color: {{ $square->color }};">
+                                        {{-- @dd($squares) --}}
+                                        @if ($squares != null)
+                                            @foreach ($squares as $i => $square)
+                                                <div class="square point__events" id="square{{ $i }}"
+                                                    style="top: {{ $square->y }}px; left: {{ $square->x }}px; width: {{ $square->width }}px; height: {{ $square->height }}px; color: {{ $square->color }};">
 
-                                                        </div>
-                                                    @endforeach
-                                                @endif
-
-                                            </div>
-                                        </div>
+                                                </div>
+                                            @endforeach
+                                        @endif
 
                                     </div>
                                 </div>
 
 
                             </div>
-                        </div>
-                    </div>
-
-                    {{-- <div class="card">
-                    <div class="wrapper__prev__img">
-                        <div class="row row__arrows">
-                            <div class="col-1 col--arrows col--arrows--arrow" id="left">
-                                <img src="{{ asset('images/right-arrow.png') }}" alt=""
-                                    class="arrow arrow--left" wire:click.prevent='submit("previous")'>
-                            </div>
-                            <div class="col-6 col--arrows col--arrows--photos">
-                                <div class="row row__photo__list">
-                                    @foreach ($nav_images as $img)
-                                        @if ($img['id'] == $images->id)
-                                            <div class="col-sm col__photos__list"><img
-                                                    class="photogal-el photogal-el--active"
-                                                    src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                    style="aspect-ratio: 1/1"
-                                                    wire:click.prvent='submit({{ $img['id'] }})' /></div>
-                                        @else
-                                            <div class="col-sm col__photos__list"><img class="photogal-el"
-                                                    src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                    style="aspect-ratio: 1/1"
-                                                    wire:click.prevent='submit({{ $img['id'] }})' />
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()" id="right">
-
-
-                                <img src="{{ asset('images/right-arrow.png') }}" alt="" class="arrow"
-                                    wire:click='submit("next")'>
-
-                            </div>
-
-
 
                         </div>
                     </div>
-                </div> --}}
+
+
                 </div>
                 <div class="col-sm-4">
-                    {{-- <div class="card card-info-input">
-                    <div class="wrapper__info">
-                        <input type="text" class="name_imput">
-                        <input type="color" class="calor_input">
-                        <a href="" class="create__markColor">Create</a>
-                        <div class="radio_buttons__wrapper">
-                            <div class="rowRad">
-                                <input type="radio" name="color_selector" value="#fff" class="colorCL"
-                                    checked="True">
-                                <label id="defaultColor" class="lable__color">Default</label>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
 
 
                     <div class="card">
@@ -120,8 +53,6 @@
                             <div class="categories">
                                 @foreach ($categories as $i => $category)
                                     <label class="form-check">
-                                        {{-- <input class="form-check-input" type="radio" id="{{$category->id}}" value="{{$category->id}}" name="{{$category->description}}">
-                                <label for="{{$category->description}}">{{$category->description}}</label> --}}
                                         <input class="form-check-input categories-default"
                                             id="radio_{{ $category->id }}" type="radio" name="radio_category"
                                             value="{{ $category->id }}"
@@ -163,8 +94,7 @@
                                                     value="{{ $square->category_id }}" />
                                                 <td class="table-action">
                                                     <a class="button__editing" id="editing__button{{ $i }}"
-                                                        {{-- wire:click.prevent="update(false, null, null, null, null, null, null)" --}}
-                                                        wire:click.prevent=""
+                                                        {{-- wire:click.prevent="update(false, null, null, null, null, null, null)" --}} wire:click.prevent=""
                                                         style="text-decoration: none"><svg
                                                             xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
@@ -251,30 +181,7 @@
 
                     @push('scripts')
                         <script>
-
                             $(document).ready(function(e) {
-                                // $('.button__deletting').on('mouseup', function() {
-                                //     console.log(123)
-                                // })
-
-                                // $('.canvas').on('mouseup', function() {
-                                //     @this.x = $('#hiddenX').attr('value')
-                                //     @this.y = $('#hiddenY').attr('value')
-                                //     @this.width = $('#hiddenWidth').attr('value')
-                                //     @this.height = $('#hiddenHeight').attr('value')
-                                //     @this.category = $('#hiddenCategory').attr('value')
-                                //     console.log(parseInt($('#hiddenX').attr('value')))
-
-                                //     let count = $('.canvas').children('.square').length
-                                //     console.log(parseFloat($(`#square${count-1}`).css('top')))
-                                //     // @this.foo(
-                                //     //     $('#hiddenCategory').attr('value'),
-                                //     //     parseFloat($(`#square${count-1}`).css('left')),
-                                //     //     parseFloat($(`#square${count-1}`).css('top')),
-                                //     //     parseFloat($(`#square${count-1}`).css('width')),
-                                //     //     parseFloat($(`#square${count-1}`).css('height')),
-                                //     // )
-                                // })
                                 $('#left').on('mouseup', function() {
                                     @this.x = $('#hiddenX').attr('value')
                                     @this.y = $('#hiddenY').attr('value')
@@ -334,11 +241,13 @@
                                             <div class="col-sm col__photos__list"><img
                                                     class="photogal-el photogal-el--active"
                                                     src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                    wire:click.prvent='submit({{ $img['id'] }})' style="height: 10vh"/></div>
+                                                    wire:click.prvent='submit({{ $img['id'] }})'
+                                                    style="height: 10vh" /></div>
                                         @else
                                             <div class="col-sm col__photos__list"><img class="photogal-el"
                                                     src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                    wire:click.prevent='submit({{ $img['id'] }})' style="height: 10vh"/>
+                                                    wire:click.prevent='submit({{ $img['id'] }})'
+                                                    style="height: 10vh" />
                                             </div>
                                         @endif
                                     @endforeach
