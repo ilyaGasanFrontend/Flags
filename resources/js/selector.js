@@ -519,60 +519,6 @@ $(document).ready(function (e) {
       $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
       // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
       $(objects[number]).children('.button__editing').attr('wire:click.prevent', '')
-
-
-      //алгоритм для обновления данных
-      let old_X = $('#square' + number).css('left')
-      let old_Y = $('#square' + number).css('top')
-      old_X = old_X.substring(0, old_X.length - 2)
-      old_Y = old_Y.substring(0, old_Y.length - 2)
-      console.log('oldX', old_X, old_Y)
-
-      let transform_value = $(testobjects[number]).css('transform')
-      let tmp_X = 0
-      let tmp_Y = 0
-      if (transform_value != 'none') {
-        transform_value = transform_value.substring(7)
-        transform_value = transform_value.substring(0, transform_value.length - 1)
-        tmp_X = transform_value.split(',')[4]
-        tmp_Y = transform_value.split(',')[5]
-      }
-
-      console.log(tmp_X, tmp_Y)
-      // $('#hiddenX').val(new_X.split(',')[4])
-
-      let new_arr_X = $('#hiddenX').val().split(',')
-      let new_arr_Y = $('#hiddenY').val().split(',')
-
-      console.log(new_arr_X);
-      let new_X = new_arr_X[number]
-      let new_Y = new_arr_Y[number]
-      new_X = new_X.substring(0, new_X.length - 2)
-      new_X = parseFloat(old_X) + parseFloat(tmp_X) + 'px'
-
-      new_Y = new_Y.substring(0, new_Y.length - 2)
-      new_Y = parseFloat(old_Y) + parseFloat(tmp_Y) + 'px'
-      console.log(new_X, new_Y)
-      new_arr_X[number] = new_X
-      new_arr_Y[number] = new_Y
-      $('#hiddenX').val(new_arr_X)
-      $('#hiddenY').val(new_arr_Y)
-
-      let new_arr_Width = $('#hiddenWidth').val().split(',')
-      new_arr_Width[number] = $('#square' + number).css('width')
-      console.log('width', new_arr_Width)
-      $('#hiddenWidth').val(new_arr_Width)
-
-      let new_arr_Height = $('#hiddenHeight').val().split(',')
-      new_arr_Height[number] = $('#square' + number).css('height')
-      $('#hiddenHeight').val(new_arr_Height)
-
-
-      let new_arr_Category = $('#hiddenCategory').val().split(',')
-      console.log(new_arr_Category)
-      new_arr_Category[number] = radio_checked_id
-      $('#hiddenCategory').val(new_arr_Category)
-      console.log(new_arr_Category)
     }
 
   })
@@ -717,26 +663,6 @@ $(document).ready(function (e) {
       pointY = e.layerY - ys * scale
       $(zoom).css('transform', "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")")
     e.preventDefault();
-  });
-
-
-  // $(document).keydown(function (e) {
-  //   if (e.keyCode == 38) {
-  //     $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) - 10}px`)
-  //   }
-  //   else if (e.keyCode == 40) {
-  //     $('.wrapper_canvas').css('margin-top', `${parseInt($('.wrapper_canvas').css('margin-top')) + 10}px`)
-  //   }
-  //   else if (e.keyCode == 37) {
-  //     $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) - 10}px`)
-  //   }
-  //   else if (e.keyCode == 39) {
-  //     $('.wrapper_canvas').css('margin-left', `${parseInt($('.wrapper_canvas').css('margin-left')) + 10}px`)
-  //   }
-
-  //   // e.preventDefault()
-  // });
-
-  
+  }); 
 })
 

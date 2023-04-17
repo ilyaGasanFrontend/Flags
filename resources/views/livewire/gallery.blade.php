@@ -19,52 +19,47 @@
                                         multiple>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <button class="btn btn-primary" wire:click.prevent="store_photos">Загрузить</button>
                             </div>
+                            <div class="col-md-2">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Параметры
+                                    </button>
+                                    <div class="dropdown-menu" data-popper-placement="bottom-start"
+                                        style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 35px);">
+                                        <div>
+                                            <label class="form-check">
+                                                <input class="form-check-input" type="radio" value="option1" name="radios-example" wire:click="view_switch(true)" @if ($col_md == 3) checked @endif style="margin-left: -1em">
+                                                <span class="form-check-label" style="padding-left: 5px">
+                                                    Большие значки
+                                                </span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input class="form-check-input" type="radio" value="option2" name="radios-example" wire:click="view_switch(false)" @if ($col_md == 2) checked @endif style="margin-left: -1em">
+                                                <span class="form-check-label" style="padding-left: 5px">
+                                                    Маленькие значки
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                        <div class="form-check form-switch">
+                                            <input wire:click="$toggle('filter')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" style="margin-left: -2rem">
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Скрывать готовые</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" disabled="">Экспорт</button>
+                            </div>
                         </div>
 
-                        
+
 
                         {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
-                        @push('scripts')
-                            <script>
-                                $(document).ready(function(e) {
-                                    console.log($("input[name='test[1]']").val())
-                                })
-                            </script>
-                        @endpush
-                        <div class="row">
-                            {{-- <div class="col-md-6">
-                                <input type="checkbox" wire:click="$toggle('filter')"><label> Скрывать готовые</label>
-
-                            </div> --}}
-                            <div class="form-check form-switch">
-                                <input wire:click="$toggle('filter')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                <label  class="form-check-label" for="flexSwitchCheckDefault">Скрывать готовые</label>
-                            </div>
-
-                            <div class="col-md-6 text-center">
-                                {{-- <div class="input-group mb-3">
-                    <select class="form-select flex-grow-1" wire:click="filter(0)">
-                        <option wire:click="filter">Показывать все</option>
-                        <option wire:click="filter">Показывать пустые</option>
-                    </select>
-
-                    <button class="btn btn-secondary" type="button">Go!</button>
-                </div> --}}
-
-                            </div>
-
-                        </div>
-                        <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Large button group">
-                            <button type="button" @if ($col_md == 2) class="btn btn-secondary" @else class="btn btn-outline-secondary" @endif wire:click="view_switch(false)">
-                                <i class="align-middle me-2 fas fa-fw fa-th"></i>
-                            </button>
-                            <button type="button" @if ($col_md == 3) class="btn btn-secondary" @else class="btn btn-outline-secondary" @endif wire:click="view_switch(true)">
-                                <i class="align-middle me-2 fas fa-fw fa-th-large"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -77,40 +72,41 @@
                     <div class="card-body">
                         <div class="row">
                             @foreach ($images as $image)
-                                <div class="col-md-{{$col_md}}">
+                                <div class="col-md-{{ $col_md }}">
                                     {{-- <button class="btn btn-primary submit-button"> --}}
                                     <div class="card bg-light col d-flex ">
                                         <div class="wrapper__class ">
-                                            <a class="row-8"  
-                                            @if ($is_empty == true) wire:click="alert" @else href="/gallery/{{ $image->id }}" @endif>
-                                            <img class="card-img-top" src="{{ $image->path_to_file }}" loading="lazy"
-                                                alt="{{ $image->path_to_file }}" style="width: 100%; height: 337px; object-fit: cover;">
-                                            {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
-                                        </a>
+                                            <a class="row-8"
+                                                @if ($is_empty == true) wire:click="alert" @else href="/gallery/{{ $image->id }}" @endif>
+                                                <img class="card-img-top" src="{{ $image->path_to_file }}"
+                                                    loading="lazy" alt="{{ $image->path_to_file }}"
+                                                    style="width: 100%; height: 337px; object-fit: cover;">
+                                                {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
+                                            </a>
 
-                                        <div class="card-header bg-light row-8">
+                                            <div class="card-header bg-light row-8">
 
-                                            <h5 class="card-title ">
-                                                {{-- {{ substr($image->original_name, 0, 7) . '...' . substr($image->name, -9, 9) }} --}}
-                                                {{$image->original_name}}
-                                            </h5>
+                                                <h5 class="card-title ">
+                                                    {{-- {{ substr($image->original_name, 0, 7) . '...' . substr($image->name, -9, 9) }} --}}
+                                                    {{ $image->original_name }}
+                                                </h5>
+                                            </div>
+                                            <div class="card-body h-auto row-1 h-25 p-3">
+                                                @if ($image->is_ready)
+                                                    <div class="badge bg-success my-2">Готово</div>
+                                                @else
+                                                    <div class="badge bg-danger my-2">Не готово</div>
+                                                @endif
+
+                                                <button class="btn btn-danger btn-sm"
+                                                    wire:click="delete({{ $image->id }})"><i
+                                                        class="fas fa-times"></i></button>
+
+                                            </div>
                                         </div>
-                                        <div class="card-body h-auto row-1 h-25 p-3">
-                                            @if ($image->is_ready)
-                                                <div class="badge bg-success my-2">Готово</div>
-                                            @else
-                                                <div class="badge bg-danger my-2">Не готово</div>
-                                            @endif
-
-                                            <button class="btn btn-danger btn-sm"
-                                                wire:click="delete({{ $image->id }})"><i
-                                                    class="fas fa-times"></i></button>
-
-                                        </div>
-                                        </div>
 
 
-                                        
+
                                     </div>
                                     {{-- </button> --}}
                                 </div>
