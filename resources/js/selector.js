@@ -1,24 +1,4 @@
 $(document).ready(function (e) {
-  console.log($('div.container').css('height'))
-  console.log($('div.container').css('width'))
-
-  if ($('#hiddenX').val() == '') {
-    var x_arr = []
-    var y_arr = []
-    var width_arr = []
-    var height_arr = []
-    var categories_arr = []
-  }
-  else {
-
-    var x_arr = $('#hiddenX').val().split(',')
-    var y_arr = $('#hiddenY').val().split(',')
-    var width_arr = $('#hiddenWidth').val().split(',')
-    var height_arr = $('#hiddenHeight').val().split(',')
-    var categories_arr = $('#hiddenCategory').val().split(',')
-  }
-
-  var delete_arr = []
   const Statuses = Object.freeze({
     CreatingElements: 1,
     EditingElements: 2,
@@ -44,12 +24,15 @@ $(document).ready(function (e) {
   $(canvas).css("height", img.height);
 
   while (
-    img.height * scale > parseInt($('div#text').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
+    img.height * scale > parseInt($(canvas).css('height')) || img.width * scale > parseInt($(canvas).css('width'))
   ) {
     scale -= 0.05
+    // console.log(scale)
   }
-  $(canvas).css('transform', 'scale('+scale+')')
-  // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
+  
+  
+  $(canvas).css('transform', 'scale('+scale+') translate('+pointX+'px, 0px)')
+  
   var min_scale = scale
   const square = 'square'
   const prev__elemnt__objects = 'prev__elemnt__objects'
@@ -232,18 +215,6 @@ $(document).ready(function (e) {
         $(id).css('width', (e.clientX - startcoordX) / scale)
         $(id).css('height', (e.clientY - startcoordY) / scale)
 
-        x_arr.push($(id).css('left'))
-        y_arr.push($(id).css('top'))
-        width_arr.push($(id).css('width'))
-        height_arr.push($(id).css('height'))
-        categories_arr.push($("input[name='radio_category']:checked").val())
-
-        $('#hiddenX').val(x_arr)
-        $('#hiddenY').val(y_arr)
-        $('#hiddenWidth').val(width_arr)
-        $('#hiddenHeight').val(height_arr)
-        $('#hiddenCategory').val(categories_arr)
-
         let number = $('.canvas').children('.square').length - 1
         var obj = $('.obj-table')
         console.log(radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.4)')
@@ -281,7 +252,6 @@ $(document).ready(function (e) {
         })
 
         console.log($(id).css('left'))
-        console.log(x_arr)
         // console.log(startcoordX)
 
 
@@ -629,48 +599,17 @@ $(document).ready(function (e) {
     let testobjects = $('.canvas').children('.square')
     let objects = $('.obj-table').children('.table-row')
 
-    console.log(x_arr)
-    console.log(x_arr[0])
-    console.log(number)
-    // x_arr.push($(id).css('left'))
-    // y_arr.push($(id).css('top'))
-    // width_arr.push($(id).css('width'))
-    // height_arr.push($(id).css('height'))
+ 
+ 
 
-    // $('#hiddenX').val(x_arr)
-    // $('#hiddenY').val(y_arr)
-    // $('#hiddenWidth').val(width_arr)
-    // $('#hiddenHeight').val(height_arr)
-    // if (condition) {
+    
 
-    // } else {
 
-    // }
-    delete_arr.push(parseInt(number))
-
-    // delete_arr = parseInt(number)
-    x_arr.splice(number, 1)
-    y_arr.splice(number, 1)
-    width_arr.splice(number, 1)
-    height_arr.splice(number, 1)
-    categories_arr.splice(number, 1)
-    $('#hiddenX').val(x_arr)
-    $('#hiddenY').val(y_arr)
-    $('#hiddenWidth').val(width_arr)
-    $('#hiddenHeight').val(height_arr)
-    $('#hiddenCategory').val(categories_arr)
-
-    console.log('ID', delete_arr)
     $(objects[number]).remove()
 
     $(testobjects[number]).remove()
     console.log($('.canvas').children('.square').length)
-    if ($('.canvas').children('.square').length == 0) {
-      $('#hidden_delete').val(0)
-    }
-    else {
-      $('#hidden_delete').val(delete_arr)
-    }
+
     testobjects = $('.canvas').children('.square')
     objects = $('.obj-table').children('.table-row')
     console.log(objects, '!!!!!!!!!!!!!!!!!!!', number)

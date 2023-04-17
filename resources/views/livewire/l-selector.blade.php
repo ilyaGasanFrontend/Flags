@@ -1,6 +1,6 @@
 <div>
     <main>
-        @vite(['resources/js/selector.js', 'resources/js/creatingmarks.js', 'resources/js/returnerToBD.js'])
+        @vite(['resources/js/selector.js'])
         {{-- @vite(['resources/js/slider.js']) --}}
         <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
 
@@ -41,47 +41,51 @@
                                 <div class="wrapper__prev__img">
                                     <div class=" row__arrows">
                                         <div class="col-1 col--arrows col--arrows--arrow" id="left"
-                                            style="justify-content: center; display: flex"
-                                            wire:click.prevent='submit("previous")'>
-                                            <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg"
-                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="feather feather-chevron-left align-middle me-2">
-                                                <polyline points="15 18 9 12 15 6"></polyline>
-                                            </svg>
+                                            style="justify-content: center; display: flex">
+                                            <a href="{{ $prev_image_id }}">
+                                                <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg"
+                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="feather feather-chevron-left align-middle me-2">
+                                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                                </svg>
+                                            </a>
                                         </div>
                                         <div class="col-md-auto col--arrows col--arrows--photos">
                                             <div class="row row__photo__list">
                                                 @foreach ($nav_images as $img)
                                                     @if ($img['id'] == $images->id)
                                                         <div class="col-sm col__photos__list">
-                                                            <img class="photogal-el photogal-el--active"
-                                                                src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                                wire:click.prvent='submit({{ $img['id'] }})'
-                                                                style="height: 10vh" />
+                                                            <a href="{{ $img['id'] }}">
+                                                                <img class="photogal-el photogal-el--active"
+                                                                    src="{{ asset($img['path_to_file']) }}"
+                                                                    alt="Image" style="height: 10vh" />
+                                                            </a>
                                                         </div>
                                                     @else
-                                                        <div class="col-sm col__photos__list"><img class="photogal-el"
-                                                                src="{{ asset($img['path_to_file']) }}" alt="Image"
-                                                                wire:click.prevent='submit({{ $img['id'] }})'
-                                                                style="height: 6vh" />
+                                                        <div class="col-sm col__photos__list">
+                                                            <a href="{{ $img['id'] }}">
+                                                                <img class="photogal-el"
+                                                                    src="{{ asset($img['path_to_file']) }}"
+                                                                    alt="Image" style="height: 6vh; width: 100%; margin-top: 2vh" />
+                                                            </a>
                                                         </div>
                                                     @endif
                                                 @endforeach
                                             </div>
                                         </div>
                                         <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()"
-                                            id="right" style="justify-content: center; display: flex"
-                                            wire:click.prevent='submit("next")'>
-
-                                            <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg"
-                                                width="0" height="0" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="feather feather-chevron-right align-middle me-2">
-                                                <polyline points="9 18 15 12 9 6"></polyline>
-                                            </svg>
+                                            id="right" style="justify-content: center; display: flex">
+                                            <a href="{{ $next_image_id }}">
+                                                <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg"
+                                                    width="0" height="0" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="feather feather-chevron-right align-middle me-2">
+                                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                                </svg>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -186,91 +190,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <div class="card card-info-input card-info-obj">
-                @if ($squares != null)
-                    @php
-                        $x_str = '';
-                        $y_str = '';
-                        $width_str = '';
-                        $height_str = '';
-                        $category_str = '';
-                        foreach ($squares as $i => $square) {
-                            if ($i == 0) {
-                                $x_str = strval($square->x) . 'px';
-                                $y_str = strval($square->y) . 'px';
-                                $width_str = strval($square->width) . 'px';
-                                $height_str = strval($square->height) . 'px';
-                                $category_str = strval($square->category_id);
-                            } else {
-                                $x_str = $x_str . ',' . strval($square->x) . 'px';
-                                $y_str = $y_str . ',' . strval($square->y) . 'px';
-                                $width_str = $width_str . ',' . strval($square->width) . 'px';
-                                $height_str = $height_str . ',' . strval($square->height) . 'px';
-                                $category_str = $category_str . ',' . strval($square->category_id);
-                            }
-                        }
-                        
-                    @endphp
-
-                    <input type="hidden" id="hiddenX" value="{{ $x_str }}" />
-                    <input type="hidden" id="hiddenY" value="{{ $y_str }}" />
-                    <input type="hidden" id="hiddenWidth" value="{{ $width_str }}" />
-                    <input type="hidden" id="hiddenHeight" value="{{ $height_str }}" />
-                    <input type="hidden" id="hiddenCategory" value="{{ $category_str }}" />
-                @else
-                    <input type="hidden" id="hiddenX" />
-                    <input type="hidden" id="hiddenY" />
-                    <input type="hidden" id="hiddenWidth" />
-                    <input type="hidden" id="hiddenHeight" />
-                    <input type="hidden" id="hiddenCategory" />
-                @endif
-
-                <input type="hidden" id="hidden_delete">
-                <input type="hidden" id="flag" value="Creating">
-
-            </div>
-
-            @push('scripts')
-                <script>
-                    $(document).ready(function(e) {
-                        $('#left').on('mouseup', function() {
-                            @this.x = $('#hiddenX').attr('value')
-                            @this.y = $('#hiddenY').attr('value')
-                            @this.width = $('#hiddenWidth').attr('value')
-                            @this.height = $('#hiddenHeight').attr('value')
-                            @this.delete = $('#hidden_delete').attr('value')
-                            @this.category = $('#hiddenCategory').attr('value')
-                            @this.img_scale = $('.wrapper_canvas').css('transform')
-                            // @this.radio_category = $('%')
-                        })
-
-                        $('#right').on('mouseup', function() {
-                            @this.x = $('#hiddenX').attr('value')
-                            @this.y = $('#hiddenY').attr('value')
-                            @this.width = $('#hiddenWidth').attr('value')
-                            @this.height = $('#hiddenHeight').attr('value')
-                            @this.delete = $('#hidden_delete').attr('value')
-                            @this.category = $('#hiddenCategory').attr('value')
-                            @this.img_scale = $('.wrapper_canvas').css('transform')
-                            // @this.radio_category = $('%')
-                        })
-
-                        $('.photogal-el').on('mouseup', function() {
-                            @this.x = $('#hiddenX').attr('value')
-                            @this.y = $('#hiddenY').attr('value')
-                            @this.width = $('#hiddenWidth').attr('value')
-                            @this.height = $('#hiddenHeight').attr('value')
-                            @this.delete = $('#hidden_delete').attr('value')
-                            @this.category = $('#hiddenCategory').attr('value')
-                            @this.img_scale = $('.wrapper_canvas').css('transform')
-                        })
-
-                    })
-                </script>
-            @endpush
     </main>
 
     <link href="{{ url('/css/selector.css') }}" rel="stylesheet">
