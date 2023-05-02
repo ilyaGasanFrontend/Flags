@@ -1,26 +1,25 @@
 $(document).ready(function (e) {
-<<<<<<< HEAD
-=======
+
   console.log($('div.container').css('height'))
   console.log($('div.container').css('width'))
 
 
 
-  if ($('#hiddenX').val() == '') {
-    var x_arr = []
-    var y_arr = []
-    var width_arr = []
-    var height_arr = []
-    var categories_arr = []
-  }
-  else {
+  // if ($('#hiddenX').val() == '') {
+  //   var x_arr = []
+  //   var y_arr = []
+  //   var width_arr = []
+  //   var height_arr = []
+  //   var categories_arr = []
+  // }
+  // else {
 
-    var x_arr = $('#hiddenX').val().split(',')
-    var y_arr = $('#hiddenY').val().split(',')
-    var width_arr = $('#hiddenWidth').val().split(',')
-    var height_arr = $('#hiddenHeight').val().split(',')
-    var categories_arr = $('#hiddenCategory').val().split(',')
-  }
+  //   var x_arr = $('#hiddenX').val().split(',')
+  //   var y_arr = $('#hiddenY').val().split(',')
+  //   var width_arr = $('#hiddenWidth').val().split(',')
+  //   var height_arr = $('#hiddenHeight').val().split(',')
+  //   var categories_arr = $('#hiddenCategory').val().split(',')
+  // }
   var zoom = $('.canvas')
 
 
@@ -33,7 +32,6 @@ $(document).ready(function (e) {
   
   
   var delete_arr = []
->>>>>>> 48508fc9adf2c1e4d5f80786b763e8d7b44739d2
   const Statuses = Object.freeze({
     CreatingElements: 1,
     EditingElements: 2,
@@ -58,18 +56,6 @@ $(document).ready(function (e) {
   $(canvas).css("width", img.width);
   $(canvas).css("height", img.height);
 
-<<<<<<< HEAD
-  while (
-    img.height * scale > parseInt($(canvas).css('height')) || img.width * scale > parseInt($(canvas).css('width'))
-  ) {
-    scale -= 0.05
-    // console.log(scale)
-  }
-  
-  
-  $(canvas).css('transform', 'scale('+scale+') translate('+pointX+'px, 0px)')
-  
-=======
   // while (
   //   img.height * scale > parseInt($('div#text').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
   // ) {
@@ -103,7 +89,6 @@ $(document).ready(function (e) {
   $(canvas).css('left',`${parseFloat($('.position_image').css('width'))/2 - parseFloat($('#image').css('width'))/2}px`)
   
   // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
->>>>>>> 48508fc9adf2c1e4d5f80786b763e8d7b44739d2
   var min_scale = scale
   const square = 'square'
   const prev__elemnt__objects = 'prev__elemnt__objects'
