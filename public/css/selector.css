@@ -42,9 +42,15 @@
 
     }
 
+
+    
+
     .card__for__analis {
       position: relative;
       padding: 1.75rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .tools__wrap {
