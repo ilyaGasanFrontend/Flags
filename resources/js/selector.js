@@ -2,6 +2,8 @@ $(document).ready(function (e) {
   console.log($('div.container').css('height'))
   console.log($('div.container').css('width'))
 
+
+
   if ($('#hiddenX').val() == '') {
     var x_arr = []
     var y_arr = []
@@ -17,7 +19,17 @@ $(document).ready(function (e) {
     var height_arr = $('#hiddenHeight').val().split(',')
     var categories_arr = $('#hiddenCategory').val().split(',')
   }
+  var zoom = $('.canvas')
 
+
+  var width_window = parseFloat($('.position_image').css('width'))
+  console.log(width_window)
+  $(zoom).css('transform', "translate(1,1,1,1,1,1)")
+  
+  console.log($(zoom).css('transform'))
+  
+  
+  
   var delete_arr = []
   const Statuses = Object.freeze({
     CreatingElements: 1,
@@ -43,12 +55,38 @@ $(document).ready(function (e) {
   $(canvas).css("width", img.width);
   $(canvas).css("height", img.height);
 
-  while (
-    img.height * scale > parseInt($('div#text').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
-  ) {
-    scale -= 0.05
+  // while (
+  //   img.height * scale > parseInt($('div#text').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
+  // ) {
+  //   scale -= 0.05
+  // }
+
+  console.log(parseFloat($('.position_image').css('width')), 'aaaaaaaaaaaaaaaa')
+  var width_position_wrapper = parseFloat($('.position_image').css('width'))
+  var width_position_image = parseFloat($('#image').css('width'))
+
+
+  var height_position_wrapper = parseFloat($('.position_image').css('height'))
+  var height_position_image = parseFloat($('#image').css('height'))
+
+
+  var widthdist = Math.abs((width_position_wrapper - width_position_image)/2)
+  var heightdist = Math.abs((height_position_image - height_position_wrapper)/2)
+
+
+  if (widthdist > heightdist){
+    $('#image').css('height', height_position_wrapper)
   }
+  else
+  {
+    $('#image').css('width', width_position_wrapper)
+
+  }
+
+
   $(canvas).css('transform', 'scale('+scale+')')
+  $(canvas).css('left',`${parseFloat($('.position_image').css('width'))/2 - parseFloat($('#image').css('width'))/2}px`)
+  
   // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
   var min_scale = scale
   const square = 'square'
@@ -111,7 +149,7 @@ $(document).ready(function (e) {
           $(objects[i]).attr('id', prev__elemnt__objects + i)
           $(objects[i]).children('.number').html(i + 1)
         }
-
+ 
 
         break
     }
@@ -438,7 +476,6 @@ $(document).ready(function (e) {
             // translate when resizing from top or left edges
             x += event.deltaRect.left * (1 / scale)
             y += event.deltaRect.top * (1 / scale)
-
             target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
 
             target.setAttribute('data-x', x)
@@ -759,7 +796,6 @@ $(document).ready(function (e) {
 
 
   
-  var zoom = $('.canvas')
 
   addOnWheel(text, function (e) {
     var delta = e.deltaY || e.detail || e.wheelDelta;
@@ -776,7 +812,9 @@ $(document).ready(function (e) {
 
       pointX = e.layerX - xs * scale
       pointY = e.layerY - ys * scale
-      $(zoom).css('transform', "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")")
+            // console.log($('.position_image').css('width'));
+
+      $(zoom).css('transform', "translate(" + pointX  + "px, " + pointY + "px) scale(" + scale + ")")
     e.preventDefault();
   });
 
