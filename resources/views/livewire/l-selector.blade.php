@@ -15,7 +15,7 @@
                             <div class="card card__selector">
                                 <div class="card-body m-sm-3 m-md-0 card__for__analis">
                                     <div wire:ignore id="text"
-                                        style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                                        style="position: relative; width: 100%; height: 100%; overflow: hidden;" class="position_image">
                                         <div class="canvas" wire:click.prevent
                                             style="transform-origin: 0px 0px; width: 100%; height: 100%; transition-duration: 300ms">
                                             <img src="{{ $images->path_to_file }}" alt="" class="img__current"
