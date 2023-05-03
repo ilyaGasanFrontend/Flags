@@ -29,10 +29,12 @@ $(document).ready(function (e) {
     scale -= 0.05
     // console.log(scale)
   }
-  
-  
+  console.log(parseFloat($(text).css('width')), parseFloat($('.img__current').css('width')), parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
+  $(canvas).css('left', parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
+  // pointX = Math.abs((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * 2)) 
   $(canvas).css('transform', 'scale('+scale+') translate('+pointX+'px, 0px)')
-  
+  console.log((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * scale ) / 2)
+  // alert($(text).css('width'))
   var min_scale = scale
   const square = 'square'
   const prev__elemnt__objects = 'prev__elemnt__objects'
