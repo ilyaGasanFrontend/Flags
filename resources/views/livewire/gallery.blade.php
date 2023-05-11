@@ -32,13 +32,19 @@
                                         style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 35px);">
                                         <div>
                                             <label class="form-check">
-                                                <input class="form-check-input" type="radio" value="option1" name="radios-example" wire:click="view_switch(true)" @if ($col_md == 3) checked @endif style="margin-left: -1em">
+                                                <input class="form-check-input" type="radio" value="option1"
+                                                    name="radios-example" wire:click="view_switch(true)"
+                                                    @if ($col_md == 3) checked @endif
+                                                    style="margin-left: -1em">
                                                 <span class="form-check-label" style="padding-left: 5px">
                                                     Большие значки
                                                 </span>
                                             </label>
                                             <label class="form-check">
-                                                <input class="form-check-input" type="radio" value="option2" name="radios-example" wire:click="view_switch(false)" @if ($col_md == 2) checked @endif style="margin-left: -1em">
+                                                <input class="form-check-input" type="radio" value="option2"
+                                                    name="radios-example" wire:click="view_switch(false)"
+                                                    @if ($col_md == 2) checked @endif
+                                                    style="margin-left: -1em">
                                                 <span class="form-check-label" style="padding-left: 5px">
                                                     Маленькие значки
                                                 </span>
@@ -46,14 +52,26 @@
                                         </div>
                                         <div class="dropdown-divider"></div>
                                         <div class="form-check form-switch">
-                                            <input wire:click="$toggle('filter')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" style="margin-left: -2rem">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Скрывать готовые</label>
+                                            <input wire:model='filter' class="form-check-input" type="checkbox"
+                                                id="flexSwitchCheckDefault" style="margin-left: -2rem">
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Скрывать
+                                                готовые</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary" disabled="">Экспорт</button>
+                                {{-- <button class="btn btn-primary" disabled="">Экспорт</button> --}}
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Экспорт
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    <h6 class="dropdown-header">Экспортировать как...</h6>
+                                    <a class="dropdown-item" wire:click='download_file("txt")'>TXT</a>
+                                    <a class="dropdown-item" wire:click='download_file("csv")'>CSV</a>
+                                    {{-- <div class="dropdown-item" wire:click='download_file("json")'>JSON</div> --}}
+                                </div>
                             </div>
                         </div>
 

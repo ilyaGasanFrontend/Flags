@@ -17,16 +17,16 @@ class Gallery extends Component
     public $files = [];
     public $images;
     public $col_md = 3;
-    public $filter = False;
+    public $filter = true;
     public function render()
     {
         if ($this->filter) {
-            $this->images = Image::where('is_ready', 0)->get();
+            $this->images = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->get();
         } else {
-            $this->images = Image::all();
+            $this->images = Image::all()->where('user_id', auth()->user()->id);
         }
         
-        if (Category::count() == 0) {
+        if (Category::where('user_id', auth()->user()->id)->count() == 0) {
             $is_empty = true;
         } else {
             $is_empty = false;
@@ -64,27 +64,38 @@ class Gallery extends Component
         if ($json)
         {
             $sql_view = test::select(
-                'images.name', 'tests.label_id', 'tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
-                )->join('images', 'tests.photoName', '=', 'images.id')->orderBy('images.id')->orderBy('label_id')->toJson();
+                'images.original_name', 'tests.label_id', 'categories.description','tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
+                )
+                ->join('images', 'tests.photoName', '=', 'images.id')
+                ->join('categories', 'tests.category_id', '=', 'categories.id')
+                ->orderBy('images.id')
+                ->orderBy('label_id')
+                ->toJson();
         }
         else
         {
             $sql_view = test::select(
-                'images.name', 'tests.label_id', 'tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
-                )->join('images', 'tests.photoName', '=', 'images.id')->orderBy('images.id')->orderBy('label_id')->get();
+                'images.original_name', 'tests.label_id', 'categories.description','tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
+                )
+                ->where('tests.user_id', auth()->user()->id)
+                ->join('images', 'tests.photoName', '=', 'images.id')
+                ->join('categories', 'tests.category_id', '=', 'categories.id')
+                ->orderBy('images.id')->orderBy('label_id')->get();
         }
         
         return $sql_view;
+
     }
 
     private function create_file($sql, $dtype)
     {
         $dir = public_path('storage') . '/exports/' . 'admin_flags_work_' . date('d_m_Y') . '.' . $dtype;
         $file = fopen($dir, 'w');
-        fwrite($file, 'name,label_id,x,y,width,height,original_width,original_height' . PHP_EOL);
+        fwrite($file, 'name,label_id,category,x,y,width,height,original_width,original_height' . PHP_EOL);
         foreach ($sql as $item) {
-            fwrite($file, $item->name . ',');
+            fwrite($file, $item->original_name . ',');
             fwrite($file, $item->label_id . ',');
+            fwrite($file, $item->description . ',');
             fwrite($file, $item->x . ',');
             fwrite($file, $item->y . ',');
             fwrite($file, $item->width . ',');

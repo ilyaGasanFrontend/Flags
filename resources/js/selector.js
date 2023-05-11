@@ -1,37 +1,4 @@
 $(document).ready(function (e) {
-
-  console.log($('div.container').css('height'))
-  console.log($('div.container').css('width'))
-
-
-
-  // if ($('#hiddenX').val() == '') {
-  //   var x_arr = []
-  //   var y_arr = []
-  //   var width_arr = []
-  //   var height_arr = []
-  //   var categories_arr = []
-  // }
-  // else {
-
-  //   var x_arr = $('#hiddenX').val().split(',')
-  //   var y_arr = $('#hiddenY').val().split(',')
-  //   var width_arr = $('#hiddenWidth').val().split(',')
-  //   var height_arr = $('#hiddenHeight').val().split(',')
-  //   var categories_arr = $('#hiddenCategory').val().split(',')
-  // }
-  var zoom = $('.canvas')
-
-
-  var width_window = parseFloat($('.position_image').css('width'))
-  console.log(width_window)
-  $(zoom).css('transform', "translate(1,1,1,1,1,1)")
-  
-  console.log($(zoom).css('transform'))
-  
-  
-  
-  var delete_arr = []
   const Statuses = Object.freeze({
     CreatingElements: 1,
     EditingElements: 2,
@@ -56,49 +23,31 @@ $(document).ready(function (e) {
   $(canvas).css("width", img.width);
   $(canvas).css("height", img.height);
 
-  // while (
-  //   img.height * scale > parseInt($('div#text').css('height')) || img.width * scale > parseInt($('div.container').css('width'))
-  // ) {
-  //   scale -= 0.05
-  // }
-
-  console.log(parseFloat($('.position_image').css('width')), 'aaaaaaaaaaaaaaaa')
-  var width_position_wrapper = parseFloat($('.position_image').css('width'))
-  var width_position_image = parseFloat($('#image').css('width'))
-
-
-  var height_position_wrapper = parseFloat($('.position_image').css('height'))
-  var height_position_image = parseFloat($('#image').css('height'))
-
-
-  var widthdist = Math.abs((width_position_wrapper - width_position_image)/2)
-  var heightdist = Math.abs((height_position_image - height_position_wrapper)/2)
-
-
-  if (widthdist > heightdist){
-    $('#image').css('height', height_position_wrapper)
+  var min_scale = 1
+  while (
+    img.height * scale > parseInt($(canvas).css('height')) || img.width * scale > parseInt($(canvas).css('width'))
+  ) {
+    scale -= 0.05
+    min_scale = scale
   }
-<<<<<<< HEAD
+  if (scale == 1) {
+    while (
+      img.height * scale < parseInt($(canvas).css('height')) && img.width * scale < parseInt($(canvas).css('width'))
+    ) {
+      scale += 0.05
+      
+      // console.log(scale)
+    }
+    min_scale = 1
+  }
+
   console.log(parseFloat($(text).css('width')), parseFloat($('.img__current').css('width')), parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
   $(canvas).css('left', parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
   // pointX = Math.abs((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * 2)) 
   $(canvas).css('transform', 'scale('+scale+') translate('+pointX+'px, 0px)')
   console.log((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * scale ) / 2)
   // alert($(text).css('width'))
-=======
-  else
-  {
-    $('#image').css('width', width_position_wrapper)
 
-  }
-
-
-  $(canvas).css('transform', 'scale('+scale+')')
-  $(canvas).css('left',`${parseFloat($('.position_image').css('width'))/2 - parseFloat($('#image').css('width'))/2}px`)
-  
-  // text.style.transform = text.style.WebkitTransform = text.style.MsTransform = 'scale(' + 1 + ')';
->>>>>>> stepa
-  var min_scale = scale
   const square = 'square'
   const prev__elemnt__objects = 'prev__elemnt__objects'
 
@@ -159,7 +108,7 @@ $(document).ready(function (e) {
           $(objects[i]).attr('id', prev__elemnt__objects + i)
           $(objects[i]).children('.number').html(i + 1)
         }
- 
+
 
         break
     }
@@ -200,10 +149,7 @@ $(document).ready(function (e) {
         // startcoordX = e.clientX
         // startcoordY = e.clientY
 
-
-        break
-      case (Statuses.EditingElements):
-
+        $(".canvas").attr('wire:click.prevent', '')
         break
     }
   });
@@ -323,34 +269,24 @@ $(document).ready(function (e) {
 
 
 
-        $(obj).append(table_row)
-        // $(obj).append('<tr id="table_row_0" class="table-row" style="background-color: #00000040;"><td class="number">1</td><td class="desmetr">Категория1</td><td class="table-action"><a class="button__editing" id="editing__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a><a class="button__deletting" id="deletting__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a></td></tr>')
-        console.log($('#span_' + radio_checked_id).text())
-        $(td_number).html($('.canvas').children('.square').length)
-        $(table_row).append(td_number)
-        $(td_desmetr).html($('#span_' + radio_checked_id).text())
-        $(table_row).append(td_desmetr)
+        // $(obj).append(table_row)
+        // // $(obj).append('<tr id="table_row_0" class="table-row" style="background-color: #00000040;"><td class="number">1</td><td class="desmetr">Категория1</td><td class="table-action"><a class="button__editing" id="editing__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a><a class="button__deletting" id="deletting__button0" style="text-decoration: none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a></td></tr>')
+        // console.log($('#span_' + radio_checked_id).text())
+        // $(td_number).html($('.canvas').children('.square').length)
+        // $(table_row).append(td_number)
+        // $(td_desmetr).html($('#span_' + radio_checked_id).text())
+        // $(table_row).append(td_desmetr)
 
-        var svg_edit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
-        var svg_delete = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"> <polyline points="3 6 5 6 21 6"></polyline> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"> </path> <line x1="10" y1="11" x2="10" y2="17"> </line> <line x1="14" y1="11" x2="14" y2="17"> </line> </svg>'
+        // var svg_edit = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle me-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>'
+        // var svg_delete = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"> <polyline points="3 6 5 6 21 6"></polyline> <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"> </path> <line x1="10" y1="11" x2="10" y2="17"> </line> <line x1="14" y1="11" x2="14" y2="17"> </line> </svg>'
 
-        $(edit_button).append(svg_edit)
-        $(td_table_action).append(edit_button)
-        $(delete_button).append(svg_delete)
-        $(td_table_action).append(delete_button)
-        $(table_row).append(td_table_action)
-        // // $(object).append(form)
+        // $(edit_button).append(svg_edit)
+        // $(td_table_action).append(edit_button)
+        // $(delete_button).append(svg_delete)
+        // $(td_table_action).append(delete_button)
+        // $(table_row).append(td_table_action)
+        
 
-
-        ///////////////////////////////////////////////////////////////////////
-        // $(object).append(hidden_x)
-        // $(object).append(hidden_y)
-        // $(object).append(hidden_width)
-        // $(object).append(hidden_height)
-
-
-        // $(object).append(textbox)
-        // $(object).append('<label for="testtext">123</label>')
         console.log(radio_checked_id)
         $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
         break
@@ -384,9 +320,9 @@ $(document).ready(function (e) {
     if (status != Statuses.EditingElements) {
 
       status = Statuses.EditingElements
-
+      console.log(status)
       $('#flag').val('EditingInProgress')
-
+      $(".canvas").attr('wire:click.prevent', '')
       let categories = $('.categories').children()
       let number = ($(this).attr('id')).substring(editingButtonId.length)
       let active_category_id = $('#hidden-category-' + number).val()
@@ -473,6 +409,7 @@ $(document).ready(function (e) {
             // translate when resizing from top or left edges
             x += event.deltaRect.left * (1 / scale)
             y += event.deltaRect.top * (1 / scale)
+
             target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
 
             target.setAttribute('data-x', x)
@@ -708,6 +645,7 @@ $(document).ready(function (e) {
 
 
   
+  var zoom = $('.canvas')
 
   addOnWheel(text, function (e) {
     var delta = e.deltaY || e.detail || e.wheelDelta;
@@ -724,10 +662,7 @@ $(document).ready(function (e) {
 
       pointX = e.layerX - xs * scale
       pointY = e.layerY - ys * scale
-            // console.log($('.position_image').css('width'));
-
-      $(zoom).css('transform', "translate(" + pointX  + "px, " + pointY + "px) scale(" + scale + ")")
+      $(zoom).css('transform', "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")")
     e.preventDefault();
   }); 
 })
-
