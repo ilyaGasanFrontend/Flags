@@ -10,6 +10,7 @@ use Auth;
 
 class LSelector extends Component
 {
+    private $DELAY = 0.5;
     public $test;
     protected $listeners = ['submit', ];
 
@@ -45,11 +46,13 @@ class LSelector extends Component
         if (Test::where('user_id', auth()->user()->id)->where('photoName', $this->param)->count() == 0) {
             Image::where('id', $this->param)->update(['is_ready' => 0]);
         }
+        sleep($this->DELAY);
     }
 
     
     public function update($flag, $id, $x, $y, $width, $height, $category)
     {
+        // dd('123');
         if ($flag == true)
         {
             Test::where('photoName', $this->param)->where('label_id', $id)->update(
@@ -77,7 +80,11 @@ class LSelector extends Component
             'height' => $height,
         ]);
 
-        Image::where('id', $this->param)->update(['is_ready' => 1]);        
+        Image::where('id', $this->param)->update(['is_ready' => 1]);     
+        // !!!!!!!!!!!!!!!!!! можно попробовать сделать через ?провайдер 
+        // 
+        //https://laravel.com/docs/10.x/database#listening-for-query-events   
+        sleep($this->DELAY);
     }
 
     public function mount($param)
