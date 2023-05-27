@@ -69,7 +69,7 @@ class LSelector extends Component
 
     public function create($id, $category, $x, $y, $width, $height)
     {
-        test::create([
+        $sql = test::create([
             'user_id' => auth()->user()->id,
             'photoName' => $this->param,
             'label_id' => $id,
@@ -85,6 +85,11 @@ class LSelector extends Component
         // 
         //https://laravel.com/docs/10.x/database#listening-for-query-events   
         sleep($this->DELAY);
+        
+        // if (test::created($sql) == null)
+        //     dump('123');
+        // dump(test::creating($sql));
+        // dump(test::created($sql));
     }
 
     public function mount($param)

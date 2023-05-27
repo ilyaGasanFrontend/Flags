@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     //gallery & selector
     Route::get('/gallery', Gallery::class)->name('gallery');
     Route::get('/gallery/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
+    Route::get('/gallery/flags', LSelector::class);
     // Route::get('/options', OptionsIndex::class)->name('options');
 
 

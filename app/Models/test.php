@@ -10,4 +10,15 @@ class test extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    // protected static function booted(): void
+    // {
+    //     static::creating(function (test $user) {
+    //         // return $user->time;
+    //     });
+
+    //     static::created(function (test $user) {
+    //         // dump('321');
+    //     });
+    // }
 }

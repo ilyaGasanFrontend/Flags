@@ -56,7 +56,14 @@ class Gallery extends Component
     }
     public function delete($image_id)
     {
+        $filename = Image::find($image_id)->hash_name;
+        Storage::delete('/public/photos/'.$filename);
         Image::where('id', $image_id)->delete();
+
+        // dd($filename);
+        
+        // dd(Storage::get('/public/photos/'.$filename));
+        // dd(Storage::allFiles('public/photos/'));
 
     }
     public function create_sql_view($json)
@@ -156,6 +163,7 @@ class Gallery extends Component
         
     }
 
+    
     public function alert()
     {
         $this->dispatchBrowserEvent('modal-confirm-hide', ['message' => 'Необходимо создать категории!']);
