@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+
 use App\Models\Image;
 use App\Models\test;
 use App\Models\Category;
@@ -13,17 +15,24 @@ use Illuminate\Support\Facades\DB;
 class Gallery extends Component
 {
     use WithFileUploads;
+    use WithPagination;
     public $test = [];
     public $files = [];
     public $images;
     public $col_md = 3;
     public $filter = true;
+    protected $paginationTheme = 'bootstrap';
+
     public function render()
     {
         if ($this->filter) {
             $this->images = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->get();
+            // $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->cursorPaginate(2);
+            $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->paginate(12);
         } else {
             $this->images = Image::all()->where('user_id', auth()->user()->id);
+            // $paginate = Image::all()->where('user_id', auth()->user()->id)->cursorPaginate(2);
+            $paginate = Image::where('user_id', auth()->user()->id)->paginate(12);
         }
         
         if (Category::where('user_id', auth()->user()->id)->count() == 0) {
@@ -34,22 +43,26 @@ class Gallery extends Component
 
         // $this->images = DB::table('images')->get();
         return view('livewire.gallery', compact([
-            'is_empty', 
+            'is_empty', 'paginate', 
         ]))->extends('layouts.app');
     }
 
     public function view_switch($param)
     {
+        // use paginate;
+
         if ($param == true) {
             // if ($this->col_md != 2) {
             //     $this->col_md++;
             // }
             $this->col_md = 3;
+            // return redirect()->to('gallery?page='.$page);
         } else {
             // if ($this->col_md != 2) {
             //     $this->col_md--;
             // }
             $this->col_md = 2;
+            // return redirect()->to('gallery?page='.$page);
         }
         
         
@@ -59,13 +72,8 @@ class Gallery extends Component
         $filename = Image::find($image_id)->hash_name;
         Storage::delete('/public/photos/'.$filename);
         Image::where('id', $image_id)->delete();
-
-        // dd($filename);
-        
-        // dd(Storage::get('/public/photos/'.$filename));
-        // dd(Storage::allFiles('public/photos/'));
-
     }
+
     public function create_sql_view($json)
     {
         if ($json)
@@ -145,10 +153,7 @@ class Gallery extends Component
 
     public function test()
     {
-        foreach ($this->test as $test) {
-            dd($this->test);
-        }
-        
+        return redirect()->to('/gallery?page=2');        
     }
     public function store_s3()
     {
