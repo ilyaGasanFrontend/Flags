@@ -57,6 +57,8 @@ $(document).ready(function (e) {
   var distX = 0
   var distY = 0
   var flag = false
+  var is_out = false
+
   var id = ''
   var curenid
 
@@ -146,6 +148,9 @@ $(document).ready(function (e) {
         // $(id).css('background', radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)')
 
         flag = true
+
+        is_out = false
+
         // startcoordX = e.clientX
         // startcoordY = e.clientY
 
@@ -156,6 +161,7 @@ $(document).ready(function (e) {
   $(canvas).on('mouseleave', function (e) {
     if (flag) {
       flag = false
+      is_out = true
       let objects = (canvas).children()
       $(objects[objects.length - 1]).remove()
       // console.log('exit')
@@ -288,7 +294,10 @@ $(document).ready(function (e) {
         
 
         console.log(radio_checked_id)
-        $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
+        if (!is_out)
+        {
+          $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
+        }
         break
 
     }
@@ -545,12 +554,6 @@ $(document).ready(function (e) {
     let number = ($(this).attr('id')).substring(delettingButtonId.length)
     let testobjects = $('.canvas').children('.square')
     let objects = $('.obj-table').children('.table-row')
-
- 
- 
-
-    
-
 
     $(objects[number]).remove()
 

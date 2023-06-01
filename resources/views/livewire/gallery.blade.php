@@ -83,6 +83,8 @@
                 </div>
             </div>
 
+            {{-- <button wire:click="store_zip">123</button> --}}
+
             <div class="row">
                 <div class="card">
                     <div class="card-header">

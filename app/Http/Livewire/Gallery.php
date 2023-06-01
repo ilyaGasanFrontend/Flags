@@ -9,43 +9,22 @@ use Livewire\WithPagination;
 use App\Models\Image;
 use App\Models\test;
 use App\Models\Category;
+
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
 
 class Gallery extends Component
 {
     use WithFileUploads;
     use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $test = [];
     public $files = [];
     public $images;
     public $col_md = 3;
     public $filter = true;
-    protected $paginationTheme = 'bootstrap';
-
-    public function render()
-    {
-        if ($this->filter) {
-            $this->images = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->get();
-            // $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->cursorPaginate(2);
-            $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->paginate(12);
-        } else {
-            $this->images = Image::all()->where('user_id', auth()->user()->id);
-            // $paginate = Image::all()->where('user_id', auth()->user()->id)->cursorPaginate(2);
-            $paginate = Image::where('user_id', auth()->user()->id)->paginate(12);
-        }
-        
-        if (Category::where('user_id', auth()->user()->id)->count() == 0) {
-            $is_empty = true;
-        } else {
-            $is_empty = false;
-        }
-
-        // $this->images = DB::table('images')->get();
-        return view('livewire.gallery', compact([
-            'is_empty', 'paginate', 
-        ]))->extends('layouts.app');
-    }
 
     public function view_switch($param)
     {
@@ -167,12 +146,17 @@ class Gallery extends Component
         }
         
     }
-
     
     public function alert()
     {
         $this->dispatchBrowserEvent('modal-confirm-hide', ['message' => 'Необходимо создать категории!']);
     }
+
+    public function store_zip(Request $request)
+    {
+        dd($request);
+    }
+
     public function store_photos()
     {
         // dd(public_path('storage'));
@@ -197,19 +181,31 @@ class Gallery extends Component
             
             ]);
         }
-        // $this->photo->store('livewire-imgs', 's3');
-        // $this->photo->store('photos', 'public'); 
-        // $width = \getimagesize('E:/Projects/FlagsOcta/public/storage/photos/' . $this->photo->hashName())[0];
-        // $height = \getimagesize('E:/Projects/FlagsOcta/public/storage/photos/' . $this->photo->hashName())[1];
-        // image::create([
-        //     'name' => $this->photo->hashName(),
-        //     'path_to_file' => '/storage/photos/' . $this->photo->hashName(),
-        //     'original_width' =>  $width,
-        //     'original_height' => $height,
-            
-        // ]);
         
-        return redirect()->to('/gallery');
-        // dump($this->photo->hashName());
+        // return redirect()->to('/gallery');
+    }
+
+    public function render()
+    {
+        if ($this->filter) {
+            $this->images = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->get();
+            // $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->cursorPaginate(2);
+            $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->paginate(12);
+        } else {
+            $this->images = Image::all()->where('user_id', auth()->user()->id);
+            // $paginate = Image::all()->where('user_id', auth()->user()->id)->cursorPaginate(2);
+            $paginate = Image::where('user_id', auth()->user()->id)->paginate(12);
+        }
+        
+        if (Category::where('user_id', auth()->user()->id)->count() == 0) {
+            $is_empty = true;
+        } else {
+            $is_empty = false;
+        }
+
+        // $this->images = DB::table('images')->get();
+        return view('livewire.gallery', compact([
+            'is_empty', 'paginate', 
+        ]))->extends('layouts.app');
     }
 }
