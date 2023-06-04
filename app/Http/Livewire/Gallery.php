@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Livewire\TemporaryUploadedFile;
 
 use App\Models\Image;
 use App\Models\test;
@@ -12,6 +13,8 @@ use App\Models\Category;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+
+use League\Flysystem\Filesystem;
 
 
 class Gallery extends Component
@@ -22,9 +25,115 @@ class Gallery extends Component
 
     public $test = [];
     public $files = [];
+
     public $images;
     public $col_md = 3;
     public $filter = true;
+    public $is_image = false;
+
+
+    //chunk file upload
+    public $chunkSize = 12000000; // 12 MB
+    public $fileChunk;
+
+    public $fileName;
+    public $fileSize;
+
+    public $finalFile;
+
+    public function updatedFileChunk()
+    {
+        /*
+        Загрузка файла чанками взята с сайта:
+
+        https://fly.io/laravel-bytes/chunked-file-upload-livewire/
+
+        */
+        $chunkFileName = $this->fileChunk->getFileName();
+        $finalPath = Storage::path('/livewire-tmp/' . $this->fileName);
+        $tmpPath   = Storage::path('/livewire-tmp/' . $chunkFileName);
+        $file = fopen($tmpPath, 'rb');
+        $buff = fread($file, $this->chunkSize);
+        fclose($file);
+
+        $final = fopen($finalPath, 'ab');
+        fwrite($final, $buff);
+        fclose($final);
+        unlink($tmpPath);
+        $curSize = Storage::size('/livewire-tmp/' . $this->fileName);
+        if ($curSize == $this->fileSize) {
+            $this->finalFile =
+                TemporaryUploadedFile::createFromLivewire('/' . $this->fileName);
+            $this->unzip($this->fileName);
+        }
+    }
+
+    private function unzip($tmp_filename)
+    {
+        // dd(storage_path('app\\livewire-tmp\\' . $filename));
+        //путь до файла
+        $path = storage_path('app\\livewire-tmp\\' . $tmp_filename);
+
+        //работа с архивом
+        $zip = new \ZipArchive();
+        $zip->open($path);
+
+        for ($i = 0; $i < $zip->count(); $i++) {
+            $filename = $zip->getNameIndex($i);
+
+            // расширение файла
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+            $unique_filename = uniqid() . '.' . $ext;
+
+            if ($ext == 'png' || $ext ==  'jpg' || $ext ==  'bmp') {
+                // $zip->extractTo(public_path('storage\\archives\\' . auth()->user()->name), $zip->getNameIndex($i));
+                $zip->extractTo(public_path('storage\\photos\\'), $filename);
+
+                $width = \getimagesize(public_path('storage\\photos\\') . $filename)[0];
+                $height = \getimagesize(public_path('storage\\photos\\') . $filename)[1];
+
+                image::create([
+                    'user_id' => auth()->user()->id,
+                    'original_name' => $filename,
+                    'hash_name' => $filename,
+                    'path_to_file' => '/storage/photos/' . $filename,
+                    'original_width' =>  $width,
+                    'original_height' => $height,
+
+                ]);
+            }
+        }
+        // $zip->extractTo(storage_path('app\\livewire-tmp\\'));
+    }
+
+    public function updatedPhoto()
+    {
+        $this->validate([
+            'photo.*' => 'image|max:1024', // 1MB Max
+        ]);
+    }
+
+    public function updatedFiles()
+    {
+        $this->is_image = false;
+
+        $this->validate([
+            'files.*' => 'image',
+        ]);
+
+        $this->is_image = true;
+    }
+
+    public function check_if_zip()
+    {
+        // dd($this->files);
+        // $this->validate([
+        //     'files.*' => 'image|max:1024',
+        // ]);
+
+        // $this->tatata = 321;
+    }
 
     public function view_switch($param)
     {
@@ -43,42 +152,52 @@ class Gallery extends Component
             $this->col_md = 2;
             // return redirect()->to('gallery?page='.$page);
         }
-        
-        
     }
     public function delete($image_id)
     {
         $filename = Image::find($image_id)->hash_name;
-        Storage::delete('/public/photos/'.$filename);
+        Storage::delete('/public/photos/' . $filename);
         Image::where('id', $image_id)->delete();
     }
 
     public function create_sql_view($json)
     {
-        if ($json)
-        {
+        if ($json) {
             $sql_view = test::select(
-                'images.original_name', 'tests.label_id', 'categories.description','tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
-                )
+                'images.original_name',
+                'tests.label_id',
+                'categories.description',
+                'tests.x',
+                'tests.y',
+                'tests.width',
+                'tests.height',
+                'images.original_width',
+                'images.original_height'
+            )
                 ->join('images', 'tests.photoName', '=', 'images.id')
                 ->join('categories', 'tests.category_id', '=', 'categories.id')
                 ->orderBy('images.id')
                 ->orderBy('label_id')
                 ->toJson();
-        }
-        else
-        {
+        } else {
             $sql_view = test::select(
-                'images.original_name', 'tests.label_id', 'categories.description','tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
-                )
+                'images.original_name',
+                'tests.label_id',
+                'categories.description',
+                'tests.x',
+                'tests.y',
+                'tests.width',
+                'tests.height',
+                'images.original_width',
+                'images.original_height'
+            )
                 ->where('tests.user_id', auth()->user()->id)
                 ->join('images', 'tests.photoName', '=', 'images.id')
                 ->join('categories', 'tests.category_id', '=', 'categories.id')
                 ->orderBy('images.id')->orderBy('label_id')->get();
         }
-        
-        return $sql_view;
 
+        return $sql_view;
     }
 
     private function create_file($sql, $dtype)
@@ -104,15 +223,18 @@ class Gallery extends Component
 
     public function download_file($dtype)
     {
-        if ($dtype == 'json')
-        {
+        if ($dtype == 'json') {
             $query = test::select(
-                'images.name', 'tests.label_id', 'tests.x', 'tests.y', 'tests.width', 'tests.height', 'images.original_width', 'images.original_height'
-                )->join('images', 'tests.photoName', '=', 'images.id')->toJson();
-
-        }
-        else 
-        {
+                'images.name',
+                'tests.label_id',
+                'tests.x',
+                'tests.y',
+                'tests.width',
+                'tests.height',
+                'images.original_width',
+                'images.original_height'
+            )->join('images', 'tests.photoName', '=', 'images.id')->toJson();
+        } else {
             $query = $this->create_sql_view(false);
             $file = $this->create_file($query, $dtype);
         }
@@ -121,18 +243,12 @@ class Gallery extends Component
     }
     public function submit()
     {
-        image::create([
-            'name' => '',
-            'path_to_file' => '',
-            'original_width' => '',
-            'original_height' => '',
-
-        ]);
+        dd(123);
     }
 
     public function test()
     {
-        return redirect()->to('/gallery?page=2');        
+        return redirect()->to('/gallery?page=2');
     }
     public function store_s3()
     {
@@ -140,13 +256,11 @@ class Gallery extends Component
             'files.*' => 'image',
         ]);
 
-        foreach ($this->files as $file)
-        {
+        foreach ($this->files as $file) {
             $file->storePublicly('livewire-imgs', 's3');
         }
-        
     }
-    
+
     public function alert()
     {
         $this->dispatchBrowserEvent('modal-confirm-hide', ['message' => 'Необходимо создать категории!']);
@@ -157,32 +271,37 @@ class Gallery extends Component
         dd($request);
     }
 
-    public function store_photos()
+
+    public function store_photos($param)
     {
-        // dd(public_path('storage'));
-        $this->validate([
-            'files.*' => 'image',
-        ]);
-
-        foreach ($this->files as $file ) {
-            // storage::path('public') "E:\Projects\FlagsOcta\storage\app\public"
-            // public_path('storage') "E:\Projects\FlagsOcta\public\storage"
-            $file->store('photos', 'public');
-            $width = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[0];
-            $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
-
-            image::create([
-                'user_id' => auth()->user()->id,
-                'original_name' => $file->getClientOriginalName(),
-                'hash_name' => $file->hashName(),
-                'path_to_file' => '/storage/photos/' . $file->hashName(),
-                'original_width' =>  $width,
-                'original_height' => $height,
-            
+        if (!$param) {
+            return;
+        } else {
+            // dd(public_path('storage'));
+            $this->validate([
+                'files.*' => 'image',
             ]);
+
+            foreach ($this->files as $file) {
+                // storage::path('public') "E:\Projects\FlagsOcta\storage\app\public"
+                // public_path('storage') "E:\Projects\FlagsOcta\public\storage"
+                $file->store('photos', 'public');
+                $width = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[0];
+                $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
+
+                image::create([
+                    'user_id' => auth()->user()->id,
+                    'original_name' => $file->getClientOriginalName(),
+                    'hash_name' => $file->hashName(),
+                    'path_to_file' => '/storage/photos/' . $file->hashName(),
+                    'original_width' =>  $width,
+                    'original_height' => $height,
+
+                ]);
+            }
+
+            // return redirect()->to('/gallery');
         }
-        
-        // return redirect()->to('/gallery');
     }
 
     public function render()
@@ -196,7 +315,7 @@ class Gallery extends Component
             // $paginate = Image::all()->where('user_id', auth()->user()->id)->cursorPaginate(2);
             $paginate = Image::where('user_id', auth()->user()->id)->paginate(12);
         }
-        
+
         if (Category::where('user_id', auth()->user()->id)->count() == 0) {
             $is_empty = true;
         } else {
@@ -205,7 +324,7 @@ class Gallery extends Component
 
         // $this->images = DB::table('images')->get();
         return view('livewire.gallery', compact([
-            'is_empty', 'paginate', 
+            'is_empty', 'paginate',
         ]))->extends('layouts.app');
     }
 }

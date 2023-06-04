@@ -10,6 +10,35 @@
             <div class="row">
                 <div class="card">
                     <div class="card-body">
+                        <script>
+                            function uploadChunks() {
+                                const file = document.querySelector('#formFileMultiple').files[0];
+
+                                // Send the following later at the next available call to component
+
+                                //filename = php::uniqid + js::date_in_msec + file_extension
+                                @this.set('fileName', @js(uniqid()) + '-' + Date.now() + '.' + file.name.split('.').pop(), true);
+                                // @this.set('fileName', file.name, true);
+                                @this.set('fileSize', file.size, true);
+                                livewireUploadChunk(file, 0);
+                            }
+
+                            function livewireUploadChunk(file, start) {
+                                const chunkEnd = Math.min(start + @js($chunkSize), file.size);
+                                const chunk = file.slice(start, chunkEnd);
+
+                                @this.upload('fileChunk', chunk, (uName) => {}, () => {}, (event) => {
+                                    if (event.detail.progress == 100) {
+                                        // We recursively call livewireUploadChunk from within itself
+                                        start = chunkEnd;
+                                        if (start < file.size) {
+                                            livewireUploadChunk(file, start);
+                                        }
+                                    }
+                                });
+                            }
+                        </script>
+
                         <div class="row">
 
                             <label for="formFileMultiple" class="form-label">Добавить файлы</label>
@@ -18,9 +47,17 @@
                                     <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
                                         multiple>
                                 </div>
+
+                                @error('files.*')
+                                    <span class="error">{{ $message }}</span>
+                                @enderror
                             </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-primary" wire:click.prevent="store_photos">Загрузить</button>
+                            <div class="col-md-2">                                
+                                @if ($is_image)
+                                    <button class="btn btn-primary" wire:click="store_photos(true)">Загрузить</button>
+                                @else
+                                    <button class="btn btn-primary" wire:click="store_photos(false)" onClick="uploadChunks()">Загрузить</button>
+                                @endif
                             </div>
                             <div class="col-md-2">
                                 <div class="btn-group">
@@ -83,7 +120,20 @@
                 </div>
             </div>
 
-            {{-- <button wire:click="store_zip">123</button> --}}
+            {{-- <form wire:submit.prevent="submit">
+                <div class="row">
+                    <label for="formFileMultiple" class="form-label">Добавить файлы</label>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
+                                multiple>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" class="btn btn-primary" value="Загрузить"></button>
+                    </div>
+                </div>
+            </form> --}}
 
             <div class="row">
                 <div class="card">
@@ -160,6 +210,16 @@
                     myMessageConfirm(event.detail.message, 'danger')
                 });
             </script>
+
+
+
+            @if ($finalFile)
+                Photo Preview:
+                {{-- {{$finalFile->getFilename()}} --}}
+                {{ $finalFile->getPath() }}
+                {{ uniqid() }}
+                {{-- <img src="{{ $finalFile->temporaryUrl() }}"> --}}
+            @endif
 
 
     </main>
