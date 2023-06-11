@@ -17,7 +17,7 @@ class LSelector extends Component
 
     private $DELAY = 0.5;
     public $test;
-    protected $listeners = ['submit', ];
+    protected $listeners = ['submit', 'create'];
 
     public $radio_category;
     public $img_scale;
@@ -40,9 +40,6 @@ class LSelector extends Component
 
     public $show_grid = false;
 
-    //для пагинации
-    // public $first_id, $last_id;
-
     public function delete($id)
     {
         Test::where('photoName', $this->param)->where('label_id', $id + 1)->delete();
@@ -59,7 +56,10 @@ class LSelector extends Component
         sleep($this->DELAY);
     }
 
-    
+    public function testss($param, $param2, $param3, $param4, $param5) {
+        dd($param, $param2, $param3, $param4, $param5);
+    }
+
     public function update($flag, $id, $x, $y, $width, $height, $category)
     {
         // dd('123');
@@ -93,7 +93,8 @@ class LSelector extends Component
         Image::where('id', $this->param)->update(['is_ready' => 1]);     
         // !!!!!!!!!!!!!!!!!! можно попробовать сделать через ?провайдер 
         // 
-        //https://laravel.com/docs/10.x/database#listening-for-query-events   
+        //https://laravel.com/docs/10.x/database#listening-for-query-events  
+        $this->dispatchBrowserEvent('RecordCreated');
         sleep($this->DELAY);
     }
 

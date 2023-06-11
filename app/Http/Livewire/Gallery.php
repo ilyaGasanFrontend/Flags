@@ -214,7 +214,7 @@ class Gallery extends Component
             fwrite($file, $item->width . ',');
             fwrite($file, $item->height . ',');
             fwrite($file, $item->original_width . ',');
-            fwrite($file, $item->original_width . PHP_EOL);
+            fwrite($file, $item->original_height . PHP_EOL);
         }
         fclose($file);
 
