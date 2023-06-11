@@ -1,32 +1,45 @@
 <div>
     <main>
         @vite(['resources/js/selector.js'])
-        {{-- @vite(['resources/js/slider.js']) --}}
-        <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
 
+        <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
 
         <div class="container-fluid p-0">
             <div class="row">
-
                 {{-- <div class="row row__selector"> --}}
                 <div class="col-8">
                     <div class="row">
                         <div class="col-12" style="height: 60vh; margin-bottom: 24px">
                             <div class="card card__selector">
                                 <div class="card-body m-sm-3 m-md-0 card__for__analis">
-                                    <div wire:ignore id="text"
-                                        style="position: relative; width: 100%; height: 100%; overflow: hidden;" class="position_image">
-                                        <div class="canvas" wire:click.prevent
-                                            style="transform-origin: 0px 0px; width: 100%; height: 100%; transition-duration: 300ms">
+                                    <div id="text" {{-- wire:ignore --}}
+                                        style="position: absolute; 
+                                        width: 100%; 
+                                        height: 100%; 
+                                        overflow: hidden; 
+                                        /* padding: 30px; */
+                                        overflow: scroll;"
+                                        class="position_image">
+
+                                        <div class="canvas" wire:ignore.self wire:click.prevent id="canvas"
+                                            style="transform-origin: 0% 0%; 
+                                            /* width: {{ $images->original_width }}px; height: {{ $images->original_height }}px;  */
+                                            width: 100%; height: 100%; 
+                                            transition-duration: 0ms; margin:auto;">
+
+
                                             <img src="{{ $images->path_to_file }}" alt="" class="img__current"
                                                 id="image">
+
                                             @foreach ($squares as $i => $square)
                                                 <div class="square point__events" id="square{{ $i }}"
                                                     style="top: {{ $square->y }}px; left: {{ $square->x }}px; width: {{ $square->width }}px; height: {{ $square->height }}px; color: {{ $square->color }};">
 
                                                 </div>
                                             @endforeach
+
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -40,18 +53,22 @@
                             <div class="card">
                                 <div class="wrapper__prev__img">
                                     <div class=" row__arrows">
-                                        <div class="col-1 col--arrows col--arrows--arrow" id="left"
-                                            style="justify-content: center; display: flex">
-                                            <a href="{{ $prev_image_id }}">
-                                                <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg"
-                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="feather feather-chevron-left align-middle me-2">
-                                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                                </svg>
-                                            </a>
-                                        </div>
+                                        @if ($param != $first_id)
+                                            <div class="col-1 col--arrows col--arrows--arrow" id="left"
+                                                style="justify-content: center; display: flex" wire:click="go_to_prev">
+                                                {{-- <a href="{{ $prev_image_id }}"> --}}
+                                                <a href="#">
+                                                    <svg style="scale:3; height:100%;"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-chevron-left align-middle me-2">
+                                                        <polyline points="15 18 9 12 15 6"></polyline>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        @endif
+
                                         <div class="col-md-auto col--arrows col--arrows--photos">
                                             <div class="row row__photo__list">
                                                 @foreach ($nav_images as $img)
@@ -68,25 +85,29 @@
                                                             <a href="{{ $img['id'] }}">
                                                                 <img class="photogal-el"
                                                                     src="{{ asset($img['path_to_file']) }}"
-                                                                    alt="Image" style="height: 6vh; width: 100%; margin-top: 2vh" />
+                                                                    alt="Image"
+                                                                    style="height: 6vh; width: 100%; margin-top: 2vh" />
                                                             </a>
                                                         </div>
                                                     @endif
                                                 @endforeach
                                             </div>
                                         </div>
-                                        <div class="col-1 col--arrows col--arrows--arrow" onclick="GetStyle()"
-                                            id="right" style="justify-content: center; display: flex">
-                                            <a href="{{ $next_image_id }}">
-                                                <svg style="scale:3; height:100%;" xmlns="http://www.w3.org/2000/svg"
-                                                    width="0" height="0" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="feather feather-chevron-right align-middle me-2">
-                                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                                </svg>
-                                            </a>
-                                        </div>
+                                        @if ($param != $last_id)
+                                            <div class="col-1 col--arrows col--arrows--arrow" wire:click="go_to_next"
+                                                id="right" style="justify-content: center; display: flex">
+                                                <a href="#">
+                                                    <svg style="scale:3; height:100%;"
+                                                        xmlns="http://www.w3.org/2000/svg" width="0" height="0"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-chevron-right align-middle me-2">
+                                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -99,6 +120,21 @@
 
                 <div class="col-sm-4">
                     <div class="row">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Параметры</h5>
+                            </div>
+                            <div class="card-body">
+                                <button class="btn btn-primary" id="toggle_grid">
+                                    @if ($show_grid)
+                                        Скрыть сетку
+                                    @else
+                                        Показать сетку
+                                    @endif
+                                </button>
+
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Категории</h5>

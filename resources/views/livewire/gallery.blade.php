@@ -10,6 +10,35 @@
             <div class="row">
                 <div class="card">
                     <div class="card-body">
+                        <script>
+                            function uploadChunks() {
+                                const file = document.querySelector('#formFileMultiple').files[0];
+
+                                // Send the following later at the next available call to component
+
+                                //filename = php::uniqid + js::date_in_msec + file_extension
+                                @this.set('fileName', @js(uniqid()) + '-' + Date.now() + '.' + file.name.split('.').pop(), true);
+                                // @this.set('fileName', file.name, true);
+                                @this.set('fileSize', file.size, true);
+                                livewireUploadChunk(file, 0);
+                            }
+
+                            function livewireUploadChunk(file, start) {
+                                const chunkEnd = Math.min(start + @js($chunkSize), file.size);
+                                const chunk = file.slice(start, chunkEnd);
+
+                                @this.upload('fileChunk', chunk, (uName) => {}, () => {}, (event) => {
+                                    if (event.detail.progress == 100) {
+                                        // We recursively call livewireUploadChunk from within itself
+                                        start = chunkEnd;
+                                        if (start < file.size) {
+                                            livewireUploadChunk(file, start);
+                                        }
+                                    }
+                                });
+                            }
+                        </script>
+
                         <div class="row">
 
                             <label for="formFileMultiple" class="form-label">Добавить файлы</label>
@@ -18,9 +47,17 @@
                                     <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
                                         multiple>
                                 </div>
+                                {{-- {{ $paginate->count()}} --}}
+                                {{-- @error('files.*')
+                                    <span class="error">{{ $message }}</span>
+                                @enderror --}}
                             </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-primary" wire:click.prevent="store_photos">Загрузить</button>
+                            <div class="col-md-2">                                
+                                @if ($is_image)
+                                    <button class="btn btn-primary" wire:click="store_photos">Загрузить</button>
+                                @else
+                                    <button class="btn btn-primary" wire:click onClick="uploadChunks()">Загрузить</button>
+                                @endif
                             </div>
                             <div class="col-md-2">
                                 <div class="btn-group">
@@ -49,6 +86,7 @@
                                                     Маленькие значки
                                                 </span>
                                             </label>
+
                                         </div>
                                         <div class="dropdown-divider"></div>
                                         <div class="form-check form-switch">
@@ -85,11 +123,23 @@
             <div class="row">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Список фотографий</h5>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h5 class="card-title mb-0">Список фотографий</h5>
+                            </div>
+                            <div class="col-md-3" style="">
+                                {{-- {{ $paginate->links('livewire.livewire-pagination-links')}} --}}
+                                {{-- {{ $paginate->links() }} --}}
+                            </div>
+                        </div>
                     </div>
+
                     <div class="card-body">
                         <div class="row">
-                            @foreach ($images as $image)
+                            {{ $paginate->links() }}
+                        </div>
+                        <div class="row">
+                            @foreach ($paginate as $image)
                                 <div class="col-md-{{ $col_md }}">
                                     {{-- <button class="btn btn-primary submit-button"> --}}
                                     <div class="card bg-light col d-flex ">
@@ -98,7 +148,7 @@
                                                 @if ($is_empty == true) wire:click="alert" @else href="/gallery/{{ $image->id }}" @endif>
                                                 <img class="card-img-top" src="{{ $image->path_to_file }}"
                                                     loading="lazy" alt="{{ $image->path_to_file }}"
-                                                    style="width: 100%; height: 337px; object-fit: cover;">
+                                                    style="width: 100%; height: @if ($col_md == 3) 337px @else 220px @endif; object-fit: cover;">
                                                 {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
                                             </a>
 
@@ -134,6 +184,7 @@
 
 
                         </div>
+
                     </div>
                 </div>
 
@@ -144,5 +195,17 @@
                     myMessageConfirm(event.detail.message, 'danger')
                 });
             </script>
+
+
+
+            @if ($finalFile)
+                Photo Preview:
+                {{-- {{$finalFile->getFilename()}} --}}
+                {{ $finalFile->getPath() }}
+                {{ uniqid() }}
+                {{-- <img src="{{ $finalFile->temporaryUrl() }}"> --}}
+            @endif
+
+
     </main>
 </div>
