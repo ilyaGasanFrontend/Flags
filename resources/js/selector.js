@@ -4,6 +4,8 @@ $(document).ready(function (e) {
     EditingElements: 2,
     DeletingElements: 3
   });
+  var script_src = document.getElementsByTagName('script')[3].src
+  console.log(script_src)
   var prevobjects = $('.dropdown-menu')
   var canvas = $('.canvas')
   var form = $('.hidden-form')
@@ -14,7 +16,7 @@ $(document).ready(function (e) {
   var scale = 1;
   var pointX = 0
   var pointY = 0
-  const img = new Image();
+  var img = new Image();
 
   img.src = $(".img__current").attr('src');
   img.onload = function () {
@@ -25,27 +27,28 @@ $(document).ready(function (e) {
 
   var min_scale = 1
   while (
-    img.height * scale > parseInt($(canvas).css('height')) || img.width * scale > parseInt($(canvas).css('width'))
+    img.height * scale > parseInt($('#text').css('height')) || img.width * scale > parseInt($('#text').css('width'))
   ) {
     scale -= 0.05
     min_scale = scale
+    console.log(img.width * scale, parseInt($('#text').css('width')))
   }
   if (scale == 1) {
     while (
-      img.height * scale < parseInt($(canvas).css('height')) && img.width * scale < parseInt($(canvas).css('width'))
+      img.height * scale < parseInt($('#text').css('height')) && img.width * scale < parseInt($('#text').css('width'))
     ) {
       scale += 0.05
-      
+
       // console.log(scale)
     }
     min_scale = 1
   }
 
-  console.log(parseFloat($(text).css('width')), parseFloat($('.img__current').css('width')), parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
-  $(canvas).css('left', parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
-  // pointX = Math.abs((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * 2)) 
-  $(canvas).css('transform', 'scale('+scale+') translate('+pointX+'px, 0px)')
-  console.log((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * scale ) / 2)
+
+  // $(canvas).css('left', parseFloat($(text).css('width')) / 2 - parseFloat($('.img__current').css('width')) / 2)
+
+  $(canvas).css('transform', 'scale(' + scale + ')')
+  console.log((parseFloat($(canvas).css('width')) - parseFloat($(text).css('width')) * scale) / 2)
   // alert($(text).css('width'))
 
   const square = 'square'
@@ -81,7 +84,7 @@ $(document).ready(function (e) {
   })
 
 
-
+  ///////////////////////////////////////
 
 
 
@@ -122,8 +125,12 @@ $(document).ready(function (e) {
   $(canvas).on('mousedown', function (e) {
     switch (status) {
       case (Statuses.CreatingElements):
-        startcoordX = (e.originalEvent.layerX - pointX) / scale  
-        startcoordY = (e.originalEvent.layerY - pointY) / scale
+        // startcoordX = (e.originalEvent.layerX - pointX) / scale
+        // startcoordY = (e.originalEvent.layerY - pointY) / scale
+
+        startcoordX = e.originalEvent.layerX / scale
+        startcoordY = e.originalEvent.layerY / scale
+
         console.log(startcoordX, $(canvas).css('transform'), pointX)
         var object = $('<div>', {
           'class': 'square point__events',
@@ -173,8 +180,12 @@ $(document).ready(function (e) {
     switch (status) {
       case (Statuses.CreatingElements):
         if (flag) {
-          var endcoordX = (e.originalEvent.layerX - pointX) / scale
-          var endcoordY = (e.originalEvent.layerY - pointY) / scale
+          // var endcoordX = (e.originalEvent.layerX - pointX) / scale
+          // var endcoordY = (e.originalEvent.layerY - pointY) / scale
+
+          var endcoordX = e.originalEvent.layerX / scale
+          var endcoordY = e.originalEvent.layerY / scale
+
           var width_current = endcoordX - startcoordX
           var height_current = endcoordY - startcoordY
           // console.log(e.originalEvent.layerX
@@ -291,12 +302,13 @@ $(document).ready(function (e) {
         // $(delete_button).append(svg_delete)
         // $(td_table_action).append(delete_button)
         // $(table_row).append(td_table_action)
-        
+
 
         console.log(radio_checked_id)
-        if (!is_out)
-        {
+        if (!is_out) {
+          // $("#text").attr('wire:ignore', '')
           $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
+          // $("#text").removeAttr('wire:ignore')
         }
         break
 
@@ -305,6 +317,17 @@ $(document).ready(function (e) {
   });
 
   ///////
+
+  $('#next').on('mousedown', function () {
+    $("#text").removeAttr('wire:ignore')
+  })
+
+  $('#next').on('mouseclick', function () {
+    $("#text").attr('wire:ignore', '')
+    // console.log($('script[src=/resources/js/selector.js]'))
+    location.reload()
+
+  })
 
   $('.obj-table').on('mouseenter', '.button__editing', function (e) {
 
@@ -629,6 +652,30 @@ $(document).ready(function (e) {
   })
 
 
+  // $('#toggle_grid').on('mouseenter', function (e) {
+  //   $('#text').removeAttr('wire:ignore')
+  //   $('script[src="' + script_src + '"]').remove();
+  //   console.log($('script[src="' + script_src + '"]'))
+  //   // alert(123)
+  //     // $('<script>').attr('src', script_src).appendTo('head');
+  // })
+
+  // $('#toggle_grid').on('mouseleave', function (e) {
+  //   $('#text').attr('wire:ignore', '')
+  //   // window.location.href = 12519
+  // })
+
+  $('#toggle_grid').on('click', function (e) {
+    // console.log($('#canvas').css('transform'))
+    $('.canvas').toggleClass('grid')
+    $('#image').attr('scr', '/storage/photos/levHiM5VCWB4NLqNlEBeYQRg7SMOIdMvKDcnsy9V.jpg')
+
+  })
+
+  $('.canvas').on('change', function (e) {
+    console.log(321)
+  })
+
   function addOnWheel(elem, handler) {
     if (elem.addEventListener) {
       if ('onwheel' in document) {
@@ -647,26 +694,142 @@ $(document).ready(function (e) {
   }
 
 
-  
+
   var zoom = $('.canvas')
 
   addOnWheel(text, function (e) {
     var delta = e.deltaY || e.detail || e.wheelDelta;
 
     var xs = (e.layerX - pointX) / scale,
-    ys = (e.layerY - pointY) / scale
-    if (delta > 0)
-      scale -= 0.05;
-    else
+      ys = (e.layerY - pointY) / scale
+
+    var outer_width = document.getElementById('text').offsetWidth
+    var outer_height = document.getElementById('text').offsetHeight
+    var old_center_X = parseInt(((img.width * scale - outer_width)) / 2)
+
+    if (delta > 0) {
+      scale -= 0.05
+      document.querySelector('#text').scrollTop = document.querySelector('#text').scrollTop
+      document.querySelector('#text').scrollLeft = document.querySelector('#text').scrollLeft
+      // document.querySelector('#text').scrollLeft = ((img.width * scale - outer_width)) / 2 //просто к центру
+      // document.querySelector('#text').scrollTop = ((img.height * scale - outer_height)) / 2
+    }
+
+    else {
       scale += 0.05
+      var center_X = parseInt(((img.width * (scale) - outer_width)) / 2)
+      // console.log(img.width, img.width * scale, outer_width)
+
+      // if (document.querySelector('#text').scrollLeft == 0)
+      // {
+      // $('#text').scrollLeft( ((img.width * scale - outer_width)) / 2 )
+      // }
+      // else {
+      //   document.querySelector('#text').scrollLeft = ((img.width * scale - outer_width)) / 2 + (document.querySelector('#text').scrollLeft - (((img.width * (scale-0.05) - outer_width)) / 2) ) 
+      // }
+
+      // if (document.querySelector('#text').scrollTop == 0)
+      // {
+      // document.querySelector('#text').scrollTop = ((img.height * scale - outer_height)) / 2
+      // }
+      // else
+      // {
+      //   document.querySelector('#text').scrollTop = ((img.height * scale - outer_height)) / 2 + (document.querySelector('#text').scrollTop - (((img.height * (scale - 0.05) - outer_height)) / 2))
+      // }
+      document.querySelector('#text').scrollTop = document.querySelector('#text').scrollTop / (scale - 0.05) * scale
+      document.querySelector('#text').scrollLeft = document.querySelector('#text').scrollLeft / (scale - 0.05) * scale
+      // console.log(document.querySelector('#text').scrollHeight, img.height * (scale - 0.05))
+      // console.log(document.querySelector('#text').scrollHeight, document.querySelector('#text').scroll)
+
+      // document.querySelector('#text').scrollTo({
+      //   top: e.layerY,
+      //   left: 0,
+      //   behavior: "smooth",
+      // })
+
+
+    }
 
     if (scale < min_scale)
       scale = min_scale
 
-      pointX = e.layerX - xs * scale
-      pointY = e.layerY - ys * scale
-      $(zoom).css('transform', "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")")
+    console.log(e.clientY)
+    pointX = e.layerX - xs * scale
+    pointY = e.layerY - ys * scale
+
+    // $('.canvas').css('transform', "translate(" + -document.querySelector('#text').scrollLeft * scale + "px, " + -document.querySelector('#text').scrollTop * scale + "px) scale(" + scale + ")")
+    // $('.canvas').css('transform-origin', parseInt(document.querySelector('#text').scrollLeft) + 'px ' + parseInt(document.querySelector('#text').scrollTop) + 'px')
+
+    $(zoom).css('transform', "scale(" + scale + ") ")
     e.preventDefault();
-  }); 
+  });
+
+//////////////////////////////////////////////////////////////
+
+  $(document).on('nextPageClicked', function (e) {
+    scale = 1
+    img = new Image();
+    img.src = $(".img__current").attr('src');
+    console.log(img.height)
+    img.onload = function () {
+
+    }
+    $(canvas).css("width", img.width);
+    $(canvas).css("height", img.height);
+
+
+    while (
+      img.height * scale > parseInt($('#text').css('height')) || img.width * scale > parseInt($('#text').css('width'))
+    ) {
+      scale -= 0.05
+      min_scale = scale
+      console.log(img.width * scale, parseInt($('#text').css('width')))
+    }
+    if (scale == 1) {
+      while (
+        img.height * scale < parseInt($('#text').css('height')) && img.width * scale < parseInt($('#text').css('width'))
+      ) {
+        scale += 0.05
+      }
+      min_scale = 1
+    }
+
+
+    $(canvas).css('transform', 'scale(' + scale + ')')
+
+  })
+
+  $(document).on('prevPageClicked', function (e) {
+    scale = 1
+    img = new Image();
+    img.src = $(".img__current").attr('src');
+    console.log(img.height)
+    img.onload = function () {
+
+    }
+    $(canvas).css("width", img.width);
+    $(canvas).css("height", img.height);
+
+
+    while (
+      img.height * scale > parseInt($('#text').css('height')) || img.width * scale > parseInt($('#text').css('width'))
+    ) {
+      scale -= 0.05
+      min_scale = scale
+      console.log(img.width * scale, parseInt($('#text').css('width')))
+    }
+    if (scale == 1) {
+      while (
+        img.height * scale < parseInt($('#text').css('height')) && img.width * scale < parseInt($('#text').css('width'))
+      ) {
+        scale += 0.05
+      }
+      min_scale = 1
+    }
+
+
+    $(canvas).css('transform', 'scale(' + scale + ')')
+
+  })
 })
 

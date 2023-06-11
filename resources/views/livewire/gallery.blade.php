@@ -47,16 +47,16 @@
                                     <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
                                         multiple>
                                 </div>
-
-                                @error('files.*')
+                                {{-- {{ $paginate->count()}} --}}
+                                {{-- @error('files.*')
                                     <span class="error">{{ $message }}</span>
-                                @enderror
+                                @enderror --}}
                             </div>
                             <div class="col-md-2">                                
                                 @if ($is_image)
-                                    <button class="btn btn-primary" wire:click="store_photos(true)">Загрузить</button>
+                                    <button class="btn btn-primary" wire:click="store_photos">Загрузить</button>
                                 @else
-                                    <button class="btn btn-primary" wire:click="store_photos(false)" onClick="uploadChunks()">Загрузить</button>
+                                    <button class="btn btn-primary" wire:click onClick="uploadChunks()">Загрузить</button>
                                 @endif
                             </div>
                             <div class="col-md-2">
@@ -119,21 +119,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <form wire:submit.prevent="submit">
-                <div class="row">
-                    <label for="formFileMultiple" class="form-label">Добавить файлы</label>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
-                                multiple>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <input type="submit" class="btn btn-primary" value="Загрузить"></button>
-                    </div>
-                </div>
-            </form> --}}
 
             <div class="row">
                 <div class="card">

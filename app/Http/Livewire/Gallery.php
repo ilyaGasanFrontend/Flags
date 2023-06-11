@@ -272,36 +272,33 @@ class Gallery extends Component
     }
 
 
-    public function store_photos($param)
+    public function store_photos()
     {
-        if (!$param) {
-            return;
-        } else {
-            // dd(public_path('storage'));
-            $this->validate([
-                'files.*' => 'image',
+        // dd(public_path('storage'));
+        $this->validate([
+            'files.*' => 'image',
+        ]);
+
+        foreach ($this->files as $file) {
+            // storage::path('public') "E:\Projects\FlagsOcta\storage\app\public"
+            // public_path('storage') "E:\Projects\FlagsOcta\public\storage"
+            $file->store('photos', 'public');
+            $width = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[0];
+            $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
+
+            image::create([
+                'user_id' => auth()->user()->id,
+                'original_name' => $file->getClientOriginalName(),
+                'hash_name' => $file->hashName(),
+                'path_to_file' => '/storage/photos/' . $file->hashName(),
+                'original_width' =>  $width,
+                'original_height' => $height,
+
             ]);
-
-            foreach ($this->files as $file) {
-                // storage::path('public') "E:\Projects\FlagsOcta\storage\app\public"
-                // public_path('storage') "E:\Projects\FlagsOcta\public\storage"
-                $file->store('photos', 'public');
-                $width = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[0];
-                $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
-
-                image::create([
-                    'user_id' => auth()->user()->id,
-                    'original_name' => $file->getClientOriginalName(),
-                    'hash_name' => $file->hashName(),
-                    'path_to_file' => '/storage/photos/' . $file->hashName(),
-                    'original_width' =>  $width,
-                    'original_height' => $height,
-
-                ]);
-            }
-
-            // return redirect()->to('/gallery');
         }
+
+        // return redirect()->to('/gallery');
+
     }
 
     public function render()

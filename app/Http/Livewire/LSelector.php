@@ -3,13 +3,18 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
+
 use App\Models\test;
 use App\Models\Image;
 use App\Models\Category;
-use Auth;
 
 class LSelector extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    protected $querySrting = ['search'];
+
     private $DELAY = 0.5;
     public $test;
     protected $listeners = ['submit', ];
@@ -32,6 +37,11 @@ class LSelector extends Component
     // public $squares;
 
     public $delete;
+
+    public $show_grid = false;
+
+    //для пагинации
+    // public $first_id, $last_id;
 
     public function delete($id)
     {
@@ -85,12 +95,30 @@ class LSelector extends Component
         // 
         //https://laravel.com/docs/10.x/database#listening-for-query-events   
         sleep($this->DELAY);
-        
-        // if (test::created($sql) == null)
-        //     dump('123');
-        // dump(test::creating($sql));
-        // dump(test::created($sql));
     }
+
+    public function go_to_prev()
+    {
+        $prev_id = Image::where('user_id', auth()->user()->id)->where('id', '<', $this->param)->orderByDesc('id')->limit(1)->value('id');
+        $this->param = $prev_id;
+        $this->images = Image::find($this->param);
+        $this->dispatchBrowserEvent('prevPageClicked');
+    }
+
+    public function go_to_next()
+    {
+        $next_id = Image::where('user_id', auth()->user()->id)->where('id', '>', $this->param)->limit(1)->value('id');
+        if ($next_id == null)
+        {
+            $next_id = Image::where('user_id', auth()->user()->id)->first()->value('id');
+            // dd($next_id);
+        }
+
+        $this->param = $next_id;
+        $this->images = Image::find($this->param);
+        $this->dispatchBrowserEvent('nextPageClicked');
+    }
+
 
     public function mount($param)
     {
@@ -99,6 +127,10 @@ class LSelector extends Component
 
     public function render()
     {
+        $first_id = Image::where('user_id', auth()->user()->id)->first()->value('id');
+        $last_id = Image::where('user_id', auth()->user()->id)->orderByDesc('id')->value('id');
+        // dd($this->first_id);
+
         $this->images = Image::find($this->param);
         $squares = test::select(
             'tests.x',
@@ -152,6 +184,8 @@ class LSelector extends Component
         else {
             $next_image_id = Image::where('user_id', auth()->user()->id)->where('id', '>', $this->param)->first()->getOriginal('id');
         }
+
+        $paginate = Image::find($this->param)->paginate(1);
         // dd($prev_image_id);
         // $next_image_id;
         return view('livewire.l-selector', compact([
@@ -159,6 +193,10 @@ class LSelector extends Component
             'squares',
             'prev_image_id',
             'next_image_id',
+            'paginate',
+            'first_id',
+            'last_id',
+            // 'foo' => Image::where('id', 'like', '%'.$this->param.'%')->get(),
         ]))->extends('layouts.app');
     }
 }
