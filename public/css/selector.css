@@ -193,6 +193,13 @@
       pointer-events: none;
       
     }
+
+    .correcting {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+
     .button__deletting__disabled {
       text-decoration: none; 
       pointer-events: none;
