@@ -4,6 +4,9 @@ $(document).ready(function (e) {
     EditingElements: 2,
     DeletingElements: 3
   });
+
+  var isOverToolbar = false
+
   var script_src = document.getElementsByTagName('script')[3].src
   // //console.log(script_src)
   var prevobjects = $('.dropdown-menu')
@@ -16,6 +19,7 @@ $(document).ready(function (e) {
   var scale = 1;
   var pointX = 0
   var pointY = 0
+
   var img = new Image();
 
   img.src = $(".img__current").attr('src');
@@ -125,49 +129,57 @@ $(document).ready(function (e) {
   $(canvas).on('mousedown', function (e) {
     switch (status) {
       case (Statuses.CreatingElements):
-        var rect = e.target.getBoundingClientRect();
-        var x = e.clientX - canvas.left; //x position within the element.
-        var y = e.clientY - canvas.top;  //y position within the element.
+        if (isOverToolbar) {
 
-        // // //console.log("Left? : " + x + " ; Top? : " + y + ".");
-        // startcoordX = (e.originalEvent.layerX - pointX) / scale
-        // startcoordY = (e.originalEvent.layerY - pointY) / scale
+        }
+        else {
 
-        startcoordX = e.originalEvent.layerX / scale
-        startcoordY = e.originalEvent.layerY / scale
-        //console.log(startcoordX, startcoordY, x, y)
-        // //console.log(startcoordX, $(canvas).css('transform'), pointX)
-        var object = $('<div>', {
-          'class': 'square point__events',
-        })
-        id = '#' + square + $('.canvas').children('.square').length
-        curenid = id
-        // startcoordX = parseInt($(canvas).css("width")) / 2 + startcoordX;
-        // startcoordX = startcoordX;
-        // startcoordY = parseInt($(canvas).css("height")) / 2 + startcoordY;
-        // startcoordY = startcoordY;
-        newstartX = startcoordX;
-        newstartY = startcoordY;
+          var rect = e.target.getBoundingClientRect();
+          var x = e.clientX - canvas.left; //x position within the element.
+          var y = e.clientY - canvas.top;  //y position within the element.
+
+          // // //console.log("Left? : " + x + " ; Top? : " + y + ".");
+          // startcoordX = (e.originalEvent.layerX - pointX) / scale
+          // startcoordY = (e.originalEvent.layerY - pointY) / scale
+
+          startcoordX = e.originalEvent.layerX / scale
+          startcoordY = e.originalEvent.layerY / scale
+          //console.log(startcoordX, startcoordY, x, y)
+          // //console.log(startcoordX, $(canvas).css('transform'), pointX)
+          var object = $('<div>', {
+            'class': 'square point__events',
+          })
+          id = '#' + square + $('.canvas').children('.square').length
+          curenid = id
+          // startcoordX = parseInt($(canvas).css("width")) / 2 + startcoordX;
+          // startcoordX = startcoordX;
+          // startcoordY = parseInt($(canvas).css("height")) / 2 + startcoordY;
+          // startcoordY = startcoordY;
+          newstartX = startcoordX;
+          newstartY = startcoordY;
 
 
-        $(object).attr('id', 'square' + $('.canvas').children('.square').length)
-        $(canvas).append(object)
-        $(id).css('top', startcoordY)
-        $(id).css('left', startcoordX)
-        $(id).css('width', 0)
-        $(id).css('height', 0)
-        $(id).css('color', radio_checked_color)
-        // $(id).css('background', radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)')
+          $(object).attr('id', 'square' + $('.canvas').children('.square').length)
+          $(canvas).append(object)
+          $(id).css('top', startcoordY)
+          $(id).css('left', startcoordX)
+          $(id).css('width', 0)
+          $(id).css('height', 0)
+          $(id).css('color', radio_checked_color)
+          // $(id).css('background', radio_checked_color.substring(0, radio_checked_color.length-1) + ', 0.25)')
 
-        flag = true
+          $('.toolbar').toggleClass('hidden')
 
-        is_out = false
+          flag = true
 
-        // startcoordX = e.clientX
-        // startcoordY = e.clientY
+          is_out = false
 
-        $(".canvas").attr('wire:click.prevent', '')
-        break
+          // startcoordX = e.clientX
+          // startcoordY = e.clientY
+
+          $(".canvas").attr('wire:click.prevent', '')
+          break
+        }
     }
   });
   $(canvas).on('mouseleave', function (e) {
@@ -183,20 +195,20 @@ $(document).ready(function (e) {
   })
 
   var wrappercanvas = $('#text')
-  
+
   function scrollRight(elementId, distance) {
     var currentScrollLeft = $("#" + elementId).scrollLeft();
-    $("#" + elementId).animate({ scrollLeft: currentScrollLeft + distance }, 0.00001 );
+    $("#" + elementId).animate({ scrollLeft: currentScrollLeft + distance }, 0.00001);
 
-    }
-    
+  }
+
   function scrollTop(elementId, distance) {
     var currentScrollLeft = $("#" + elementId).scrollTop();
-    $("#" + elementId).animate({ scrollTop: currentScrollLeft + distance }, 0.00001 );
-    }
-  
-    // Пример использования
-  var  smesh = 0
+    $("#" + elementId).animate({ scrollTop: currentScrollLeft + distance }, 0.00001);
+  }
+
+  // Пример использования
+  var smesh = 0
 
   function getScrollLeft(elementId) {
     var scrollLeft = $("#" + elementId).scrollLeft();
@@ -209,38 +221,33 @@ $(document).ready(function (e) {
     // console.log("Текущее положение скроллбара по вертикали: " + scrollTop);
     return scrollTop;
   }
-  
+
   $(canvas).on('mousemove', function (e) {
     // console.log(e.originalEvent.layerX - getScrollLeft('text'), parseFloat($(wrappercanvas).css('width')))
-    console.log(parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50/scale)
+    // console.log(parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50/scale)
     switch (status) {
       case (Statuses.CreatingElements):
         if (flag) {
           // //console.log(e.originalEvent.layerX / scale, parseFloat($(wrappercanvas).css('width'))/scale)
           // console.log(parseFloat($(canvas).css('width'))*scale , parseFloat($(wrappercanvas).css('width')))
-          
+
           var endcoordX = e.originalEvent.layerX / scale
           var endcoordY = e.originalEvent.layerY / scale
 
-          if (parseFloat($(canvas).css('width'))*scale > parseFloat($(wrappercanvas).css('width')))
-          {
+          if (parseFloat($(canvas).css('width')) * scale > parseFloat($(wrappercanvas).css('width'))) {
             var scrolhor = getScrollLeft('text')
-            console.log(parseFloat($(canvas).css('height'))/scale -e.originalEvent.layerY - getScrollTop('text')  )
-            if (parseFloat($(wrappercanvas).css('width') ) - e.originalEvent.layerX + getScrollLeft('text') < 50/scale)
-            {
+            // console.log(parseFloat($(canvas).css('height'))/scale -e.originalEvent.layerY - getScrollTop('text')  )
+            if (parseFloat($(wrappercanvas).css('width')) - e.originalEvent.layerX + getScrollLeft('text') < 50 / scale) {
               scrollRight('text', 10)
             }
-            if (e.originalEvent.layerX-scrolhor < 50/scale)
-            {
+            if (e.originalEvent.layerX - scrolhor < 50 / scale) {
               scrollRight('text', -10)
             }
-            if (e.originalEvent.layerY-getScrollTop('text') < 50/scale)
-            {
+            if (e.originalEvent.layerY - getScrollTop('text') < 50 / scale) {
               scrollTop('text', -10)
             }
 
-            if (parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50/scale)
-            {
+            if (parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50 / scale) {
               scrollTop('text', 10)
             }
           }
@@ -287,71 +294,37 @@ $(document).ready(function (e) {
   $('.canvas').on('mouseup', function () {
     switch (status) {
       case (Statuses.CreatingElements):
-        flag = false;
-        if (parseInt($(curenid).css('width')) < 20 && parseInt($(curenid).css('height')) < 20) {
-          $(curenid).css('width', 20)
-          $(curenid).css('height', 20)
+        if (flag) {
 
-          $(curenid).css('border-radius', "50%")
-          $(curenid).css('top', parseInt($(curenid).css('top')) - parseInt($(curenid).css('height')) / 2)
-          $(curenid).css('left', parseInt($(curenid).css('left')) - parseInt($(curenid).css('width')) / 2)
+          flag = false;
+          if (parseInt($(curenid).css('width')) < 20 && parseInt($(curenid).css('height')) < 20) {
+            $(curenid).css('width', 20)
+            $(curenid).css('height', 20)
 
+            $(curenid).css('border-radius', "50%")
+            $(curenid).css('top', parseInt($(curenid).css('top')) - parseInt($(curenid).css('height')) / 2)
+            $(curenid).css('left', parseInt($(curenid).css('left')) - parseInt($(curenid).css('width')) / 2)
+
+          }
+          // //console.log(img.height)
+          $(id).css('width', (e.clientX - startcoordX) / scale)
+          $(id).css('height', (e.clientY - startcoordY) / scale)
+
+          if (!is_out) {
+            // $("#text").attr('wire:ignore', '')
+            Livewire.emit('create', parseInt(curenid.substr(7, curenid.length)) + 1, radio_checked_id, parseFloat($(id).css('left')), parseFloat($(id).css('top')), parseFloat($(id).css('width')), parseFloat($(id).css('height')))
+            // $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
+            // $("#text").removeAttr('wire:ignore')
+          }
+          // var pensil = $('<a>',{
+          //   'class': 'correcting'
+          // })
+
+          // $(pensil).append('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
+          // $('#text').append(pensil)
+          $('.toolbar').toggleClass('hidden')
+          break
         }
-        // //console.log(img.height)
-        $(id).css('width', (e.clientX - startcoordX) / scale)
-        $(id).css('height', (e.clientY - startcoordY) / scale)
-
-        let number = $('.canvas').children('.square').length - 1
-        var obj = $('.obj-table')
-        // //console.log(radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.4)')
-        var table_row = $('<tr>', {
-          'id': 'table_row_' + number,
-          'class': 'table-row',
-          'style': 'background-color: ' + radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.25)',
-
-        })
-
-        var td_number = $('<td>', {
-          'class': 'number',
-        })
-
-        var td_desmetr = $('<td>', {
-          'class': 'desmetr',
-        })
-
-        var td_table_action = $('<td>', {
-          'class': 'table-action',
-        })
-        
-
-        var edit_button = $('<a>', {
-          'class': 'button__editing',
-          'id': `${editingButtonId}${$('.canvas').children('.square').length - 1}`,
-          // 'style': 'text-decoration: none'
-
-        })
-        var delete_button = $('<a>', {
-          'class': 'button__deletting',
-          'id': `${delettingButtonId}${$('.canvas').children('.square').length - 1}`,
-          'wire:click.prevent': `delete(${number})`
-          // 'style': 'text-decoration: none'
-
-        })
-
-        if (!is_out) {
-          // $("#text").attr('wire:ignore', '')
-          $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
-          // $("#text").removeAttr('wire:ignore')
-        }
-        // var pensil = $('<a>',{
-        //   'class': 'correcting'
-        // })
-
-        // $(pensil).append('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
-        // $('#text').append(pensil)
-        
-        break
-
     }
 
   });
@@ -413,6 +386,7 @@ $(document).ready(function (e) {
       // //console.log(number, '1111111111111111111')
       let objects = $('.obj-table').children('.table-row').children('.table-action')
       $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+      $('#toolbar__editing__button'+number).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
       $(testobjects[number]).toggleClass('point__events')
 
 
@@ -436,6 +410,14 @@ $(document).ready(function (e) {
       }
 
       // // //console.log($($('.obj-table').children('.table-row')[number]).children('.button__editing').attr('wire:click', 'dododo(123)'))
+
+
+      let toolbars = $('.toolbar')
+      for (let i = 0; i < testobjects.length; i++) {
+        if (i != parseInt(number)) {
+          $(toolbars[i]).toggleClass('hidden')
+        }
+      }
 
       $('.categories-editing').click(function () {
         //получение новых id и цвета у чекбокса
@@ -484,6 +466,9 @@ $(document).ready(function (e) {
 
             target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
 
+            $('#square_toolbar_' + number).css('left', parseFloat(target.style.left) + x + parseFloat(target.style.width))
+            $('#square_toolbar_' + number).css('top', parseFloat(target.style.top) + y)
+
             target.setAttribute('data-x', x)
             target.setAttribute('data-y', y)
 
@@ -492,7 +477,7 @@ $(document).ready(function (e) {
             d_width = parseFloat($(`#square${number}`).css('width'))
             d_height = parseFloat($(`#square${number}`).css('height'))
 
-            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
+            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
           }
         },
         modifiers: [
@@ -549,6 +534,9 @@ $(document).ready(function (e) {
         // translate the element
         target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
 
+        $('#square_toolbar_' + number).css('left', parseFloat(target.style.left) + x + parseFloat(target.style.width))
+        $('#square_toolbar_' + number).css('top', parseFloat(target.style.top) + y)
+
         // update the posiion attributes
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
@@ -558,14 +546,14 @@ $(document).ready(function (e) {
         d_width = parseFloat($(`#square${number}`).css('width'))
         d_height = parseFloat($(`#square${number}`).css('height'))
 
-        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
       }
       // // //console.log( $(testobjects[number]).css('x'))
       window.dragMoveListener = dragMoveListener
 
       // //console.log(number)
       // $(objects[number]).children('.button__editing').attr('wire:click', `update(${parseInt(number)+1}, 100, 100, 100, 100, ${radio_checked_id})`)
-      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+      $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
     }
     else {
 
@@ -642,56 +630,285 @@ $(document).ready(function (e) {
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   })
 
-
-  $('.canvas').on('mouseenter', '.square', function (e) {
-
-    switch (status) {
-      case (Statuses.EditingElements):
-        $(this).toggleClass('active__square__el__obj__changing')
-
-        let number = ($(this).attr('id')).substring(square.length)
-
-        let objects = $('.dropdown-menu-obj').children()
-        $(objects[number]).toggleClass('active__menu__el__obj__changing')
-
-        break
-
-
-      case (Statuses.DeletingElements):
-        $(this).toggleClass('active__square__el__obj__deletting')
-
-        let numberD = ($(this).attr('id')).substring(square.length)
-
-        let objectsD = $('.dropdown-menu-obj').children()
-        $(objectsD[numberD]).toggleClass('active__menu__el__obj__deletting')
-
-        break
+  $(canvas).on('mouseenter', '.toolbar', function (e) {
+    if ($(this).hasClass('disabled')) {
+      isOverToolbar = true
+      $(this).toggleClass('disabled')
     }
   })
 
-  $('.canvas').on('mouseleave', '.square', function (e) {
-    switch (status) {
-      case (Statuses.EditingElements):
-        $(this).toggleClass('active__square__el__obj__changing')
-
-        let number = ($(this).attr('id')).substring(square.length)
-
-        let objects = $('.dropdown-menu-obj').children()
-        $(objects[number]).toggleClass('active__menu__el__obj__changing')
-
-        break
-      case (Statuses.DeletingElements):
-        $(this).toggleClass('active__square__el__obj__deletting')
-
-        let numberD = ($(this).attr('id')).substring(square.length)
-
-        let objectsD = $('.dropdown-menu-obj').children()
-        $(objectsD[numberD]).toggleClass('active__menu__el__obj__deletting')
-        break
+  $(canvas).on('mouseleave', '.toolbar', function (e) {
+    if (!$(this).hasClass('disabled')) {
+      isOverToolbar = false
+      $(this).toggleClass('disabled')
     }
   })
 
+  $(canvas).on('mouseenter', '.button__editing', function (e) {
+    let number = ($(this).attr('id')).substring(editingButtonId.length)
+    let testobjects = $('.canvas').children('.square')
+    $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+  })
 
+  $(canvas).on('mouseleave', '.button__editing', function (e) {
+    let number = ($(this).attr('id')).substring(editingButtonId.length)
+    let testobjects = $('.canvas').children('.square')
+    $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+  })
+
+  $(canvas).on('click', '.button__editing', function (e) {
+    // // //console.log('click', $('.obj-table').children('.table-row').children('.table-action'))
+    if (status != Statuses.EditingElements) {
+
+      status = Statuses.EditingElements
+      // //console.log(status)
+      $('#flag').val('EditingInProgress')
+      // $(".canvas").attr('wire:click.prevent', '')
+      let categories = $('.categories').children()
+      let number = ($(this).attr('id')).substring('toolbar__editing__button'.length)
+      let active_category_id = $('#hidden-category-' + number).val()
+
+      for (let i = 0; i < categories.length; i++) {
+        // //console.log($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length), radio_checked_id)
+        if ($(categories[i]).children('.form-check-input').attr('id').substr('radio_'.length) == active_category_id) {
+          $(categories[i]).children('.form-check-input').prop('checked', true)
+          radio_checked_id = active_category_id
+          radio_checked_color = $('#span_' + radio_checked_id).css('color');
+        }
+      }
+
+      let testobjects = $('.canvas').children('.square')
+      let objects = $('.obj-table').children('.table-row').children('.table-action')
+
+      $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+      $('#editing__button' + number).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+      $(testobjects[number]).toggleClass('point__events')
+
+
+      $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
+
+      $("input[type='radio']").toggleClass('categories-editing')
+      $("input[type='radio']").toggleClass('categories-default')
+
+      //смена класса необходимой строке
+      $($('.obj-table').children('.table-row')[number]).toggleClass('table-row-editing')
+
+      //смена класса области с текстом
+      $($('.obj-table').children('.table-row').children('.desmetr')[number]).toggleClass('desmetr-editing')
+
+      for (let i = 0; i < testobjects.length; i++) {
+        // // //console.log(i, $(objects[number]).children())
+        if (i != parseInt(number)) {
+          $(testobjects[i]).toggleClass('hidden__squares')
+          $(objects[i]).toggleClass('hidden__tools')
+        }
+      }
+
+      let toolbars = $('.toolbar')
+      for (let i = 0; i < testobjects.length; i++) {
+        if (i != parseInt(number)) {
+          $(toolbars[i]).toggleClass('hidden')
+        }
+      }
+
+      $('.categories-editing').click(function () {
+        //получение новых id и цвета у чекбокса
+        radio_checked_id = $("input[name='radio_category']:checked").val()
+        radio_checked_color = $('#span_' + radio_checked_id).css('color')
+
+        //смена цвета выделенному квадрату
+        $('.active__square__el__obj__edititng').css('color', radio_checked_color)
+        // //console.log($('#span_' + radio_checked_id).text())
+
+        //смена описания
+        $('.desmetr-editing').text($('#span_' + radio_checked_id).text())
+
+        //смена цвета фона
+        $('.table-row-editing').css('background', radio_checked_color.substring(0, radio_checked_color.length - 1) + ', 0.25)')
+
+        let edit_button_attr = $(objects[number]).children('.button__editing').attr('wire:click.prevent')
+        edit_button_attr = edit_button_attr.substr(0, edit_button_attr.length - 2) + radio_checked_id + ')'
+        // //console.log(edit_button_attr)
+        $(objects[number]).children('.button__editing').attr('wire:click.prevent', edit_button_attr)
+      })
+
+      var d_x, d_y, d_top, d_left, d_width, d_height
+      d_left = parseFloat($(`#square${number}`).css('left'))
+      d_top = parseFloat($(`#square${number}`).css('top'))
+      d_width = parseFloat($(`#square${number}`).css('width'))
+      d_height = parseFloat($(`#square${number}`).css('height'))
+
+      interact(testobjects[number]).resizable({
+        // resize from all edges and corners
+        edges: { left: true, right: true, bottom: true, top: true },
+
+        listeners: {
+          move(event) {
+            var target = event.target
+            var x = (parseFloat(target.getAttribute('data-x')) || 0)
+            var y = (parseFloat(target.getAttribute('data-y')) || 0)
+
+            // update the element's style
+            target.style.width = event.rect.width * (1 / scale) + 'px'
+            target.style.height = event.rect.height * (1 / scale) + 'px'
+            // translate when resizing from top or left edges
+            x += event.deltaRect.left * (1 / scale)
+            y += event.deltaRect.top * (1 / scale)
+            console.log(target.style.width, x, target.style.left)
+
+            target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+
+            $('#square_toolbar_' + number).css('left', parseFloat(target.style.left) + x + parseFloat(target.style.width))
+            $('#square_toolbar_' + number).css('top', parseFloat(target.style.top) + y)
+
+            target.setAttribute('data-x', x)
+            target.setAttribute('data-y', y)
+
+            d_left = parseFloat($(`#square${number}`).css('left'))
+            d_top = parseFloat($(`#square${number}`).css('top'))
+            d_width = parseFloat($(`#square${number}`).css('width'))
+            d_height = parseFloat($(`#square${number}`).css('height'))
+            // alert(123)
+            // $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
+          }
+        },
+        modifiers: [
+          // keep the edges inside the parent
+          interact.modifiers.restrictEdges({
+            outer: 'parent'
+          }),
+
+          // minimum size
+          interact.modifiers.restrictSize({
+            min: { width: 10, height: 10 }
+          })
+        ],
+
+        inertia: true
+      })
+
+      interact(testobjects[number]).draggable({
+        // enable inertial throwing
+        inertia: true,
+        // keep the element within the area of it's parent
+        modifiers: [
+          interact.modifiers.restrictRect({
+            restriction: 'parent',
+            endOnly: true
+          })
+        ],
+        // enable autoScroll
+        autoScroll: true,
+
+        listeners: {
+          // call this function on every dragmove event
+          move: dragMoveListener,
+
+          // call this function on every dragend event
+          end(event) {
+            var textEl = event.target.querySelector('p')
+
+            textEl && (textEl.textContent =
+              'moved a distance of ' +
+              (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                Math.pow(event.pageY - event.y0, 2) | 0))
+                .toFixed(2) + 'px')
+          }
+        }
+      })
+
+      function dragMoveListener(event) {
+        var target = event.target
+        // keep the dragged position in the data-x/data-y attributes
+        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx / scale
+        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy / scale
+
+        // translate the element
+        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+        $('#square_toolbar_' + number).css('left', parseFloat(target.style.left) + x + parseFloat(target.style.width))
+        $('#square_toolbar_' + number).css('top', parseFloat(target.style.top) + y)
+
+
+        // update the posiion attributes
+        target.setAttribute('data-x', x)
+        target.setAttribute('data-y', y)
+
+        d_left = parseFloat($(`#square${number}`).css('left'))
+        d_top = parseFloat($(`#square${number}`).css('top'))
+        d_width = parseFloat($(`#square${number}`).css('width'))
+        d_height = parseFloat($(`#square${number}`).css('height'))
+
+        // $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+      }
+      // // //console.log( $(testobjects[number]).css('x'))
+      window.dragMoveListener = dragMoveListener
+
+      // //console.log(number)
+      // $(objects[number]).children('.button__editing').attr('wire:click', `update(${parseInt(number)+1}, 100, 100, 100, 100, ${radio_checked_id})`)
+      // $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(true, ${parseInt(number) + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+    }
+    else {
+      status = Statuses.CreatingElements
+      let testobjects = $('.canvas').children('.square')
+      let number = ($(this).attr('id')).substring('toolbar__editing__button'.length)
+      let objects = $('.obj-table').children('.table-row').children('.table-action')
+      // $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
+      $(testobjects[number]).toggleClass('point__events')
+      $("input[type='radio']").toggleClass('categories-editing')
+      $("input[type='radio']").toggleClass('categories-default')
+      $($('.obj-table').children('.table-row')[number]).toggleClass('table-row-editing')
+      $($('.obj-table').children('.table-row').children('.desmetr')[number]).toggleClass('desmetr-editing')
+
+      // for (let i = 0; i < testobjects.length; i++) {
+
+      //   if (i != parseInt(number)) {
+      //     $(testobjects[i]).toggleClass('hidden__squares')
+      //     $(objects[i]).toggleClass('hidden__tools')
+      //   }
+      // }
+      $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
+      // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
+      $(objects[number]).children('.button__editing').attr('wire:click.prevent', '')
+
+      let object = $('#square' + number)
+      let dx = $(object).attr('data-x') == null ? 0 : parseFloat($(object).attr('data-x'))
+      let dy = $(object).attr('data-y') == null ? 0 : parseFloat($(object).attr('data-y'))
+
+      Livewire.emit(
+        'update',
+        parseInt(number) + 1,
+        parseFloat($(object).css('left')) + dx,
+        parseFloat($(object).css('top')) + dy,
+        parseFloat($(object).css('width')),
+        parseFloat($(object).css('height')),
+        radio_checked_id
+      )
+
+
+      // alert(123)
+    }
+
+  })
+
+  $(canvas).on('mouseenter', '.button__deletting', function (e) {
+    let number = ($(this).attr('id')).substring(delettingButtonId.length)
+    let testobjects = $('.canvas').children('.square')
+    $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
+  })
+
+  //new mouseleave delete
+  $(canvas).on('mouseleave', '.button__deletting', function (e) {
+    if (isOverToolbar) {
+      let number = ($(this).attr('id')).substring(delettingButtonId.length)
+      let testobjects = $('.canvas').children('.square')
+      $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
+    }
+  })
+
+  //new click delete
+  $(canvas).on('click', '.button__deletting', function (e) {
+    isOverToolbar = false
+  })
   // $('#toggle_grid').on('mouseenter', function (e) {
   //   $('#text').removeAttr('wire:ignore')
   //   $('script[src="' + script_src + '"]').remove();
@@ -706,14 +923,7 @@ $(document).ready(function (e) {
   // })
 
   $('#toggle_grid').on('click', function (e) {
-    // // //console.log($('#canvas').css('transform'))
     $('.canvas').toggleClass('grid')
-    $('#image').attr('scr', '/storage/photos/levHiM5VCWB4NLqNlEBeYQRg7SMOIdMvKDcnsy9V.jpg')
-
-  })
-
-  $('.canvas').on('change', function (e) {
-    // //console.log(321)
   })
 
   function addOnWheel(elem, handler) {
@@ -746,6 +956,10 @@ $(document).ready(function (e) {
     var outer_width = document.getElementById('text').offsetWidth
     var outer_height = document.getElementById('text').offsetHeight
     var old_center_X = parseInt(((img.width * scale - outer_width)) / 2)
+
+
+    // $('#edit_toolbar_0').css('width', 24 / scale)
+    // $('#edit_toolbar_0').css('height', 24 / scale)
 
     if (delta > 0) {
       scale -= 0.05
@@ -804,7 +1018,7 @@ $(document).ready(function (e) {
     e.preventDefault();
   });
 
-//////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
 
   $(document).on('nextPageClicked', function (e) {
     scale = 1

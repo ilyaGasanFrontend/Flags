@@ -21,7 +21,9 @@
                                         overflow: scroll;"
                                         class="position_image">
 
-                                        <div class="canvas" wire:ignore.self wire:click.prevent id="canvas"
+                                        <div class="canvas" 
+                                        wire:ignore.self 
+                                        wire:click.prevent id="canvas"
                                             style="transform-origin: 0% 0%; 
                                             /* width: {{ $images->original_width }}px; height: {{ $images->original_height }}px;  */
                                             width: 100%; height: 100%; 
@@ -31,11 +33,54 @@
                                             <img src="{{ $images->path_to_file }}" alt="" class="img__current"
                                                 id="image">
 
+
+
                                             @foreach ($squares as $i => $square)
                                                 <div class="square point__events" id="square{{ $i }}"
                                                     style="top: {{ $square->y }}px; left: {{ $square->x }}px; width: {{ $square->width }}px; height: {{ $square->height }}px; color: {{ $square->color }};">
-
                                                 </div>
+
+                                                @if ($show_toolbars)
+                                                    <div class="toolbar disabled" id="square_toolbar_{{ $i }}"
+                                                        style="top: {{ $square->y }}px; left: {{ $square->x + $square->width }}px;">
+                                                #{{$i + 1}}
+                                                        <a class="button__editing"
+                                                            id="toolbar__editing__button{{ $i }}"
+                                                            wire:click.prevent="" style="text-decoration: none"><svg
+                                                                id="edit_toolbar_{{ $i }}"
+                                                                style="width: 24px; height: 24px"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="blue" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="feather feather-edit-2 align-middle">
+                                                                <path
+                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                                </path>
+                                                            </svg>
+                                                        </a>
+                                                        <a class="button__deletting"
+                                                            id="deletting__button{{ $i }}"
+                                                            wire:click.prevent="delete({{ $i }})"
+                                                            style="text-decoration: none"><svg
+                                                                xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="red" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="feather feather-trash-2 align-middle me-2">
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                                <line x1="10" y1="11" x2="10"
+                                                                    y2="17">
+                                                                </line>
+                                                                <line x1="14" y1="11" x2="14"
+                                                                    y2="17">
+                                                                </line>
+                                                            </svg></a>
+                                                    </div>
+                                                @endif
                                             @endforeach
 
                                         </div>
@@ -98,9 +143,10 @@
                                                 id="right" style="justify-content: center; display: flex">
                                                 <a href="#">
                                                     <svg style="scale:3; height:100%;"
-                                                        xmlns="http://www.w3.org/2000/svg" width="0" height="0"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        xmlns="http://www.w3.org/2000/svg" width="0"
+                                                        height="0" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
                                                         class="feather feather-chevron-right align-middle me-2">
                                                         <polyline points="9 18 15 12 9 6"></polyline>
                                                     </svg>
@@ -125,14 +171,39 @@
                                 <h5 class="card-title mb-0">Параметры</h5>
                             </div>
                             <div class="card-body">
-                                <button class="btn btn-primary" id="toggle_grid">
-                                    @if ($show_grid)
-                                        Скрыть сетку
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @if ($show_grid)
+                                            <button class="btn btn-primary" id="toggle_grid"
+                                                wire:click.prevent="$toggle('show_grid')">
+                                                Скрыть сетку
+                                            </button>
+                                        @else
+                                            <button class="btn btn-primary" id="toggle_grid"
+                                                wire:click.prevent="$toggle('show_grid')">
+                                                Показать сетку
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="range" class="form-range" min="50" max="200" step="50" value="100"
+                                            id="grid_range" @if (!$show_grid) 
+                                            {{-- disabled --}}
+                                             @endif>
+                                    </div>
+                                </div>
+
+                                <br>
+                                
+                                <button class="btn btn-primary" id="toggle_toolbar"
+                                    wire:click.prevent="$toggle('show_toolbars')">
+                                    @if ($show_toolbars)
+                                        Скрыть панель управления
                                     @else
-                                        Показать сетку
+                                        Показать панель управления
                                     @endif
                                 </button>
-
+                                
                             </div>
                         </div>
                         <div class="card">
