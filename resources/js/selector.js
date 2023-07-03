@@ -182,14 +182,133 @@ $(document).ready(function (e) {
         }
     }
   });
-  $(canvas).on('mouseleave', function (e) {
-    if (flag) {
-      flag = false
-      is_out = true
-      let objects = (canvas).children()
-      $(objects[objects.length - 1]).remove()
-      // // //console.log('exit')
+
+  $('.content').on('mouseup', function (e) {
+    switch (status) {
+      case (Statuses.CreatingElements):
+        if (flag) {
+          flag = false
+          Livewire.emit(
+            'create',
+            parseInt(curenid.substr(7, curenid.length)) + 1,
+            radio_checked_id,
+            parseFloat($(id).css('left')),
+            parseFloat($(id).css('top')),
+            parseFloat($(id).css('width')),
+            parseFloat($(id).css('height'))
+          )
+          break
+        }
     }
+  })
+
+  $(canvas).on('mouseleave', function (e) {
+    let canvas_x1 = $(canvas).offset().left
+    let canvas_y1 = $(canvas).offset().top
+
+    $('.content').on('mousemove', function (e) {
+      if (flag) {
+        let canvas_x2 = $(canvas).offset().left + parseFloat($(canvas).css('width')) * scale
+        let canvas_y2 = $(canvas).offset().top + parseFloat($(canvas).css('height')) * scale
+
+        // console.log('Канвас Х1', canvas_x1)
+        // console.log('Канвас Y1', canvas_y1)
+        // console.log('Канвас Х2', canvas_x2)
+        // console.log('Канвас Y2', canvas_y2)
+        // console.log('Позиция мыши', e.originalEvent.pageX, e.originalEvent.pageY)
+
+        if (e.originalEvent.pageY > canvas_y2) {
+          if (e.originalEvent.pageX < canvas_x1) {
+            $(id).css('width', startcoordX)
+            $(id).css('height', img.height - startcoordY)
+            // console.log('bottom left')
+          }
+          else if (e.originalEvent.pageX > canvas_x2) {
+            $(id).css('width', img.width - startcoordX)
+            $(id).css('height', img.height - startcoordY)
+            // console.log('bottom right')
+          }
+          else {
+            var endcoordX = (e.originalEvent.pageX - canvas_x1) / scale
+            var width_current = endcoordX - startcoordX
+
+            if (width_current >= 0) {
+              $(id).css('width', width_current)
+            }
+            else {
+              $(id).css('left', parseInt(endcoordX))
+              $(id).css('width', parseInt(Math.abs(width_current)))
+            }
+
+            $(id).css('height', img.height - startcoordY)
+            // console.log('bottom', startcoordX, (e.originalEvent.pageX - canvas_x1) / scale, canvas_x1)
+          }
+        }
+        if (e.originalEvent.pageY < canvas_y1) {
+          if (e.originalEvent.pageX < canvas_x1) {
+            $(id).css('width', startcoordX)
+            $(id).css('height', startcoordY)
+            // console.log('top left')
+          }
+          else if (e.originalEvent.pageX > canvas_x2) {
+            $(id).css('width', img.width - startcoordX)
+            $(id).css('height', startcoordY)
+            // console.log('top right')
+          }
+          else {
+            var endcoordX = (e.originalEvent.pageX - canvas_x1) / scale
+            var width_current = endcoordX - startcoordX
+
+            if (width_current >= 0) {
+              $(id).css('width', width_current)
+            }
+            else {
+              $(id).css('left', parseInt(endcoordX))
+              $(id).css('width', parseInt(Math.abs(width_current)))
+            }
+
+            $(id).css('height', startcoordY)
+            // console.log('top')       
+          }
+        }
+        if (e.originalEvent.pageY > canvas_y1 && e.originalEvent.pageY < canvas_y2) {
+          if (e.originalEvent.pageX < canvas_x1) {
+            var endcoordY = (e.originalEvent.pageY - canvas_y1) / scale
+            var height_current = endcoordY - startcoordY
+
+            if (height_current >= 0) {
+              $(id).css('height', height_current)
+            }
+            else {
+              $(id).css('top', parseInt(endcoordY))
+              $(id).css('height', parseInt(Math.abs(height_current)))
+            }
+            $(id).css('width', startcoordX)
+            // console.log('left')
+          }
+          else if (e.originalEvent.pageX > canvas_x2) {
+            var endcoordY = (e.originalEvent.pageY - canvas_y1) / scale
+            var height_current = endcoordY - startcoordY
+
+            if (height_current >= 0) {
+              $(id).css('height', height_current)
+            }
+            else {
+              $(id).css('top', parseInt(endcoordY))
+              $(id).css('height', parseInt(Math.abs(height_current)))
+            }
+            $(id).css('width', img.width - startcoordX)
+            // console.log('right')
+          }
+        }
+      }
+    })
+
+    // flag = false
+    // is_out = true
+    // let objects = (canvas).children()
+    // $(objects[objects.length - 1]).remove()
+    // // //console.log('exit')
 
 
   })
@@ -291,6 +410,7 @@ $(document).ready(function (e) {
     }
 
   })
+
   $('.canvas').on('mouseup', function () {
     switch (status) {
       case (Statuses.CreatingElements):
@@ -311,15 +431,14 @@ $(document).ready(function (e) {
           $(id).css('height', (e.clientY - startcoordY) / scale)
 
           if (!is_out) {
-            // $("#text").attr('wire:ignore', '')
             Livewire.emit('create', parseInt(curenid.substr(7, curenid.length)) + 1, radio_checked_id, parseFloat($(id).css('left')), parseFloat($(id).css('top')), parseFloat($(id).css('width')), parseFloat($(id).css('height')))
-            // $(".canvas").attr('wire:click.prevent', `create(${parseInt(curenid.substr(7, curenid.length)) + 1}, ${radio_checked_id}, ${parseFloat($(id).css('left'))}, ${parseFloat($(id).css('top'))}, ${parseFloat($(id).css('width'))}, ${parseFloat($(id).css('height'))})`)
-            // $("#text").removeAttr('wire:ignore')
           }
           // var pensil = $('<a>',{
           //   'class': 'correcting'
           // })
-
+          // var object = $(id)
+          // $(id).append('')
+          // console.log(object)
           // $(pensil).append('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>')
           // $('#text').append(pensil)
           $('.toolbar').toggleClass('hidden')
@@ -386,7 +505,7 @@ $(document).ready(function (e) {
       // //console.log(number, '1111111111111111111')
       let objects = $('.obj-table').children('.table-row').children('.table-action')
       $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
-      $('#toolbar__editing__button'+number).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+      $('#toolbar__editing__button' + number).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
       $(testobjects[number]).toggleClass('point__events')
 
 
