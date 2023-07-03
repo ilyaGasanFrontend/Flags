@@ -764,13 +764,15 @@ $(document).ready(function (e) {
   })
 
   $(canvas).on('mouseenter', '.button__editing', function (e) {
-    let number = ($(this).attr('id')).substring(editingButtonId.length)
+    // console.log(123)
+    let number = ($(this).attr('id')).substring('toolbar__editing__button'.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
+    // console.log($(testobjects[0]))
   })
 
   $(canvas).on('mouseleave', '.button__editing', function (e) {
-    let number = ($(this).attr('id')).substring(editingButtonId.length)
+    let number = ($(this).attr('id')).substring('toolbar__editing__button'.length)
     let testobjects = $('.canvas').children('.square')
     $(testobjects[number]).toggleClass('active__square__el__obj__edititng')
   })
