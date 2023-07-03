@@ -102,8 +102,8 @@ class LSelector extends Component
     {
         $prev_id = Image::where('user_id', auth()->user()->id)->where('id', '<', $this->param)->orderByDesc('id')->limit(1)->value('id');
         $this->param = $prev_id;
-        $this->images = Image::find($this->param);
-        $this->dispatchBrowserEvent('prevPageClicked');
+        // $this->images = Image::find($this->param);
+        $this->dispatchBrowserEvent('goToPageClicked');
     }
 
     public function go_to_next()
@@ -115,10 +115,15 @@ class LSelector extends Component
         }
 
         $this->param = $next_id;
-        $this->images = Image::find($this->param);
-        $this->dispatchBrowserEvent('nextPageClicked');
+        // $this->images = Image::find($this->param);
+        $this->dispatchBrowserEvent('goToPageClicked');
     }
 
+    public function go_to($id)
+    {
+        $this->param = $id;
+        $this->dispatchBrowserEvent('goToPageClicked');
+    }
 
     public function mount($param)
     {

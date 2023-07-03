@@ -119,15 +119,15 @@
                                                 @foreach ($nav_images as $img)
                                                     @if ($img['id'] == $images->id)
                                                         <div class="col-sm col__photos__list">
-                                                            <a href="{{ $img['id'] }}">
+                                                            <a>
                                                                 <img class="photogal-el photogal-el--active"
                                                                     src="{{ asset($img['path_to_file']) }}"
                                                                     alt="Image" style="height: 10vh" />
                                                             </a>
                                                         </div>
                                                     @else
-                                                        <div class="col-sm col__photos__list">
-                                                            <a href="{{ $img['id'] }}">
+                                                        <div class="col-sm col__photos__list" wire:click.prefetch="go_to({{$img['id']}})">
+                                                            <a>
                                                                 <img class="photogal-el"
                                                                     src="{{ asset($img['path_to_file']) }}"
                                                                     alt="Image"

@@ -1139,7 +1139,7 @@ $(document).ready(function (e) {
 
   //////////////////////////////////////////////////////////////
 
-  $(document).on('nextPageClicked', function (e) {
+  $(document).on('goToPageClicked', function (e) {
     scale = 1
     img = new Image();
     img.src = $(".img__current").attr('src');
@@ -1172,33 +1172,4 @@ $(document).ready(function (e) {
 
   })
 
-  $(document).on('prevPageClicked', function (e) {
-    scale = 1
-    img = new Image();
-    img.src = $(".img__current").attr('src');
-    // //console.log(img.height)
-    img.onload = function () {
-
-    }
-    $(canvas).css("width", img.width);
-    $(canvas).css("height", img.height);
-
-
-    while (
-      img.height * scale > parseInt($('#text').css('height')) || img.width * scale > parseInt($('#text').css('width'))
-    ) {
-      scale -= 0.05
-      min_scale = scale
-      // //console.log(img.width * scale, parseInt($('#text').css('width')))
-    }
-    if (scale == 1) {
-      while (
-        img.height * scale < parseInt($('#text').css('height')) && img.width * scale < parseInt($('#text').css('width'))
-      ) {
-        scale += 0.05
-      }
-      min_scale = 1
-    }
-    $(canvas).css('transform', 'scale(' + scale + ')')
-  })
 })
