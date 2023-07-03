@@ -14,6 +14,8 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
+
+
 use League\Flysystem\Filesystem;
 
 
@@ -21,6 +23,7 @@ class Gallery extends Component
 {
     use WithFileUploads;
     use WithPagination;
+
     protected $paginationTheme = 'bootstrap';
 
     public $test = [];
@@ -125,6 +128,78 @@ class Gallery extends Component
         $this->is_image = true;
     }
 
+    public function yolo()
+    {
+        $dir = public_path('storage/exports/'); // . 'admin_flags_work_' . date('d_m_Y') . '.' . $dtype;
+        $filename = auth()->user()->name . '_flags_work_' . date('d_m_Y');
+
+        $zip = new \ZipArchive();
+        $zip_file = $dir . $filename . '.zip';
+        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+
+        //создание yaml конфига
+        $file = fopen($dir . $filename . '.yaml', 'w');
+
+        fwrite($file, 'path: ../datasets/' . auth()->user()->name . '_flags_work_' . date('d_m_Y') . PHP_EOL);
+        fwrite($file, 'train: images/train' . PHP_EOL);
+        fwrite($file, 'val: images/val' . PHP_EOL);
+        fwrite($file, PHP_EOL);
+        fwrite($file, 'names:' . PHP_EOL);
+
+        $classes = Category::where('user_id', auth()->user()->id)->pluck('description')->toArray();
+
+        foreach ($classes as $i => $class) {
+            fwrite($file, "\t$i: $class" . PHP_EOL);
+        }
+        fclose($file);
+
+        $zip->addFile($dir . $filename . '.yaml',  $filename . '/' . $filename . '.yaml');
+
+        //фотографии
+        $images = Image::select('hash_name', 'original_name')->where('user_id', auth()->user()->id)->where('is_ready', 1)->get();
+        foreach ($images as $image) {
+            $labels = test::select(
+                'images.original_name',
+                'tests.category_id',
+                'tests.label_id',
+                'tests.x',
+                'tests.y',
+                'tests.width',
+                'tests.height',
+                'images.original_width',
+                'images.original_height'
+            )
+                ->join('images', 'tests.photoName', '=', 'images.id')
+                // ->join('categories', 'tests.category_id', '=', 'categories.id')
+                ->where('tests.user_id', auth()->user()->id)
+                ->where('images.original_name', $image->original_name)
+                // ->orderBy('images.id')
+                // ->orderBy('label_id')
+                ->get();
+            $name = pathinfo(public_path('storage/photos/' . $image->hash_name), PATHINFO_FILENAME);
+            // dd($filename);
+            $label_file = fopen($dir . $name . '.txt', 'w');
+            // dd($dir . $filename . '.txt');
+            foreach ($labels as $label) {
+                
+                fwrite($label_file, $label->category_id . ' ');
+                fwrite($label_file, ($label->x + $label->width / 2) / $label->original_width . ' ');
+                fwrite($label_file, ($label->y + $label->height / 2) / $label->original_height . ' ');
+                fwrite($label_file, $label->width / $label->original_width . ' ');
+                fwrite($label_file, $label->height / $label->original_height. PHP_EOL);
+                // dd($label->category_id);
+            }
+            fclose($label_file);
+            $zip->addFile($dir . $name . '.txt', $filename . '/' . 'labels/train/' . $name . '.txt');
+            $zip->addFile(public_path('storage/photos/' . $image->hash_name), $filename . '/' . 'images/train/' . $image->hash_name);
+        }
+
+        
+        $zip->close();
+        return response()->download($zip_file);
+    }
+    
     public function check_if_zip()
     {
         // dd($this->files);

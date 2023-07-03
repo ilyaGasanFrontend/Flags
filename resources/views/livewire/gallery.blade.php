@@ -108,6 +108,10 @@
                                     <h6 class="dropdown-header">Экспортировать как...</h6>
                                     <a class="dropdown-item" wire:click='download_file("txt")'>TXT</a>
                                     <a class="dropdown-item" wire:click='download_file("csv")'>CSV</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" wire:click="yolo">YOLOv8</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" wire:click="">Фотографии</a>
                                     {{-- <div class="dropdown-item" wire:click='download_file("json")'>JSON</div> --}}
                                 </div>
                             </div>
