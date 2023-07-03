@@ -2,6 +2,20 @@
     <main>
         @vite(['resources/js/selector.js'])
 
+        <style>
+            .grid::after {
+                position: absolute;
+                left: 0;
+                top: 0;
+                content: '';
+                width: 100%;
+                height: 100%;
+                background-image: linear-gradient(black 2px, transparent 2px), linear-gradient(90deg, black 2px, transparent 2px);
+                background-size: <?= $grid_range ?>px <?= $grid_range ?>px, <?= $grid_range ?>px <?= $grid_range ?>px, 120px 20px, 20px 20px;
+                background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+            }
+        </style>
+
         <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
 
         <div class="container-fluid p-0">
@@ -21,9 +35,7 @@
                                         overflow: scroll;"
                                         class="position_image">
 
-                                        <div class="canvas" 
-                                        wire:ignore.self 
-                                        wire:click.prevent id="canvas"
+                                        <div class="canvas" wire:ignore.self wire:click.prevent id="canvas"
                                             style="transform-origin: 0% 0%; 
                                             /* width: {{ $images->original_width }}px; height: {{ $images->original_height }}px;  */
                                             width: 100%; height: 100%; 
@@ -41,9 +53,10 @@
                                                 </div>
 
                                                 @if ($show_toolbars)
-                                                    <div class="toolbar disabled" id="square_toolbar_{{ $i }}"
+                                                    <div class="toolbar disabled"
+                                                        id="square_toolbar_{{ $i }}"
                                                         style="top: {{ $square->y }}px; left: {{ $square->x + $square->width }}px;">
-                                                #{{$i + 1}}
+                                                        #{{ $i + 1 }}
                                                         <a class="button__editing"
                                                             id="toolbar__editing__button{{ $i }}"
                                                             wire:click.prevent="" style="text-decoration: none"><svg
@@ -63,7 +76,8 @@
                                                             id="deletting__button{{ $i }}"
                                                             wire:click.prevent="delete({{ $i }})"
                                                             style="text-decoration: none"><svg
-                                                                xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px" width="24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                style="width: 24px; height: 24px" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="red" stroke-width="2" stroke-linecap="round"
                                                                 stroke-linejoin="round"
@@ -126,7 +140,8 @@
                                                             </a>
                                                         </div>
                                                     @else
-                                                        <div class="col-sm col__photos__list" wire:click.prefetch="go_to({{$img['id']}})">
+                                                        <div class="col-sm col__photos__list"
+                                                            wire:click.prefetch="go_to({{ $img['id'] }})">
                                                             <a>
                                                                 <img class="photogal-el"
                                                                     src="{{ asset($img['path_to_file']) }}"
@@ -186,15 +201,14 @@
                                         @endif
                                     </div>
                                     <div class="col-md-8">
-                                        <input type="range" class="form-range" min="50" max="200" step="50" value="100"
-                                            id="grid_range" @if (!$show_grid) 
-                                            {{-- disabled --}}
-                                             @endif>
+                                        <input type="range" class="form-range" min="50" max="200"
+                                            step="50" value="100" wire:model="grid_range" id="grid_range"
+                                            @if (!$show_grid) disabled @endif>
                                     </div>
                                 </div>
 
                                 <br>
-                                
+
                                 <button class="btn btn-primary" id="toggle_toolbar"
                                     wire:click.prevent="$toggle('show_toolbars')">
                                     @if ($show_toolbars)
@@ -203,7 +217,7 @@
                                         Показать панель управления
                                     @endif
                                 </button>
-                                
+
                             </div>
                         </div>
                         <div class="card">

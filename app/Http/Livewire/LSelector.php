@@ -38,8 +38,8 @@ class LSelector extends Component
 
     public $delete;
 
-    public $show_grid = false;
-
+    public $show_grid = false, $grid_range = 100;
+    
     public $show_toolbars = true;
 
     public function delete($id)
