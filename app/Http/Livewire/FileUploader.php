@@ -167,6 +167,8 @@ class FileUploader extends Component
             }
         }
         $this->files = [];
+
+        $this->emit('AddFiles');
     }
 
     public function render()

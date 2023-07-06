@@ -5,20 +5,12 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Livewire\TemporaryUploadedFile;
 
 use App\Models\Image;
 use App\Models\test;
 use App\Models\Category;
 
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-
-
-
-use League\Flysystem\Filesystem;
-
 
 class Gallery extends Component
 {
@@ -27,182 +19,14 @@ class Gallery extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $test = [];
     public $files = [];
-
-    public $test_files = [];
-    public $in_progress = 123;
 
     public $images;
     public $col_md = 3;
     public $filter = true;
     public $is_image = false;
 
-
-    //chunk file upload
-    public $chunkSize = 12000000; // 12 MB
-    public $fileChunk;
-
-    public $fileName;
-    public $fileSize;
-
-    public $finalFile;
-
-    public function updatedFileChunk()
-    {
-        /*
-        Загрузка файла чанками взята с сайта:
-
-        https://fly.io/laravel-bytes/chunked-file-upload-livewire/
-
-        */
-        $chunkFileName = $this->fileChunk->getFileName();
-        $finalPath = Storage::path('/livewire-tmp/' . $this->fileName);
-        $tmpPath   = Storage::path('/livewire-tmp/' . $chunkFileName);
-        $file = fopen($tmpPath, 'rb');
-        $buff = fread($file, $this->chunkSize);
-        fclose($file);
-
-        $final = fopen($finalPath, 'ab');
-        fwrite($final, $buff);
-        fclose($final);
-        unlink($tmpPath);
-        $curSize = Storage::size('/livewire-tmp/' . $this->fileName);
-        if ($curSize == $this->fileSize) {
-            $this->finalFile =
-                TemporaryUploadedFile::createFromLivewire('/' . $this->fileName);
-            $this->unzip($this->fileName);
-        }
-    }
-
-    private function unzip($tmp_path, $tmp_filename)
-    {
-        // dd(storage_path('app\\livewire-tmp\\' . $filename));
-        //путь до файла
-        $path = $tmp_path . '/' . $tmp_filename;
-        // dd($path, 'unzip');
-
-        //работа с архивом
-        $zip = new \ZipArchive();
-        if ($zip->open($path)) {
-
-            for ($i = 0; $i < $zip->count(); $i++) {
-                $filename = $zip->getNameIndex($i);
-
-                // расширение файла
-                $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-                // $unique_filename = uniqid() . '.' . $ext;
-
-                if ($this->isImage($ext)) {
-
-                    // $zip->extractTo(public_path('storage\\archives\\' . auth()->user()->name), $zip->getNameIndex($i));
-                    if ($zip->extractTo($tmp_path . '/', $filename)) {
-
-                        $path_to_file = Storage::putFile('public/photos/' . auth()->user()->name, new File($tmp_path . '/' . $filename));
-                        $hash_filename = pathinfo(storage_path('app/' . $path_to_file), PATHINFO_FILENAME) . '.' . $ext;
-
-                        $width = \getimagesize(storage_path('app/' . $path_to_file))[0];
-                        $height = \getimagesize(storage_path('app/' . $path_to_file))[1];
-
-                        image::create([
-                            'user_id' => auth()->user()->id,
-                            'original_name' => $filename,
-                            'hash_name' => $hash_filename,
-                            'path_to_file' => '/storage/photos/' . auth()->user()->name . '/' . $hash_filename,
-                            'original_width' =>  $width,
-                            'original_height' => $height,
-
-                        ]);
-                    }
-                }
-            }
-        }
-        // $zip->extractTo(storage_path('app\\livewire-tmp\\'));
-    }
-
-    public function updatedPhoto()
-    {
-        $this->validate([
-            'photo.*' => 'image|max:1024', // 1MB Max
-        ]);
-    }
-
-    public function updatedFiles()
-    {
-        $this->is_image = false;
-
-        $this->validate([
-            'files.*' => 'image',
-        ]);
-
-        $this->is_image = true;
-    }
-
-    public function updatedTest()
-    {
-        $this->validate(
-            [
-                'test.*' => ['required', 'mimes:zip,jpg', 'max:2048000'],
-            ],
-            [
-                'required' => 'Вы не выбрали файл!',
-                'mimes' => ':attribute должен быть следующего типа: zip, rar, png, jpg, jpeg!',
-                'max' => 'Размер файла не должен превышать 2Гбайт!'
-            ],
-            [
-                'test.*' => 'Файл',
-            ],
-        );
-    }
-
-    public function test_file_upload()
-    {
-        $this->validate(
-            [
-                'test.*' => ['required', 'mimes:zip,jpg', 'max:40000'],
-            ],
-            [
-                'required' => 'Вы не выбрали файл!',
-                'mimes' => ':attribute должен быть следующего типа: zip, rar, png, jpg, jpeg!',
-                'max' => 'Размер файла не должен превышать 2Гбайт!'
-            ],
-            [
-                'test.*' => 'Файл',
-            ],
-        );
-
-        if (!Storage::disk('public')->has('photos/' . auth()->user()->name . '/')) {
-            Storage::disk('public')->makeDirectory('photos/' . auth()->user()->name . '/');
-        }
-
-        foreach ($this->test as $file) {
-            if ($this->isImage($file->extension())) {
-                // dd($file->temporaryUrl());
-
-                // $path = Storage::putFile('photos', new File('/'))
-                $file->store('photos/' . auth()->user()->name . '/', 'public');
-
-                $width = \getimagesize(public_path('storage/photos/' . auth()->user()->name . '/') . $file->hashName())[0];
-                $height = \getimagesize(public_path('storage/photos/' . auth()->user()->name . '/') . $file->hashName())[1];
-
-                image::create(
-                    [
-                        'user_id' => auth()->user()->id,
-                        'original_name' => $file->getClientOriginalName(),
-                        'hash_name' => $file->hashName(),
-                        'path_to_file' => '/storage/photos/' . auth()->user()->name . '/' . $file->hashName(),
-                        'original_width' =>  $width,
-                        'original_height' => $height,
-                    ]
-                );
-            } else if ($this->isArchive($file->extension())) {
-                $this->unzip($file->getPath(), $file->getFileName());
-                // dd($file->getPath(), $file->getFileName());
-            }
-        }
-        // dd(public_path('storage/photos/' . auth()->user()->name . '/'));
-    }
+    protected $listeners = ['AddFiles' => '$refresh'];
 
     public function yolo()
     {
@@ -268,36 +92,13 @@ class Gallery extends Component
             }
             fclose($label_file);
             $zip->addFile($dir . $name . '.txt', $filename . '/' . 'labels/train/' . $name . '.txt');
-            $zip->addFile(public_path('storage/photos/' . $image->hash_name), $filename . '/' . 'images/train/' . $image->hash_name);
+            // dd(public_path('storage/photos/' . auth()->user()->id . '/' .$image->hash_name));
+            $zip->addFile(public_path('storage/photos/' . auth()->user()->name . '/' .$image->hash_name), $filename . '/' . 'images/train/' . $image->hash_name);
         }
 
 
         $zip->close();
         return response()->download($zip_file);
-    }
-
-    private function isImage($ext)
-    {
-        $extensions = ['jpg', 'jpeg', 'png'];
-
-        return in_array($ext, $extensions);
-    }
-
-    private function isArchive($ext)
-    {
-        $extensions = ['rar', 'zip'];
-
-        return in_array($ext, $extensions);
-    }
-
-    public function check_if_zip()
-    {
-        // dd($this->files);
-        // $this->validate([
-        //     'files.*' => 'image|max:1024',
-        // ]);
-
-        // $this->tatata = 321;
     }
 
     public function view_switch($param)
@@ -406,15 +207,7 @@ class Gallery extends Component
         // Storage::download($file);
         return response()->download($file);
     }
-    public function submit()
-    {
-        dd(123);
-    }
 
-    public function test()
-    {
-        return redirect()->to('/gallery?page=2');
-    }
     public function store_s3()
     {
         $this->validate([
@@ -429,41 +222,6 @@ class Gallery extends Component
     public function alert()
     {
         $this->dispatchBrowserEvent('modal-confirm-hide', ['message' => 'Необходимо создать категории!']);
-    }
-
-    public function store_zip(Request $request)
-    {
-        dd($request);
-    }
-
-
-    public function store_photos()
-    {
-        // dd(public_path('storage'));
-        $this->validate([
-            'files.*' => 'image',
-        ]);
-
-        foreach ($this->files as $file) {
-            // storage::path('public') "E:\Projects\FlagsOcta\storage\app\public"
-            // public_path('storage') "E:\Projects\FlagsOcta\public\storage"
-            $file->store('photos', 'public');
-            $width = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[0];
-            $height = \getimagesize(public_path('storage') . '/photos/' . $file->hashName())[1];
-
-            image::create([
-                'user_id' => auth()->user()->id,
-                'original_name' => $file->getClientOriginalName(),
-                'hash_name' => $file->hashName(),
-                'path_to_file' => '/storage/photos/' . $file->hashName(),
-                'original_width' =>  $width,
-                'original_height' => $height,
-
-            ]);
-        }
-
-        // return redirect()->to('/gallery');
-
     }
 
     public function render()

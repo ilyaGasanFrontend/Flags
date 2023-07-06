@@ -73,52 +73,11 @@
                                 </div>
                             </div>
                         </div>
-
-                        {{-- <div>
-                            <input type="file" wire:model="test" wire:change="$toggle('in_progress')" multiple>
-                        </div>
-
-                        <div class="progress mb-3" wire:loading wire:target="test">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Проверка
-                            </div>
-                        </div>
-
-                        <div class="progress mb-3" wire:loading wire:target="test_file_upload">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
-                                aria-valuemax="100">Загрузка
-                            </div>
-                        </div> --}}
-
-                        {{-- <div x-data="{ isUploading: false, progress: 0 }" x-on:livewire-upload-start="isUploading = true"
-                            x-on:livewire-upload-finish="isUploading = false"
-                            x-on:livewire-upload-error="isUploading = false"
-                            x-on:livewire-upload-progress="progress = $event.detail.progress">
-                            <!-- File Input -->
-                            <input type="file" wire:model="test">
-
-                            <!-- Progress Bar -->
-                            <div x-show="isUploading">
-                                <progress max="100" x-bind:value="progress"></progress>
-                            </div>
-                        </div>
-
-
-
-                        <button class="btn btn-primary" wire:click="test_file_upload">test</button>
-
-
-                        @error('test.*')
-                            <span class="error">{{ $message }}</span>
-                        @enderror --}}
-                        {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
                     </div>
                 </div>
             </div>
-
             <div class="row">
-                <div class="card" wire:poll>
+                <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-9">
@@ -186,7 +145,6 @@
                 </div>
 
             </div>
-            {{-- <button wire:click="alert">123</button> --}}
             <script>
                 window.addEventListener('modal-confirm-hide', event => {
                     myMessageConfirm(event.detail.message, 'danger')
@@ -195,13 +153,6 @@
 
 
 
-            @if ($finalFile)
-                Photo Preview:
-                {{-- {{$finalFile->getFilename()}} --}}
-                {{ $finalFile->getPath() }}
-                {{ uniqid() }}
-                {{-- <img src="{{ $finalFile->temporaryUrl() }}"> --}}
-            @endif
 
 
     </main>
