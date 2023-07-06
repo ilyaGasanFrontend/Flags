@@ -17,7 +17,6 @@
         </style>
 
         <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
-
         <div class="container-fluid p-0">
             <div class="row">
                 {{-- <div class="row row__selector"> --}}
@@ -35,11 +34,11 @@
                                         overflow: scroll;"
                                         class="position_image">
 
-                                        <div class="canvas" wire:ignore.self wire:click.prevent id="canvas"
+                                        <div class="canvas" wire:ignore.self id="canvas"
                                             style="transform-origin: 0% 0%; 
                                             /* width: {{ $images->original_width }}px; height: {{ $images->original_height }}px;  */
                                             width: 100%; height: 100%; 
-                                            transition-duration: 0ms; margin:auto;">
+                                            transition-duration: 0ms; margin:auto;" wire:loading.class="disabled-canvas">
 
 
                                             <img src="{{ $images->path_to_file }}" alt="" class="img__current"
@@ -155,7 +154,7 @@
                                         </div>
                                         @if ($param != $last_id)
                                             <div class="col-1 col--arrows col--arrows--arrow" wire:click="go_to_next"
-                                                id="right" style="justify-content: center; display: flex">
+                                                id="right" style="justify-content: center; display: flex" >
                                                 <a href="#">
                                                     <svg style="scale:3; height:100%;"
                                                         xmlns="http://www.w3.org/2000/svg" width="0"
@@ -190,12 +189,12 @@
                                     <div class="col-md-4">
                                         @if ($show_grid)
                                             <button class="btn btn-primary" id="toggle_grid"
-                                                wire:click.prevent="$toggle('show_grid')">
+                                                wire:click.prevent="$toggle('show_grid')" wire:loading.attr='disabled'>
                                                 Скрыть сетку
                                             </button>
                                         @else
                                             <button class="btn btn-primary" id="toggle_grid"
-                                                wire:click.prevent="$toggle('show_grid')">
+                                                wire:click.prevent="$toggle('show_grid')" wire:loading.attr='disabled'>
                                                 Показать сетку
                                             </button>
                                         @endif
@@ -231,7 +230,7 @@
                                             <input class="form-check-input categories-default"
                                                 id="radio_{{ $category->id }}" type="radio" name="radio_category"
                                                 value="{{ $category->id }}"
-                                                @if ($i == 0) checked @endif>
+                                                @if ($i == 0) checked @endif wire:loading.attr="disabled">
                                             <span class="form-check-label" id="span_{{ $category->id }}"
                                                 style="color: {{ $category->color }}">
                                                 {{ $category->description }}
@@ -265,7 +264,7 @@
                                                     </td>
                                                     <input type="hidden" id="hidden-category-{{ $i }}"
                                                         value="{{ $square->category_id }}" />
-                                                    <td class="table-action">
+                                                    <td class="table-action" wire:loading.class="disabled-while-loading">
                                                         <a class="button__editing"
                                                             id="editing__button{{ $i }}"
                                                             {{-- wire:click.prevent="update(false, null, null, null, null, null, null)" --}} wire:click.prevent=""

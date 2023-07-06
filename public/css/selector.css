@@ -470,3 +470,14 @@
     .hidden {
       visibility: hidden;
     }
+
+    .disabled-while-loading {
+      text-decoration: none;
+      pointer-events: none;
+      filter: saturate(0);
+      opacity: 50%;
+    }
+
+    .disabled-canvas {
+      pointer-events: none;
+    }
