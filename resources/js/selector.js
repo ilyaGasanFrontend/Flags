@@ -341,6 +341,7 @@ $(document).ready(function (e) {
     return scrollTop;
   }
 
+
   $(canvas).on('mousemove', function (e) {
     // console.log(e.originalEvent.layerX - getScrollLeft('text'), parseFloat($(wrappercanvas).css('width')))
     // console.log(parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50/scale)
@@ -353,20 +354,23 @@ $(document).ready(function (e) {
           var endcoordX = e.originalEvent.layerX / scale
           var endcoordY = e.originalEvent.layerY / scale
 
-          if (parseFloat($(canvas).css('width')) * scale > parseFloat($(wrappercanvas).css('width'))) {
+          if (
+            parseFloat($(canvas).css('width')) * scale > parseFloat($(wrappercanvas).css('width')) ||
+            parseFloat($(canvas).css('height')) * scale > parseFloat($(wrappercanvas).css('height'))
+            ) {
             var scrolhor = getScrollLeft('text')
             // console.log(parseFloat($(canvas).css('height'))/scale -e.originalEvent.layerY - getScrollTop('text')  )
-            if (parseFloat($(wrappercanvas).css('width')) - e.originalEvent.layerX + getScrollLeft('text') < 50 / scale) {
+            if (parseFloat($(wrappercanvas).css('width')) - e.originalEvent.layerX + getScrollLeft('text') < 150 / scale) {
               scrollRight('text', 10)
             }
-            if (e.originalEvent.layerX - scrolhor < 50 / scale) {
+            if (e.originalEvent.layerX - scrolhor < 150 / scale) {
               scrollRight('text', -10)
             }
-            if (e.originalEvent.layerY - getScrollTop('text') < 50 / scale) {
+            if (e.originalEvent.layerY - getScrollTop('text') < 150 / scale) {
               scrollTop('text', -10)
             }
 
-            if (parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50 / scale) {
+            if (parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 150 / scale) {
               scrollTop('text', 10)
             }
           }

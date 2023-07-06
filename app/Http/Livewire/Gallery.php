@@ -11,6 +11,7 @@ use App\Models\Image;
 use App\Models\test;
 use App\Models\Category;
 
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,9 @@ class Gallery extends Component
 
     public $test = [];
     public $files = [];
+
+    public $test_files = [];
+    public $in_progress = 123;
 
     public $images;
     public $col_md = 3;
@@ -71,40 +75,47 @@ class Gallery extends Component
         }
     }
 
-    private function unzip($tmp_filename)
+    private function unzip($tmp_path, $tmp_filename)
     {
         // dd(storage_path('app\\livewire-tmp\\' . $filename));
         //путь до файла
-        $path = storage_path('app\\livewire-tmp\\' . $tmp_filename);
+        $path = $tmp_path . '/' . $tmp_filename;
+        // dd($path, 'unzip');
 
         //работа с архивом
         $zip = new \ZipArchive();
-        $zip->open($path);
+        if ($zip->open($path)) {
 
-        for ($i = 0; $i < $zip->count(); $i++) {
-            $filename = $zip->getNameIndex($i);
+            for ($i = 0; $i < $zip->count(); $i++) {
+                $filename = $zip->getNameIndex($i);
 
-            // расширение файла
-            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+                // расширение файла
+                $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-            $unique_filename = uniqid() . '.' . $ext;
+                // $unique_filename = uniqid() . '.' . $ext;
 
-            if ($ext == 'png' || $ext ==  'jpg' || $ext ==  'bmp') {
-                // $zip->extractTo(public_path('storage\\archives\\' . auth()->user()->name), $zip->getNameIndex($i));
-                $zip->extractTo(public_path('storage\\photos\\'), $filename);
+                if ($this->isImage($ext)) {
 
-                $width = \getimagesize(public_path('storage\\photos\\') . $filename)[0];
-                $height = \getimagesize(public_path('storage\\photos\\') . $filename)[1];
+                    // $zip->extractTo(public_path('storage\\archives\\' . auth()->user()->name), $zip->getNameIndex($i));
+                    if ($zip->extractTo($tmp_path . '/', $filename)) {
 
-                image::create([
-                    'user_id' => auth()->user()->id,
-                    'original_name' => $filename,
-                    'hash_name' => $filename,
-                    'path_to_file' => '/storage/photos/' . $filename,
-                    'original_width' =>  $width,
-                    'original_height' => $height,
+                        $path_to_file = Storage::putFile('public/photos/' . auth()->user()->name, new File($tmp_path . '/' . $filename));
+                        $hash_filename = pathinfo(storage_path('app/' . $path_to_file), PATHINFO_FILENAME) . '.' . $ext;
 
-                ]);
+                        $width = \getimagesize(storage_path('app/' . $path_to_file))[0];
+                        $height = \getimagesize(storage_path('app/' . $path_to_file))[1];
+
+                        image::create([
+                            'user_id' => auth()->user()->id,
+                            'original_name' => $filename,
+                            'hash_name' => $hash_filename,
+                            'path_to_file' => '/storage/photos/' . auth()->user()->name . '/' . $hash_filename,
+                            'original_width' =>  $width,
+                            'original_height' => $height,
+
+                        ]);
+                    }
+                }
             }
         }
         // $zip->extractTo(storage_path('app\\livewire-tmp\\'));
@@ -126,6 +137,71 @@ class Gallery extends Component
         ]);
 
         $this->is_image = true;
+    }
+
+    public function updatedTest()
+    {
+        $this->validate(
+            [
+                'test.*' => ['required', 'mimes:zip,jpg', 'max:2048000'],
+            ],
+            [
+                'required' => 'Вы не выбрали файл!',
+                'mimes' => ':attribute должен быть следующего типа: zip, rar, png, jpg, jpeg!',
+                'max' => 'Размер файла не должен превышать 2Гбайт!'
+            ],
+            [
+                'test.*' => 'Файл',
+            ],
+        );
+    }
+
+    public function test_file_upload()
+    {
+        $this->validate(
+            [
+                'test.*' => ['required', 'mimes:zip,jpg', 'max:40000'],
+            ],
+            [
+                'required' => 'Вы не выбрали файл!',
+                'mimes' => ':attribute должен быть следующего типа: zip, rar, png, jpg, jpeg!',
+                'max' => 'Размер файла не должен превышать 2Гбайт!'
+            ],
+            [
+                'test.*' => 'Файл',
+            ],
+        );
+
+        if (!Storage::disk('public')->has('photos/' . auth()->user()->name . '/')) {
+            Storage::disk('public')->makeDirectory('photos/' . auth()->user()->name . '/');
+        }
+
+        foreach ($this->test as $file) {
+            if ($this->isImage($file->extension())) {
+                // dd($file->temporaryUrl());
+
+                // $path = Storage::putFile('photos', new File('/'))
+                $file->store('photos/' . auth()->user()->name . '/', 'public');
+
+                $width = \getimagesize(public_path('storage/photos/' . auth()->user()->name . '/') . $file->hashName())[0];
+                $height = \getimagesize(public_path('storage/photos/' . auth()->user()->name . '/') . $file->hashName())[1];
+
+                image::create(
+                    [
+                        'user_id' => auth()->user()->id,
+                        'original_name' => $file->getClientOriginalName(),
+                        'hash_name' => $file->hashName(),
+                        'path_to_file' => '/storage/photos/' . auth()->user()->name . '/' . $file->hashName(),
+                        'original_width' =>  $width,
+                        'original_height' => $height,
+                    ]
+                );
+            } else if ($this->isArchive($file->extension())) {
+                $this->unzip($file->getPath(), $file->getFileName());
+                // dd($file->getPath(), $file->getFileName());
+            }
+        }
+        // dd(public_path('storage/photos/' . auth()->user()->name . '/'));
     }
 
     public function yolo()
@@ -182,12 +258,12 @@ class Gallery extends Component
             $label_file = fopen($dir . $name . '.txt', 'w');
             // dd($dir . $filename . '.txt');
             foreach ($labels as $label) {
-                
+
                 fwrite($label_file, $label->category_id . ' ');
                 fwrite($label_file, ($label->x + $label->width / 2) / $label->original_width . ' ');
                 fwrite($label_file, ($label->y + $label->height / 2) / $label->original_height . ' ');
                 fwrite($label_file, $label->width / $label->original_width . ' ');
-                fwrite($label_file, $label->height / $label->original_height. PHP_EOL);
+                fwrite($label_file, $label->height / $label->original_height . PHP_EOL);
                 // dd($label->category_id);
             }
             fclose($label_file);
@@ -195,11 +271,25 @@ class Gallery extends Component
             $zip->addFile(public_path('storage/photos/' . $image->hash_name), $filename . '/' . 'images/train/' . $image->hash_name);
         }
 
-        
+
         $zip->close();
         return response()->download($zip_file);
     }
-    
+
+    private function isImage($ext)
+    {
+        $extensions = ['jpg', 'jpeg', 'png'];
+
+        return in_array($ext, $extensions);
+    }
+
+    private function isArchive($ext)
+    {
+        $extensions = ['rar', 'zip'];
+
+        return in_array($ext, $extensions);
+    }
+
     public function check_if_zip()
     {
         // dd($this->files);
@@ -231,7 +321,7 @@ class Gallery extends Component
     public function delete($image_id)
     {
         $filename = Image::find($image_id)->hash_name;
-        Storage::delete('/public/photos/' . $filename);
+        Storage::delete('/public/photos/' . auth()->user()->name . '/' . $filename);
         Image::where('id', $image_id)->delete();
     }
 

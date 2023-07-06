@@ -10,54 +10,11 @@
             <div class="row">
                 <div class="card">
                     <div class="card-body">
-                        <script>
-                            function uploadChunks() {
-                                const file = document.querySelector('#formFileMultiple').files[0];
-
-                                // Send the following later at the next available call to component
-
-                                //filename = php::uniqid + js::date_in_msec + file_extension
-                                @this.set('fileName', @js(uniqid()) + '-' + Date.now() + '.' + file.name.split('.').pop(), true);
-                                // @this.set('fileName', file.name, true);
-                                @this.set('fileSize', file.size, true);
-                                livewireUploadChunk(file, 0);
-                            }
-
-                            function livewireUploadChunk(file, start) {
-                                const chunkEnd = Math.min(start + @js($chunkSize), file.size);
-                                const chunk = file.slice(start, chunkEnd);
-
-                                @this.upload('fileChunk', chunk, (uName) => {}, () => {}, (event) => {
-                                    if (event.detail.progress == 100) {
-                                        // We recursively call livewireUploadChunk from within itself
-                                        start = chunkEnd;
-                                        if (start < file.size) {
-                                            livewireUploadChunk(file, start);
-                                        }
-                                    }
-                                });
-                            }
-                        </script>
-
                         <div class="row">
+                            <label for="file_uploader" class="form-label">Добавить файлы</label>
 
-                            <label for="formFileMultiple" class="form-label">Добавить файлы</label>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <input class="form-control" type="file" id="formFileMultiple" wire:model="files"
-                                        multiple>
-                                </div>
-                                {{-- {{ $paginate->count()}} --}}
-                                {{-- @error('files.*')
-                                    <span class="error">{{ $message }}</span>
-                                @enderror --}}
-                            </div>
-                            <div class="col-md-2">                                
-                                @if ($is_image)
-                                    <button class="btn btn-primary" wire:click="store_photos">Загрузить</button>
-                                @else
-                                    <button class="btn btn-primary" wire:click onClick="uploadChunks()">Загрузить</button>
-                                @endif
+                            <div class="col-md-8">
+                                @livewire('file-uploader')
                             </div>
                             <div class="col-md-2">
                                 <div class="btn-group">
@@ -111,21 +68,57 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" wire:click="yolo">YOLOv8</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" wire:click="">Фотографии</a>
+                                    {{-- <a class="dropdown-item" wire:click="">Фотографии</a> --}}
                                     {{-- <div class="dropdown-item" wire:click='download_file("json")'>JSON</div> --}}
                                 </div>
                             </div>
                         </div>
 
+                        {{-- <div>
+                            <input type="file" wire:model="test" wire:change="$toggle('in_progress')" multiple>
+                        </div>
+
+                        <div class="progress mb-3" wire:loading wire:target="test">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Проверка
+                            </div>
+                        </div>
+
+                        <div class="progress mb-3" wire:loading wire:target="test_file_upload">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
+                                aria-valuemax="100">Загрузка
+                            </div>
+                        </div> --}}
+
+                        {{-- <div x-data="{ isUploading: false, progress: 0 }" x-on:livewire-upload-start="isUploading = true"
+                            x-on:livewire-upload-finish="isUploading = false"
+                            x-on:livewire-upload-error="isUploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress">
+                            <!-- File Input -->
+                            <input type="file" wire:model="test">
+
+                            <!-- Progress Bar -->
+                            <div x-show="isUploading">
+                                <progress max="100" x-bind:value="progress"></progress>
+                            </div>
+                        </div>
 
 
+
+                        <button class="btn btn-primary" wire:click="test_file_upload">test</button>
+
+
+                        @error('test.*')
+                            <span class="error">{{ $message }}</span>
+                        @enderror --}}
                         {{-- <img src="https://hb.bizmrg.com/octagramma-files/livewire-imgs/knnE13EfYuHUTyOdIzmp2kH1PXlDWWzjY2evHhDU.png"> --}}
                     </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="card">
+                <div class="card" wire:poll>
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-9">
