@@ -12,6 +12,7 @@ use Illuminate\Http\File;
 
 use App\Models\Image;
 use Exception;
+use Illuminate\Contracts\Cache\Store;
 
 class FileUploader extends Component
 {
@@ -28,15 +29,15 @@ class FileUploader extends Component
     public function updatedFiles($value, $key)
     {
         // dd($this->total_files);
-        // dd($this->files);
+        
         list($index, $attribute) = explode('.', $key);
         if ($attribute == 'fileChunk') {
             $fileDetails = $this->files[intval($index)];
-
+            // dd($this->files);
             // Final File
             $fileName  = $fileDetails['fileName'];
             $finalPath = Storage::path('/livewire-tmp/' . $fileName);
-
+            // dd($finalPath);
             // Chunk File
             $chunkName = $fileDetails['fileChunk']->getFileName();
             $chunkPath = Storage::path('/livewire-tmp/' . $chunkName);
@@ -61,15 +62,40 @@ class FileUploader extends Component
                         TemporaryUploadedFile::createFromLivewire(
                             '/' . $fileDetails['fileName']
                         );
-                    
+
                         $this->files_ready++;
                 }
             } catch (Exception $e) {
                 $this->dispatchBrowserEvent('modal-confirm-hide', [
                     'message' => 'Не удалось загрузить файл ' . $fileName
                 ]);
+                // array_splice($this->files, $index, 1);
+                // $this->total_files--;
                 return;
             }
+            // $chunk      = fopen($chunkPath, 'rb');
+            // $buff       = fread($chunk, $this->chunkSize);
+            // fclose($chunk);
+
+            // // Merge Together
+            // $final = fopen($finalPath, 'ab');
+            // fwrite($final, $buff);
+            // fclose($final);
+            // unlink($chunkPath);
+
+            // // Progress
+            // $curSize = Storage::size('/livewire-tmp/' . $fileName);
+            // $this->files[$index]['progress'] =
+            //     $curSize / $fileDetails['fileSize'] * 100;
+
+            // if ($this->files[$index]['progress'] == 100) {
+            //     $this->files[$index]['fileRef'] =
+            //         TemporaryUploadedFile::createFromLivewire(
+            //             '/' . $fileDetails['fileName']
+            //         );
+
+            //     $this->files_ready++;
+            // }
         }
     }
 
@@ -124,7 +150,7 @@ class FileUploader extends Component
         // dd($this->files);
         foreach ($this->files as $file) {
             $tmp_file = $file['fileRef'];
-            // dd($tmp_file->hashName());
+            // dd($tmp_file);
             $original_filename = $file['fileName'];
             $validator = Validator::make(
                 ['file' => $tmp_file],
@@ -183,6 +209,10 @@ class FileUploader extends Component
 
     public function render()
     {
+        // if (!Storage::disk('local')->has('livewire-tmp/' . auth()->user()->name . '/'))
+        // {
+        //     Storage::disk('local')->makeDirectory('livewire-tmp/' . auth()->user()->name . '/');
+        // }
         return view('livewire.file-uploader');
     }
 }

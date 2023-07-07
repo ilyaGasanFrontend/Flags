@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-9">
             <div class="mb-3">
-                <input type="file" class="form-control" id="file_uploader" multiple>
+                <input type="file" class="form-control" id="file_uploader" wire:loading.attr='disabled' multiple>
             </div>
             <div class="row">
                 @foreach ($files as $i => $file)
@@ -27,7 +27,8 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button class="btn btn-primary" wire:click="store_files" wire:loading.attr='disabled' @if (!$files_ready == $total_files) disabled @endif>Отправить</button>
+            <button class="btn btn-primary" wire:click="store_files" wire:loading.attr='disabled'
+                @if (!$files_ready == $total_files) disabled @endif>Отправить</button>
         </div>
 
         {{-- <button class="btn btn-primary" wire:loading.attr="wire:click='store_files'">test</button> --}}
@@ -39,15 +40,17 @@
 
             filesSelector.addEventListener('change', () => {
                 const fileList = [...filesSelector.files];
-                
+                var date = new Date()
+                var datetime = date.getDate() + '_' + (date.getMonth() + 1) + '_' + date.getHours() + '_' + date
+                    .getMinutes() + '_' + date.getSeconds() + '_'
+
                 @this.set('total_files', fileList.length)
                 @this.set('files_ready', 0)
                 fileList.forEach((file, index) => {
-                    @this.set('files.' + index + '.fileName', file.name);
+                    @this.set('files.' + index + '.fileName', datetime + file.name);
                     @this.set('files.' + index + '.fileSize', file.size);
                     @this.set('files.' + index + '.progress', 0);
 
-                    
                     chnkStarts[index] = 0;
                     livewireUploadChunk(index, file);
                 });
