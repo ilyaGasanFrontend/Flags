@@ -18,7 +18,8 @@ class FileUploader extends Component
     use WithFileUploads;
 
     public $files = [];
-    
+    public $total_files;
+    public $files_ready = 0;
 
     // public $progress;
 
@@ -26,6 +27,7 @@ class FileUploader extends Component
 
     public function updatedFiles($value, $key)
     {
+        // dd($this->total_files);
         // dd($this->files);
         list($index, $attribute) = explode('.', $key);
         if ($attribute == 'fileChunk') {
@@ -59,6 +61,8 @@ class FileUploader extends Component
                         TemporaryUploadedFile::createFromLivewire(
                             '/' . $fileDetails['fileName']
                         );
+                    
+                        $this->files_ready++;
                 }
             } catch (Exception $e) {
                 $this->dispatchBrowserEvent('modal-confirm-hide', [
@@ -71,6 +75,7 @@ class FileUploader extends Component
 
     private function unzip(TemporaryUploadedFile $file)
     {
+
         // $max_exec_time = ini_get('max_execution_time');
         // dd($max_exec_time);
         $zip = new \ZipArchive();
@@ -116,10 +121,11 @@ class FileUploader extends Component
 
     public function store_files()
     {
+        // dd($this->files);
         foreach ($this->files as $file) {
-            $tmp_file = new TemporaryUploadedFile($file['fileName'], 'local');
+            $tmp_file = $file['fileRef'];
+            // dd($tmp_file->hashName());
             $original_filename = $file['fileName'];
-            // dd($original_filename);
             $validator = Validator::make(
                 ['file' => $tmp_file],
                 ['file' => 'image']
@@ -131,10 +137,14 @@ class FileUploader extends Component
                         'file' => $tmp_file
                     ],
                     [
-                        'file' => 'mimes:zip'
+                        'file' => [
+                            'mimes:zip',
+                            'max:2097152',
+                        ]
                     ],
                     [
-                        'mimes' => 'Файл :attribute долен быть фотографией или архивом!'
+                        'mimes' => 'Файл :attribute долен быть фотографией или архивом!',
+                        'max' => 'Размер файла :attribute не должен превышать 2ГБайт!',
                     ],
                     [
                         'file' => $original_filename
