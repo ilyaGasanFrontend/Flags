@@ -1,6 +1,12 @@
 <div>
     <main>
-        @vite(['resources/js/selector.js'])
+        {{-- @vite(['resources/js/selector.js']) --}}
+        @vite(['resources/js/selector/render.js'])
+        @vite(['resources/js/selector/test.js'])
+        @vite(['resources/js/selector/zoom.js'])
+        @vite(['resources/js/selector/drawing.js'])
+        @vite(['resources/js/selector/toolbars.js'])
+        @vite(['resources/js/selector/actions.js'])
 
         <style>
             .grid::after {
@@ -72,7 +78,7 @@
                                                             </svg>
                                                         </a>
                                                         <a class="button__deletting"
-                                                            id="deletting__button{{ $i }}"
+                                                            id="toolbar_deletting_button{{ $i }}"
                                                             wire:click.prevent="delete({{ $i }})"
                                                             style="text-decoration: none"><svg
                                                                 xmlns="http://www.w3.org/2000/svg"
