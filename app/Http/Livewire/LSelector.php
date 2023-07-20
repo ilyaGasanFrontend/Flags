@@ -17,7 +17,13 @@ class LSelector extends Component
 
     private $DELAY = 0.5;
     public $test;
-    protected $listeners = ['submit', 'create', 'update'];
+    protected $listeners = [
+        'submit',
+        'create',
+        'update',
+        'delete',
+        'reset' => '$refresh',
+    ];
 
     public $radio_category;
     public $img_scale;
@@ -39,7 +45,7 @@ class LSelector extends Component
     public $delete;
 
     public $show_grid = false, $grid_range = 100;
-    
+
     public $show_toolbars = true;
 
     public function delete($id)

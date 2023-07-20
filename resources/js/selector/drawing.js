@@ -12,28 +12,20 @@ $(document).ready(function (e) {
 
     var isOverToolbar = false
 
-    var script_src = document.getElementsByTagName('script')[3].src
-    // //console.log(script_src)
-    var prevobjects = $('.dropdown-menu')
     var canvas = $('.canvas')
-    var form = $('.hidden-form')
 
-    var statusElements = $('.action-el')
     var status = Statuses.CreatingElements
 
     var scale = parseFloat(storage.getItem('scale'));
-    var pointX = 0
-    var pointY = 0
+
 
     var canvas = $('.canvas')
     const square = 'square'
-    const prev__elemnt__objects = 'prev__elemnt__objects'
+
 
     var startcoordX = 0
     var startcoordY = 0
 
-    var distX = 0
-    var distY = 0
     var flag = false
     var is_out = false
 
@@ -113,6 +105,29 @@ $(document).ready(function (e) {
         }
     });
 
+    function scrollRight(elementId, distance) {
+        var currentScrollLeft = $("#" + elementId).scrollLeft();
+        $("#" + elementId).animate({ scrollLeft: currentScrollLeft + distance }, 0.00001);
+
+    }
+
+    function scrollTop(elementId, distance) {
+        var currentScrollLeft = $("#" + elementId).scrollTop();
+        $("#" + elementId).animate({ scrollTop: currentScrollLeft + distance }, 0.00001);
+    }
+
+    function getScrollLeft(elementId) {
+        var scrollLeft = $("#" + elementId).scrollLeft();
+        // console.log("Текущее положение скроллбара по горизонтали: " + scrollLeft);
+        return scrollLeft;
+    }
+
+    function getScrollTop(elementId) {
+        var scrollTop = $("#" + elementId).scrollTop();
+        // console.log("Текущее положение скроллбара по вертикали: " + scrollTop);
+        return scrollTop;
+    }
+
     $(canvas).on('mousemove', function (e) {
         switch (status) {
             case (Statuses.CreatingElements):
@@ -120,26 +135,27 @@ $(document).ready(function (e) {
                     var endcoordX = e.originalEvent.layerX / scale
                     var endcoordY = e.originalEvent.layerY / scale
 
-                    // if (
-                    //     parseFloat($(canvas).css('width')) * scale > parseFloat($(wrappercanvas).css('width')) ||
-                    //     parseFloat($(canvas).css('height')) * scale > parseFloat($(wrappercanvas).css('height'))
-                    // ) {
-                    //     var scrolhor = getScrollLeft('text')
-                    //     // console.log(parseFloat($(canvas).css('height'))/scale -e.originalEvent.layerY - getScrollTop('text')  )
-                    //     if (parseFloat($(wrappercanvas).css('width')) - e.originalEvent.layerX + getScrollLeft('text') < 150 / scale) {
-                    //         scrollRight('text', 10)
-                    //     }
-                    //     if (e.originalEvent.layerX - scrolhor < 150 / scale) {
-                    //         scrollRight('text', -10)
-                    //     }
-                    //     if (e.originalEvent.layerY - getScrollTop('text') < 150 / scale) {
-                    //         scrollTop('text', -10)
-                    //     }
+                    if (
+                        parseFloat($(canvas).css('width')) * scale > parseFloat($(wrappercanvas).css('width')) ||
+                        parseFloat($(canvas).css('height')) * scale > parseFloat($(wrappercanvas).css('height'))
+                    ) {
+                        var scrolhor = getScrollLeft('text')
+                        // console.log(parseFloat($(canvas).css('height'))/scale -e.originalEvent.layerY - getScrollTop('text')  )
+                        if (parseFloat($(wrappercanvas).css('width')) - e.originalEvent.layerX + getScrollLeft('text') < 50 / scale) {
+                            scrollRight('text', 10)
+                        }
+                        if (e.originalEvent.layerX - scrolhor < 50 / scale) {
+                            scrollRight('text', -10)
+                        }
+                        if (e.originalEvent.layerY - getScrollTop('text') < 50 / scale) {
+                            scrollTop('text', -10)
+                        }
 
-                    //     if (parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 150 / scale) {
-                    //         scrollTop('text', 10)
-                    //     }
-                    // }
+                        if (parseFloat($(wrappercanvas).css('height')) - e.originalEvent.layerY + getScrollTop('text') < 50 / scale) {
+                            scrollTop('text', 10)
+                        }
+                    }
+
                     var width_current = endcoordX - startcoordX
                     var height_current = endcoordY - startcoordY
 

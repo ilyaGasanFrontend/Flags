@@ -18,13 +18,19 @@ $(document).ready(function (e) {
 
     // event listeners
     $(document).on('radioChange', function (e, id, color) {
-        console.log(id, color)
+        // console.log(id, color)
         radio_checked_id = id
     })
 
     $(document).on('zoom', function (e, param) {
         scale = param
     })
+
+    $(document).on('statusChange', function (e, param) {
+        status = param
+    })
+
+    // actions
     $(canvas).on('mouseenter', '.toolbar', function (e) {
         if ($(this).hasClass('disabled')) {
             isOverToolbar = true
@@ -51,6 +57,11 @@ $(document).ready(function (e) {
         let number = ($(this).attr('id')).substring('toolbar_deletting_button'.length)
         let testobjects = $(canvas).children('.square')
         $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
+    })
+
+    $(canvas).on('click', '.button__deletting', function (e) {
+        let number = ($(this).attr('id')).substring('toolbar_deletting_button'.length)
+        Livewire.emit('delete', number)
     })
 
     $(canvas).on('click', '.button__deletting', function (e) {
@@ -93,13 +104,20 @@ $(document).ready(function (e) {
 
             let testobjects = $('.canvas').children('.square')
             let objects = $('.obj-table').children('.table-row').children('.table-action')
-
-            $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+            let toolbarObjects = $('.toolbar')
+            $(this).html('<svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
             $('#editing__button' + number).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
             $(testobjects[number]).toggleClass('point__events')
 
-
-            $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
+            $(toolbarObjects[number]).children('.button__deletting').html('<svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x align-middle me-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>')
+            $(toolbarObjects[number]).children('.button__deletting').toggleClass('button__reset')
+            $(toolbarObjects[number]).children('.button__deletting').attr('id', 'toolbar_reset__button'+number)
+            $(toolbarObjects[number]).children('.button__deletting').toggleClass('button__deletting')
+            
+            $(objects[number]).children('.button__deletting').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x align-middle me-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>')
+            $(objects[number]).children('.button__deletting').toggleClass('button__reset')
+            $(objects[number]).children('.button__deletting').attr('id', 'reset__button'+number)
+            $(objects[number]).children('.button__deletting').toggleClass('button__deletting')
 
             $("input[type='radio']").toggleClass('categories-editing')
             $("input[type='radio']").toggleClass('categories-default')
@@ -168,7 +186,7 @@ $(document).ready(function (e) {
                         // translate when resizing from top or left edges
                         x += event.deltaRect.left * (1 / scale)
                         y += event.deltaRect.top * (1 / scale)
-                        console.log(target.style.width, x, target.style.left)
+                        // console.log(target.style.width, x, target.style.left)
 
                         target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
 
@@ -300,9 +318,16 @@ $(document).ready(function (e) {
                 radio_checked_id
             )
 
+            
 
             // alert(123)
         }
 
+    })
+
+    $(canvas).on('click', '.button__reset', function () {
+        Livewire.emit('reset')
+        status = Statuses.CreatingElements
+        $(document).trigger('statusChange', status)
     })
 })

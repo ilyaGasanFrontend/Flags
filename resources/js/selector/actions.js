@@ -6,8 +6,8 @@ $(document).ready(function (e) {
     });
 
     const storage = window.sessionStorage
-    
-    var status = storage.getItem('status')    
+
+    var status = storage.getItem('status')
     var scale = parseFloat(storage.getItem('scale'))
 
     var canvas = $('.canvas')
@@ -25,6 +25,10 @@ $(document).ready(function (e) {
         scale = param
     })
 
+    $(document).on('statusChange', function (e, param) {
+        status = param
+    })
+
     // delete
     $('.obj-table').on('mouseenter', '.button__deletting', function (e) {
         let number = ($(this).attr('id')).substring('deletting__button'.length)
@@ -36,7 +40,12 @@ $(document).ready(function (e) {
         let number = ($(this).attr('id')).substring('deletting__button'.length)
         let testobjects = $(canvas).children('.square')
         $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
-    })    
+    })
+
+    $('.obj-table').on('click', '.button__deletting', function (e) {
+        let number = ($(this).attr('id')).substring('deletting__button'.length)
+        Livewire.emit('delete', number)
+    })
 
     // edit
     $('.obj-table').on('mouseenter', '.button__editing', function (e) {
@@ -71,12 +80,21 @@ $(document).ready(function (e) {
 
             let testobjects = $(canvas).children('.square')
             let objects = $('.obj-table').children('.table-row').children('.table-action')
+            let toolbarObjects = $('.toolbar')
+
             $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
-            $('#toolbar__editing__button' + number).html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
+            $('#toolbar__editing__button' + number).html('<svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check align-middle"><polyline points="20 6 9 17 4 12"></polyline></svg>')
             $(testobjects[number]).toggleClass('point__events')
 
+            $(toolbarObjects[number]).children('.button__deletting').html('<svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x align-middle me-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>')
+            $(toolbarObjects[number]).children('.button__deletting').toggleClass('button__reset')
+            $(toolbarObjects[number]).children('.button__deletting').attr('id', 'toolbar_reset__button' + number)
+            $(toolbarObjects[number]).children('.button__deletting').toggleClass('button__deletting')
 
-            $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
+            $(objects[number]).children('.button__deletting').html('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x align-middle me-2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>')
+            $(objects[number]).children('.button__deletting').toggleClass('button__reset')
+            $(objects[number]).children('.button__deletting').attr('id', 'reset__button' + number)
+            $(objects[number]).children('.button__deletting').toggleClass('button__deletting')
 
             $("input[type='radio']").toggleClass('categories-editing')
             $("input[type='radio']").toggleClass('categories-default')
@@ -163,7 +181,7 @@ $(document).ready(function (e) {
                         d_width = parseFloat($(`#square${number}`).css('width'))
                         d_height = parseFloat($(`#square${number}`).css('height'))
 
-                        $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
+                        // $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${event.rect.width * (1 / scale)}, ${event.rect.height * (1 / scale)}, ${radio_checked_id})`)
                     }
                 },
                 modifiers: [
@@ -232,20 +250,22 @@ $(document).ready(function (e) {
                 d_width = parseFloat($(`#square${number}`).css('width'))
                 d_height = parseFloat($(`#square${number}`).css('height'))
 
-                $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+                // $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left + x}, ${d_top + y}, ${d_width}, ${d_height}, ${radio_checked_id})`)
             }
             // // //console.log( $(testobjects[number]).css('x'))
             window.dragMoveListener = dragMoveListener
 
             // //console.log(number)
             // $(objects[number]).children('.button__editing').attr('wire:click', `update(${parseInt(number)+1}, 100, 100, 100, 100, ${radio_checked_id})`)
-            $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
+            // $(objects[number]).children('.button__editing').attr('wire:click.prevent', `update(${parseInt(number) + 1}, ${d_left}, ${d_top}, ${d_width}, ${d_height}, ${radio_checked_id})`)
         }
         else {
 
 
 
             status = Statuses.CreatingElements
+            $(document).trigger('statusChange', status)
+
             let testobjects = $('.canvas').children('.square')
             let number = ($(this).attr('id')).substring('editing__button'.length)
             let objects = $('.obj-table').children('.table-row').children('.table-action')
@@ -266,7 +286,28 @@ $(document).ready(function (e) {
             $(objects[number]).children('.button__deletting').toggleClass('button__deletting__disabled')
             // $('#hiddenX').val().split(',')[number] = $(testobjects[number]).css('x')
             $(objects[number]).children('.button__editing').attr('wire:click.prevent', '')
+
+            // Livewire.emit('reset')
+            let object = $('#square' + number)
+            let dx = $(object).attr('data-x') == null ? 0 : parseFloat($(object).attr('data-x'))
+            let dy = $(object).attr('data-y') == null ? 0 : parseFloat($(object).attr('data-y'))
+
+            Livewire.emit(
+                'update',
+                parseInt(number) + 1,
+                parseFloat($(object).css('left')) + dx,
+                parseFloat($(object).css('top')) + dy,
+                parseFloat($(object).css('width')),
+                parseFloat($(object).css('height')),
+                radio_checked_id
+            )
         }
 
+    })
+
+    $('.obj-table').on('click', '.button__reset', function () {
+        Livewire.emit('reset')
+        status = Statuses.CreatingElements
+        $(document).trigger('statusChange', status)
     })
 })
