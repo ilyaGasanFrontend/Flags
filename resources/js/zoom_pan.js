@@ -67,6 +67,7 @@ window.onload = function () {
     }
 
     var handleScroll = function (evt) {
+        console.log('hi')
         var delta = evt.wheelDelta ? evt.wheelDelta / 40 : evt.detail ? -evt.detail : 0;
         if (delta) zoom(delta);
         return evt.preventDefault() && false;

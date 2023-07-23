@@ -1,6 +1,7 @@
 <div>
     <main>
         @vite(['resources/js/selector.js'])
+        @vite(['resources/js/src/grid_color_selector.js'])
 
         <style>
             .grid::after {
@@ -24,7 +25,7 @@
                     <div class="row">
                         <div class="col-12" style="height: 60vh; margin-bottom: 24px">
                             <div class="card card__selector">
-                                <div class="card-body m-sm-3 m-md-0 card__for__analis">
+                                <div class="card-body m-sm-3 m-md-0 card__for__analis" wire:ignore.self>
                                     <div id="text" {{-- wire:ignore --}}
                                         style="position: absolute; 
                                         width: 100%; 
@@ -204,7 +205,22 @@
                                             step="50" value="100" wire:model="grid_range" id="grid_range"
                                             @if (!$show_grid) disabled @endif>
                                     </div>
+
+                                    <div class="row margin-lg" style="margin-top: 1rem">
+                                        <div class="col-md-4">
+                                            <a href="" class="btn btn-primary color_changer">Смена цвета</a> 
+                                        </div>
+                                        <div class="col-md-4" style='display:none;' >
+                                            <input type='radio' id='r1' name='color' value='fff' class='colors' >
+                                            <label for="r1">white</label>
+                                        </div>
+                                        <div class="col-md-4" style='display:none;' >
+                                            <input type='radio' id='r2' name='color' value='000' class='colors' checked>
+                                            <label for="r2">black</label>
+                                        </div>
+                                    </div>      
                                 </div>
+
 
                                 <br>
 

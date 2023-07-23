@@ -117,8 +117,6 @@ $(document).ready(function (e) {
           $(objects[i]).attr('id', prev__elemnt__objects + i)
           $(objects[i]).children('.number').html(i + 1)
         }
-
-
         break
     }
 
@@ -1034,21 +1032,9 @@ $(document).ready(function (e) {
   $(canvas).on('click', '.button__deletting', function (e) {
     isOverToolbar = false
   })
-  // $('#toggle_grid').on('mouseenter', function (e) {
-  //   $('#text').removeAttr('wire:ignore')
-  //   $('script[src="' + script_src + '"]').remove();
-  //   // //console.log($('script[src="' + script_src + '"]'))
-  //   // alert(123)
-  //     // $('<script>').attr('src', script_src).appendTo('head');
-  // })
-
-  // $('#toggle_grid').on('mouseleave', function (e) {
-  //   $('#text').attr('wire:ignore', '')
-  //   // window.location.href = 12519
-  // })
 
   $('#toggle_grid').on('click', function (e) {
-    $('.canvas').toggleClass('grid')
+    $('.card__for__analis').toggleClass('grid')
   })
 
   function addOnWheel(elem, handler) {
@@ -1072,6 +1058,7 @@ $(document).ready(function (e) {
 
   var zoom = $('.canvas')
 
+
   addOnWheel(text, function (e) {
     var delta = e.deltaY || e.detail || e.wheelDelta;
 
@@ -1085,6 +1072,8 @@ $(document).ready(function (e) {
 
     // $('#edit_toolbar_0').css('width', 24 / scale)
     // $('#edit_toolbar_0').css('height', 24 / scale)
+    console.log(scale)
+    
 
     if (delta > 0) {
       scale -= 0.05
