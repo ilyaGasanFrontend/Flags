@@ -55,7 +55,7 @@ $(document).ready(function (e) {
     })
 
     $('#toggle_grid').on('click', function (e) {
-        $(canvas).toggleClass('grid')
+        $('.card__for__analis').toggleClass('grid')
     })
 
 })

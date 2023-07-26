@@ -408,52 +408,64 @@
       height: 10vh;
     }
 
-    .grid::after {
+    .card__for__analis::after {
       position: absolute;
       left: 0;
       top: 0;
       content: '';
       width: 100%;
+      -webkit-transform-style: preserve-3d;
+      /* scale: var(--scale_grid); */
       height: 100%;
-      background-image: linear-gradient(black 2px, transparent 2px), linear-gradient(90deg, black 2px, transparent 2px);
+      background-image: linear-gradient(var(--color-grid) 2px, transparent 2px), linear-gradient(90deg, var(--color-grid) 2px, transparent 2px);
       /* background-size: 100px 100px, 100px 100px, 120px 20px, 20px 20px; */
       background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+      pointer-events: none;
+    
     }
 
-    .grid-50::after {
+    .card__for__analis-50::after {
       position: absolute;
       left: 0;
       top: 0;
       content: '';
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(black 2px, transparent 2px), linear-gradient(90deg, black 2px, transparent 2px);
+      background-image: linear-gradient(var(--color-grid) 2px, transparent 2px), linear-gradient(90deg, var(--color-grid) 2px, transparent 2px);
+
       background-size: 50px 50px, 50px 50px, 120px 20px, 20px 20px;
+      pointer-events: none;
+
       background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
     }
 
-    .grid-100::after {
+    .card__for__analis-100::after {
       position: absolute;
       left: 0;
       top: 0;
       content: '';
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(black 2px, transparent 2px), linear-gradient(90deg, black 2px, transparent 2px);
+      background-image: linear-gradient(var(--color-grid) 2px, transparent 2px), linear-gradient(90deg, var(--color-grid) 2px, transparent 2px);
+
       background-size: 100px 100px, 100px 100px, 120px 20px, 20px 20px;
       background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+      pointer-events: none;
+
     }
 
-    .grid-150::after {
+    .card__for__analis-150::after {
       position: absolute;
       left: 0;
       top: 0;
       content: '';
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(black 2px, transparent 2px), linear-gradient(90deg, black 2px, transparent 2px);
+      background-image: linear-gradient(var(--color-grid) 2px, transparent 2px), linear-gradient(90deg, var(--color-grid) 2px, transparent 2px);
+
       background-size: 150px 150px, 150px 150px, 120px 20px, 20px 20px;
       background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+      pointer-events: none;
     }
 
     .toolbar {
