@@ -35,7 +35,8 @@ class LSelector extends Component
     public $height;
     public $category;
 
-    public $param; //передача id фотки во вьюху
+    public $gal, $param; //передача id фотки во вьюху
+
 
     public $images; //массив данных из таблицы images
 

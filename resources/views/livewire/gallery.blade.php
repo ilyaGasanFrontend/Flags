@@ -12,9 +12,8 @@
                     <div class="card-body">
                         <div class="row">
                             <label for="file_uploader" class="form-label">Добавить файлы</label>
-
                             <div class="col-md-8">
-                                @livewire('file-uploader')
+                                @livewire('file-uploader', ['gal' => $gal])
                             </div>
                             <div class="col-md-2">
                                 <div class="btn-group">
@@ -101,7 +100,7 @@
                                     <div class="card bg-light col d-flex ">
                                         <div class="wrapper__class ">
                                             <a class="row-8"
-                                                @if ($is_empty == true) wire:click="alert" @else href="/gallery/{{ $image->id }}" @endif>
+                                                @if ($is_empty == true) wire:click="alert" @else href="{{ route('flags', ['param' => $image->id, 'gal' => $gal]) }}" @endif>
                                                 <img class="card-img-top" src="{{ $image->path_to_file }}"
                                                     loading="lazy" alt="{{ $image->path_to_file }}"
                                                     style="width: 100%; height: @if ($col_md == 3) 337px @else 220px @endif; object-fit: cover;">

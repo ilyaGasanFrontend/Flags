@@ -23,8 +23,8 @@
                 <div class="col-8">
                     <div class="row">
                         <div class="col-12" style="height: 60vh; margin-bottom: 24px">
-                            <div class="card card__selector">
-                                <div class="card-body m-sm-3 m-md-0 card__for__analis">
+                            <div class="card card__selector" >
+                                <div class="card-body m-sm-3 m-md-0 card__for__analis" wire:ignore.self>
                                     <div id="text" {{-- wire:ignore --}}
                                         style="position: absolute; 
                                         width: 100%; 

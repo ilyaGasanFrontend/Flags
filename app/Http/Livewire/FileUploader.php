@@ -12,7 +12,7 @@ use Illuminate\Http\File;
 
 use App\Models\Image;
 use Exception;
-use Illuminate\Contracts\Cache\Store;
+// use Illuminate\Contracts\Cache\Store;
 
 class FileUploader extends Component
 {
@@ -22,6 +22,7 @@ class FileUploader extends Component
     public $total_files;
     public $files_ready = 0;
 
+    public $gal;
     // public $progress;
 
     public $chunkSize = 5_000_000; //~5 MB
@@ -130,7 +131,7 @@ class FileUploader extends Component
 
                     image::create(
                         [
-                            'user_id' => auth()->user()->id,
+                            'project_id' => $this->gal,
                             'original_name' => $original_filename,
                             'hash_name' => $tmp_file->hashName(),
                             'path_to_file' => '/storage/photos/' . auth()->user()->name . '/' . $tmp_file->hashName(),
@@ -192,7 +193,7 @@ class FileUploader extends Component
                 // dd($tmp_file->hashName());
                 image::create(
                     [
-                        'user_id' => auth()->user()->id,
+                        'project_id' => $this->gal,
                         'original_name' => $original_filename,
                         'hash_name' => $tmp_file->hashName(),
                         'path_to_file' => '/storage/photos/' . auth()->user()->name . '/' . $tmp_file->hashName(),

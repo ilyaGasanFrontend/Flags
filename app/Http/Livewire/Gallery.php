@@ -19,6 +19,8 @@ class Gallery extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    public $gal;
+
     public $files = [];
 
     public $images;
@@ -224,16 +226,22 @@ class Gallery extends Component
         $this->dispatchBrowserEvent('modal-confirm-hide', ['message' => 'Необходимо создать категории!']);
     }
 
+    public function mount($gal)
+    {
+        $this->gal = $gal;
+        $this->emit('set_project_id', $gal);
+    }
+
     public function render()
     {
         if ($this->filter) {
-            $this->images = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->get();
+            $this->images = Image::where('is_ready', 0)->where('project_id', $this->gal)->get();
             // $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->cursorPaginate(2);
-            $paginate = Image::where('is_ready', 0)->where('user_id', auth()->user()->id)->paginate(12);
+            $paginate = Image::where('is_ready', 0)->where('project_id', $this->gal)->paginate(12);
         } else {
-            $this->images = Image::all()->where('user_id', auth()->user()->id);
+            $this->images = Image::all()->where('project_id', $this->gal);
             // $paginate = Image::all()->where('user_id', auth()->user()->id)->cursorPaginate(2);
-            $paginate = Image::where('user_id', auth()->user()->id)->paginate(12);
+            $paginate = Image::where('project_id', $this->gal)->paginate(12);
         }
 
         if (Category::where('user_id', auth()->user()->id)->count() == 0) {

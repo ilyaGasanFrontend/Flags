@@ -1,10 +1,9 @@
-
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="">
             <span class="sidebar-brand-text align-middle">
-                <img src="{{ Vite::asset('resources/adminkit/img/logo/flags2.png') }}" alt="Oktagramma"
-                    width="150px" height="auto">
+                <img src="{{ Vite::asset('resources/adminkit/img/logo/flags2.png') }}" alt="Oktagramma" width="150px"
+                    height="auto">
 
             </span>
             <svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24"
@@ -16,25 +15,48 @@
             </svg>
         </a>
 
-        
+
 
         <ul class="sidebar-nav">
             <li class="sidebar-header">
                 Разделы
             </li>
-           
+
             <li class="sidebar-item ">
                 <a class="sidebar-link" href="{{ route('dashboard') }}">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Рабочий стол</span>
                 </a>
             </li>
 
-            <li class="sidebar-item ">
+            {{-- <li class="sidebar-item ">
                 <a class="sidebar-link" href="{{ route('gallery') }}">
                     <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Галерея</span>
                 </a>
-            </li>
+            </li> --}}
+            @php($projects_counter = App\Models\Projects::where('user_id', auth()->user()->id)->count())
             
+            <li class="sidebar-item">
+                @if ($projects_counter == 1)
+                    @php($projects = App\Models\Projects::select('id', 'name')->where('user_id', auth()->user()->id)->first())
+                    <a class="sidebar-link" href="{{ route('gallery', ['gal' => $projects->id]) }}">
+                        <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Галерея</span>
+                    </a>
+                @else
+                    @php($projects = App\Models\Projects::select('id', 'name')->where('user_id', auth()->user()->id)->get())
+                    <a data-bs-target="#galleries" data-bs-toggle="collapse" class="sidebar-link" aria-expanded="true">
+                        <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Галереи</span>
+                    </a>
+                    <ul id="galleries" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar"
+                        style="">
+                        @foreach ($projects as $project)
+                            <li class="sidebar-item"><a class="sidebar-link"
+                                    href="{{ route('gallery', ['gal' => $project->id]) }}">{{ $project->name }}</a></li>
+                        @endforeach
+                    </ul>
+                @endif
+
+            </li>
+
             <li class="sidebar-header">
                 Справочники
             </li>

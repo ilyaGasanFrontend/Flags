@@ -1,0 +1,55 @@
+.bg-gals-old {
+    background-image:url('/images/gal_bg.jpg');
+}
+.bg-gals-future {
+    background-image:url('/images/future.jpg');
+}
+.bg-gal {
+
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center center;
+    -webkit-box-shadow:  0 0 178px 40px #2e4235 inset;
+
+}
+
+.box-shadow:hover {
+    scale: 1.01;
+    text-decoration: none;
+    box-shadow: 11px -5px teal;
+}
+
+
+.card-transperent {
+    background-color: rgba(23, 23, 23, 0.32);
+    color: #fff;
+    font-size: 2.9rem;
+    font-style: italic;
+    font-family: caption;
+    font-weight: bold;
+    margin: auto;    
+}
+.modal-dialog-1 {
+    max-width: 70% !important;
+    max-height: 80% !important;
+}
+
+.modal-dialog-2 {
+    max-width: 50% !important;
+    height: 50%;
+    max-height: 50% !important;
+}
+.modal-content {
+    height: 100%;
+}
+.modal-body-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.lable-gal {
+    max-width: 40%;
+}
+.form-control-lable {
+    max-width: 30%;
+}

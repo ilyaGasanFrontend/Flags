@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('project_id')->constrained('projects', 'id')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('original_name');
             $table->string('hash_name');
             $table->string('path_to_file');

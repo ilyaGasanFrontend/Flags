@@ -20,16 +20,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test/page', function (){
-    dd(phpinfo());
-});
+// Route::get('/test/page', function (){
+//     dd(phpinfo());
+// });
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Route::get('/', function () {
-    return view('dashboard');
+    return redirect('dashboard');
 })->middleware(['auth']);
 
 Route::middleware(['auth'])->group(function () {
@@ -39,9 +39,9 @@ Route::middleware(['auth'])->group(function () {
     // })->name('dashboard');
 
     //gallery & selector
-    Route::get('/gallery', Gallery::class)->name('gallery');
-    Route::get('/gallery/{param}', LSelector::class); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
-    Route::get('/gallery/flags', LSelector::class);
+    Route::get('/gallery/{gal}', Gallery::class)->name('gallery');
+    Route::get('/gallery/{gal}/{param}', LSelector::class)->name('flags'); //возможно необходимо кодировать передаваемый параметр, чтобы пользователь не мог вручную перейти на не свою фотографию
+    // Route::get('/gallery/flags', LSelector::class);
     // Route::get('/options', OptionsIndex::class)->name('options');
 
 

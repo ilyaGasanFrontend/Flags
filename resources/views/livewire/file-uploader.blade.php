@@ -20,7 +20,7 @@
 
                         <div class="col-md-3">{{ $file['fileName'] }}</div>
 
-
+                        
                         {{-- <progress max="100" wire:model="files.{{ $i }}.progress"> --}}
                     </div>
                 @endforeach
@@ -30,7 +30,6 @@
             <button class="btn btn-primary" wire:click="store_files" wire:loading.attr='disabled'
                 @if (!$files_ready == $total_files) disabled @endif>Отправить</button>
         </div>
-
         {{-- <button class="btn btn-primary" wire:loading.attr="wire:click='store_files'">test</button> --}}
 
 
