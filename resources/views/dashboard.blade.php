@@ -5,23 +5,67 @@
 
 
     <div>
+        {{-- <h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Рабочий стол</a></li>
+                    <li class="breadcrumb-item active">Галерея</li>
+                </ol>
+            </nav>
+        </h1> --}}
         <div class="row h-100">
             <div class="col h-100">
                 <div class="row">
                     <div class="card">
                         <div class="card-header">
-
                             <h5 class="card-title mb-0">Недавние</h5>
-
                         </div>
+
                         <div class="card-body">
                             <div class="row">
                                 @if ($projects)
                                     @foreach ($projects as $project)
-                                        <div class="col">
-                                            <a
-                                                href="{{ route('gallery', ['gal' => $project->id]) }}">{{ $project->name }}</a>
-                                            {{ $project->description }}
+                                        <div class="col-4">
+                                            <div class="card bg-light col d-flex ">
+                                                <div class="wrapper__class ">
+                                                    <a class="row-8"
+                                                        href="{{ route('gallery', ['gal' => $project->id]) }}">
+                                                        @if ($project->path_to_file)
+                                                            <img class="card-img-top" src="{{ $project->path_to_file }}"
+                                                                loading="lazy" style="width: 100%; object-fit: cover;">
+                                                        @else
+                                                            <img class="card-img-top"
+                                                                src="{{ Vite::asset('resources/adminkit/img/logo/flags.png') }}"
+                                                                loading="lazy" style="width: 100%; object-fit: cover;">
+                                                        @endif
+
+                                                        {{-- <img class="card-img-top" src="{{asset('images/dog.jpg')}}" alt="Unsplash"> --}}
+                                                    </a>
+
+                                                    <div class="card-header bg-light row-8">
+
+                                                        <h5 class="card-title ">
+                                                            <a href="{{ route('gallery', ['gal' => $project->id]) }}">
+                                                                {{ $project->name }}
+                                                            </a>
+                                                        </h5>
+                                                        <p>
+                                                            <em>
+                                                                @if ($project->description)
+                                                                    {{ $project->description }}
+                                                                @else
+                                                                    Описание отсутствует
+                                                                @endif
+                                                            </em>
+                                                        </p>
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                            </div>
                                         </div>
                                     @endforeach
                                 @endif
@@ -41,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col h-100">
+            <div class="col">
                 <div class="card">
                     <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
 

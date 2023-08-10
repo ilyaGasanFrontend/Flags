@@ -7,6 +7,14 @@
     </script> --}}
     <main>
         <div class="container-fluid p-0">
+            <h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Рабочий стол</a></li>
+                        <li class="breadcrumb-item active">Галерея</li>
+                    </ol>
+                </nav>
+            </h1>
             <div class="row">
                 <div class="card">
                     <div class="card-body">

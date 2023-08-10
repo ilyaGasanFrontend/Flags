@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 use App\Models\Image;
 use App\Models\test;
 use App\Models\Category;
-
+use App\Models\Projects;
 use Illuminate\Support\Facades\Storage;
 
 class Gallery extends Component
@@ -249,7 +249,7 @@ class Gallery extends Component
         } else {
             $is_empty = false;
         }
-
+        
         // $this->images = DB::table('images')->get();
         return view('livewire.gallery', compact([
             'is_empty', 'paginate',

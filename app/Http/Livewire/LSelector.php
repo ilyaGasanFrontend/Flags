@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use App\Models\test;
 use App\Models\Image;
 use App\Models\Category;
+use App\Models\Projects;
 
 class LSelector extends Component
 {
@@ -62,6 +63,8 @@ class LSelector extends Component
         if (Test::where('user_id', auth()->user()->id)->where('photoName', $this->param)->count() == 0) {
             Image::where('id', $this->param)->update(['is_ready' => 0]);
         }
+
+        Projects::where('id', $this->gal)->touch();
         sleep($this->DELAY);
     }
 
@@ -82,6 +85,7 @@ class LSelector extends Component
                 'height' => $height,
             ]
         );
+        Projects::where('id', $this->gal)->touch();
     }
 
     public function create($id, $category, $x, $y, $width, $height)
@@ -98,6 +102,7 @@ class LSelector extends Component
         ]);
 
         Image::where('id', $this->param)->update(['is_ready' => 1]);
+        Projects::where('id', $this->gal)->touch();
         // !!!!!!!!!!!!!!!!!! можно попробовать сделать через ?провайдер 
         // 
         //https://laravel.com/docs/10.x/database#listening-for-query-events  
@@ -107,7 +112,7 @@ class LSelector extends Component
 
     public function go_to_prev()
     {
-        $prev_id = Image::where('user_id', auth()->user()->id)->where('id', '<', $this->param)->orderByDesc('id')->limit(1)->value('id');
+        $prev_id = Image::where('project_id', $this->gal)->where('id', '<', $this->param)->orderByDesc('id')->limit(1)->value('id');
         $this->param = $prev_id;
         // $this->images = Image::find($this->param);
         $this->dispatchBrowserEvent('goToPageClicked');
@@ -115,7 +120,7 @@ class LSelector extends Component
 
     public function go_to_next()
     {
-        $next_id = Image::where('user_id', auth()->user()->id)->where('id', '>', $this->param)->limit(1)->value('id');
+        $next_id = Image::where('project_id', $this->gal)->where('id', '>', $this->param)->limit(1)->value('id');
         if ($next_id == null) {
             $next_id = Image::where('user_id', auth()->user()->id)->first()->value('id');
             // dd($next_id);
@@ -139,8 +144,8 @@ class LSelector extends Component
 
     public function render()
     {
-        $first_id = Image::where('user_id', auth()->user()->id)->first()->value('id');
-        $last_id = Image::where('user_id', auth()->user()->id)->orderByDesc('id')->value('id');
+        $first_id = Image::where('project_id', $this->gal)->first()->value('id');
+        $last_id = Image::where('project_id', $this->gal)->orderByDesc('id')->value('id');
         // dd($this->first_id);
 
         $this->images = Image::find($this->param);
@@ -164,7 +169,7 @@ class LSelector extends Component
         // $this->squares = test::where('photoName', $this->param)->get();
 
         $this->nav_images = [];
-        foreach (Image::where('id', '<', $this->param)->orderByDesc('id')->limit(2)->get() as $q) {
+        foreach (Image::where('id', '<', $this->param)->where('project_id', $this->gal)->orderByDesc('id')->limit(2)->get() as $q) {
             array_push($this->nav_images, $q);
         } //nav_images = [1, 0]
 
@@ -173,7 +178,7 @@ class LSelector extends Component
         } //nav_images = [0,1]
 
         array_push($this->nav_images, $this->images); //nav_images = [0, 1, 2]
-        foreach (Image::where('id', '>', $this->param)->orderBy('id')->limit(2)->get() as $q) {
+        foreach (Image::where('id', '>', $this->param)->where('project_id', $this->gal)->orderBy('id')->limit(2)->get() as $q) {
             array_push($this->nav_images, $q);
         } //nav_images = [0, 1, 2, 3, 4]
 
@@ -183,16 +188,16 @@ class LSelector extends Component
         $categories = Category::where('user_id', '=', auth()->user()->id)->get();
         // $this->radio_category = Category::first()->id;
 
-        if ($this->param == Image::where('user_id', auth()->user()->id)->first()->getOriginal('id')) {
-            $prev_image_id = Image::where('user_id', auth()->user()->id)->orderByDesc('id')->first()->getOriginal('id');
+        if ($this->param == Image::where('project_id', $this->gal)->first()->getOriginal('id')) {
+            $prev_image_id = Image::where('project_id', $this->gal)->orderByDesc('id')->first()->getOriginal('id');
         } else {
-            $prev_image_id = Image::where('user_id', auth()->user()->id)->where('id', '<', $this->param)->orderByDesc('id')->first()->getOriginal('id');
+            $prev_image_id = Image::where('project_id', $this->gal)->where('id', '<', $this->param)->orderByDesc('id')->first()->getOriginal('id');
         }
 
-        if ($this->param == Image::where('user_id', auth()->user()->id)->orderByDesc('id')->first()->getOriginal('id')) {
-            $next_image_id = Image::where('user_id', auth()->user()->id)->first()->getOriginal('id');
+        if ($this->param == Image::where('project_id', $this->gal)->orderByDesc('id')->first()->getOriginal('id')) {
+            $next_image_id = Image::where('project_id', $this->gal)->first()->getOriginal('id');
         } else {
-            $next_image_id = Image::where('user_id', auth()->user()->id)->where('id', '>', $this->param)->first()->getOriginal('id');
+            $next_image_id = Image::where('project_id', $this->gal)->where('id', '>', $this->param)->first()->getOriginal('id');
         }
 
         $paginate = Image::find($this->param)->paginate(1);

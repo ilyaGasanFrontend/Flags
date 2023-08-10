@@ -11,19 +11,28 @@
                 width: 100%;
                 height: 100%;
                 background-image: linear-gradient(black 2px, transparent 2px), linear-gradient(90deg, black 2px, transparent 2px);
-                background-size: <?= $grid_range ?>px <?= $grid_range ?>px, <?= $grid_range ?>px <?= $grid_range ?>px, 120px 20px, 20px 20px;
+                background-size: <?=$grid_range ?>px <?=$grid_range ?>px, <?=$grid_range ?>px <?=$grid_range ?>px, 120px 20px, 20px 20px;
                 background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
             }
         </style>
 
-        <h1><a href="/gallery">Галерея</a> / Фотография {{ $this_img_number }} из {{ $images_count }}</h1><br>
+        
+        <h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Рабочий стол</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('gallery', ['gal' => $gal]) }}">Галерея</a></li>
+                    <li class="breadcrumb-item active">Фотография {{ $this_img_number }} из {{ $images_count }}</li>
+                </ol>
+            </nav>
+        </h1>
         <div class="container-fluid p-0">
             <div class="row">
                 {{-- <div class="row row__selector"> --}}
                 <div class="col-8">
                     <div class="row">
                         <div class="col-12" style="height: 60vh; margin-bottom: 24px">
-                            <div class="card card__selector" >
+                            <div class="card card__selector">
                                 <div class="card-body m-sm-3 m-md-0 card__for__analis" wire:ignore.self>
                                     <div id="text" {{-- wire:ignore --}}
                                         style="position: absolute; 
@@ -38,7 +47,8 @@
                                             style="transform-origin: 0% 0%; 
                                             /* width: {{ $images->original_width }}px; height: {{ $images->original_height }}px;  */
                                             width: 100%; height: 100%; 
-                                            transition-duration: 0ms; margin:auto;" wire:loading.class="disabled-canvas">
+                                            transition-duration: 0ms; margin:auto;"
+                                            wire:loading.class="disabled-canvas">
 
 
                                             <img src="{{ $images->path_to_file }}" alt="" class="img__current"
@@ -73,8 +83,7 @@
                                                         </a>
                                                         <a class="button__deletting"
                                                             id="toolbar_deletting_button{{ $i }}"
-                                                            {{-- wire:click.prevent="delete({{ $i }})" --}}
-                                                            style="text-decoration: none"><svg
+                                                            {{-- wire:click.prevent="delete({{ $i }})" --}} style="text-decoration: none"><svg
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 style="width: 24px; height: 24px" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
@@ -154,7 +163,7 @@
                                         </div>
                                         @if ($param != $last_id)
                                             <div class="col-1 col--arrows col--arrows--arrow" wire:click="go_to_next"
-                                                id="right" style="justify-content: center; display: flex" >
+                                                id="right" style="justify-content: center; display: flex">
                                                 <a href="#">
                                                     <svg style="scale:3; height:100%;"
                                                         xmlns="http://www.w3.org/2000/svg" width="0"
@@ -189,12 +198,14 @@
                                     <div class="col-md-4">
                                         @if ($show_grid)
                                             <button class="btn btn-primary" id="toggle_grid"
-                                                wire:click.prevent="$toggle('show_grid')" wire:loading.attr='disabled'>
+                                                wire:click.prevent="$toggle('show_grid')"
+                                                wire:loading.attr='disabled'>
                                                 Скрыть сетку
                                             </button>
                                         @else
                                             <button class="btn btn-primary" id="toggle_grid"
-                                                wire:click.prevent="$toggle('show_grid')" wire:loading.attr='disabled'>
+                                                wire:click.prevent="$toggle('show_grid')"
+                                                wire:loading.attr='disabled'>
                                                 Показать сетку
                                             </button>
                                         @endif
@@ -207,17 +218,19 @@
 
                                     <div class="row margin-lg" style="margin-top: 1rem">
                                         <div class="col-md-4">
-                                            <a href="" class="btn btn-primary color_changer">Смена цвета</a> 
+                                            <a href="" class="btn btn-primary color_changer">Смена цвета</a>
                                         </div>
-                                        <div class="col-md-4" style='display:none;' >
-                                            <input type='radio' id='r1' name='color' value='fff' class='colors' >
+                                        <div class="col-md-4" style='display:none;'>
+                                            <input type='radio' id='r1' name='color' value='fff'
+                                                class='colors'>
                                             <label for="r1">white</label>
                                         </div>
-                                        <div class="col-md-4" style='display:none;' >
-                                            <input type='radio' id='r2' name='color' value='000' class='colors' checked>
+                                        <div class="col-md-4" style='display:none;'>
+                                            <input type='radio' id='r2' name='color' value='000'
+                                                class='colors' checked>
                                             <label for="r2">black</label>
                                         </div>
-                                    </div>      
+                                    </div>
                                 </div>
 
                                 <br>
@@ -244,7 +257,8 @@
                                             <input class="form-check-input categories-default"
                                                 id="radio_{{ $category->id }}" type="radio" name="radio_category"
                                                 value="{{ $category->id }}"
-                                                @if ($i == 0) checked @endif wire:loading.attr="disabled">
+                                                @if ($i == 0) checked @endif
+                                                wire:loading.attr="disabled">
                                             <span class="form-check-label" id="span_{{ $category->id }}"
                                                 style="color: {{ $category->color }}">
                                                 {{ $category->description }}
@@ -278,7 +292,8 @@
                                                     </td>
                                                     <input type="hidden" id="hidden-category-{{ $i }}"
                                                         value="{{ $square->category_id }}" />
-                                                    <td class="table-action" wire:loading.class="disabled-while-loading">
+                                                    <td class="table-action"
+                                                        wire:loading.class="disabled-while-loading">
                                                         <a class="button__editing"
                                                             id="editing__button{{ $i }}"
                                                             {{-- wire:click.prevent="update(false, null, null, null, null, null, null)" --}} wire:click.prevent=""
@@ -295,8 +310,7 @@
                                                         </a>
                                                         <a class="button__deletting"
                                                             id="deletting__button{{ $i }}"
-                                                            {{-- wire:click.prevent="delete({{ $i }})" --}}
-                                                            style="text-decoration: none"><svg
+                                                            {{-- wire:click.prevent="delete({{ $i }})" --}} style="text-decoration: none"><svg
                                                                 xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="red" stroke-width="2"
