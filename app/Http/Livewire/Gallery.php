@@ -59,7 +59,7 @@ class Gallery extends Component
         $zip->addFile($dir . $filename . '.yaml',  $filename . '/' . $filename . '.yaml');
 
         //фотографии
-        $images = Image::select('hash_name', 'original_name')->where('user_id', auth()->user()->id)->where('is_ready', 1)->get();
+        $images = Image::select('hash_name', 'original_name')->where('project_id', $this->gal)->where('is_ready', 1)->get();
         foreach ($images as $image) {
             $labels = test::select(
                 'images.original_name',
@@ -74,7 +74,7 @@ class Gallery extends Component
             )
                 ->join('images', 'tests.photoName', '=', 'images.id')
                 // ->join('categories', 'tests.category_id', '=', 'categories.id')
-                ->where('tests.user_id', auth()->user()->id)
+                ->where('images.project_id', $this->gal)
                 ->where('images.original_name', $image->original_name)
                 // ->orderBy('images.id')
                 // ->orderBy('label_id')
@@ -159,7 +159,8 @@ class Gallery extends Component
                 'images.original_width',
                 'images.original_height'
             )
-                ->where('tests.user_id', auth()->user()->id)
+                // ->where('tests.user_id', auth()->user()->id)
+                ->where('images.project_id', $this->gal)
                 ->join('images', 'tests.photoName', '=', 'images.id')
                 ->join('categories', 'tests.category_id', '=', 'categories.id')
                 ->orderBy('images.id')->orderBy('label_id')->get();
