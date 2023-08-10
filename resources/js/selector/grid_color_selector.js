@@ -8,7 +8,7 @@ $(document).ready(function() {
     // })
     $('.color_changer').on('click', e=>{
         e.preventDefault()
-        
+        console.log(123)
         if (activecolor == 0){
             activecolor = 1 
             

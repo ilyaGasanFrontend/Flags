@@ -31,6 +31,7 @@ $(document).ready(function (e) {
 
     // delete
     $('.obj-table').on('mouseenter', '.button__deletting', function (e) {
+        console.log(123)
         let number = ($(this).attr('id')).substring('deletting__button'.length)
         let testobjects = $(canvas).children('.square')
         $(testobjects[number]).toggleClass('active__square__el__obj__deletting')

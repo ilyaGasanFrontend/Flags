@@ -1,6 +1,14 @@
 <div>
     <main>
-        @vite(['resources/js/selector.js'])
+        @vite(['resources/js/selector/actions.js'])
+        @vite(['resources/js/selector/drawing.js'])
+        @vite(['resources/js/selector/grid_color_selector.js'])
+        @vite(['resources/js/selector/render.js'])
+        @vite(['resources/js/selector/toolbars.js'])
+        @vite(['resources/js/selector/zoom.js'])
+
+
+
 
         <style>
             .grid::after {

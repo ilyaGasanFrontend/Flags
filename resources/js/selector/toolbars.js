@@ -48,6 +48,8 @@ $(document).ready(function (e) {
     })
 
     $(canvas).on('mouseenter', '.button__deletting', function (e) {
+        
+        console.log(123)
         let number = ($(this).attr('id')).substring('toolbar_deletting_button'.length)
         let testobjects = $(canvas).children('.square')
         $(testobjects[number]).toggleClass('active__square__el__obj__deletting')
@@ -60,6 +62,7 @@ $(document).ready(function (e) {
     })
 
     $(canvas).on('click', '.button__deletting', function (e) {
+        alert(123)
         let number = ($(this).attr('id')).substring('toolbar_deletting_button'.length)
         Livewire.emit('delete', number)
     })
