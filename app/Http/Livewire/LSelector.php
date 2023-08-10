@@ -144,8 +144,10 @@ class LSelector extends Component
 
     public function render()
     {
-        $first_id = Image::where('project_id', $this->gal)->first()->value('id');
+        $first_id = Image::where('project_id', $this->gal)->limit(1)->value('id');
+        
         $last_id = Image::where('project_id', $this->gal)->orderByDesc('id')->value('id');
+        // dd($first_id, $last_id, $this->gal);
         // dd($this->first_id);
 
         $this->images = Image::find($this->param);
